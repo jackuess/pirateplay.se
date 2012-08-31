@@ -8,6 +8,7 @@ a, a:visited {
 
 body {
 	background-color: #f9f9f9;
+	background-color: #F0EFE7;
 	font-family: 'Quattrocento', sans-serif;
 	margin: 0;
 	/*margin-left: auto;
@@ -29,12 +30,16 @@ div#logo {
 	font-family: 'Fugaz One';
 	left: 0%;
 	padding: .5%;
+	padding-left: 2%;
+	padding-right: 2%;
 	position: absolute;
 	top: 0;
 	width: auto;
 }
 
-h1 { display: none; }
+h1 {
+	margin-top: 2%;
+}
 
 h2:target {
 	border-left: 10px solid #ee2;
@@ -56,27 +61,33 @@ input[type='checkbox'] + label, input[type='radio'] + label {
 }
 
 nav {
-	background-color: #fcfcfc;
-	box-shadow: inset 0px -3px 5px #ddd;
+	/*background-color: #fcfcfc;
+	box-shadow: inset 0px -3px 5px #ddd;*/
+	left: 0;
 	margin: 0;
 	margin-bottom: 2%;
 	padding-bottom: .9em;
-	width: 100%;
+	/*width: 100%;*/
+	position: absolute;
+	top: 7%;
 }
-nav ul {
-	padding: inherit;
-	text-align: center;
-}
+nav ul { padding: inherit;  }
 nav li {
-	border-right: 2px solid black;
-	display: inline;
+	font-size: 1.2em;
+	font-weight: bold;
+	padding-left: 5%;
+	padding: 3%;
 	list-style: none;
-	padding-right: 1%;
-	padding-left: 1%;
+	white-space: nowrap;
 }
-nav li:last-child {
-	border: none;
+nav li a, nav li a:visited {
+	color: black;
 }
+nav li:nth-child(5) { margin-top: 20%;/*border-top: 1px solid #ddd;*/ }
+nav li a:hover, nav li a.selected {
+	color: #f42;
+}
+
 section#content {
 	width: 60%;
 }

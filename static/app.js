@@ -147,6 +147,7 @@ $(document).ready(function () {
 	$('#player').click(function () { myStreamCollection.render(getForm()); });
 	$('#show_inputs').click(function () { myStreamCollection.render(getForm()); });
 	$('#close').click(function () { $('#result').hide(); $('#result_form').hide(); });
+	$('.download').hide(); //Avoiding countering CSS rules
 	$('input[name="action"]').click(function () {
 		if ($(this).val() == 'show')
 			{ $('.out').hide(); $('.player').hide(); $('.download').hide(); }

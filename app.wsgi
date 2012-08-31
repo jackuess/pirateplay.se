@@ -102,7 +102,14 @@ class Root(object):
 		qna = dict([(Markup(q.strip()), Markup(a.strip())) for q, a in qna.items()])
 		
 		return self._render_template(template_name = 'qna.html', args = {'qna': qna})
-
+	
+	def _unfinished_factory():
+		@cherrypy.expose
+		def unfinished(self):
+			return self._render_template(template_name = 'unfinished.html')
+		return unfinished
+	
+	guides_html = player_html = _unfinished_factory()
 
 _config = { 'global': {
 			'server.environment': 'production',

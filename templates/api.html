@@ -1,4 +1,5 @@
-<html xmlns:xi="http://www.w3.org/2001/XInclude">
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
 	<head>
 		<title>API</title>
 		<link rel="stylesheet" href="static/style.css" type="text/css" />
@@ -27,7 +28,7 @@
 	</head>
 	<body>
 		<xi:include href="logo.html" />
-		<xi:include href="menu.html" />
+		<xi:include py:with="selected='api.html'" href="menu.html" />
 		<section id="content">
 			<h1>API</h1>
 			<p>Base url: <a href="http://pirateplay.se/">http://pirateplay.se/</a></p>

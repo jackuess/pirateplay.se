@@ -1,8 +1,14 @@
-<nav>
+<nav xmlns:py="http://genshi.edgewall.org/">
 	<ul>
-		<li><a href="index.html">Hem</a></li>
-		<li><a href="app.html">App</a></li>
-		<li><a href="api.html">API</a></li>
-		<li><a href="qna.html">Frågor o svar</a></li>
+		<li py:def="list_item(url, title)" py:choose="url == selected">
+			<a py:when="True" class="selected" href="${url}">${title}</a>
+			<a py:when="False" href="${url}">${title}</a>
+		</li>
+		${list_item('index.html', 'Förstasida')}
+		${list_item('app.html', 'App')}
+		${list_item('player.html', 'Pirateplayer')}
+		${list_item('api.html', 'API')}
+		${list_item('guides.html', 'Guider')}
+		${list_item('qna.html', 'Frågor o svar')}
 	</ul>
 </nav>
