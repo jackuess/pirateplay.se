@@ -1,0 +1,2 @@
+SetEnv pirateplay_base_dir /path/to/pirateplay/
+SetEnv pirateplay_script_name /pirateplay

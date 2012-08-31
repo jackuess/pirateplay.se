@@ -1,0 +1,74 @@
+<html xmlns:xi="http://www.w3.org/2001/XInclude">
+	<head>
+		<title>App</title>
+		<link rel="stylesheet" href="static/style.css" type="text/css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="static/app.js"></script>
+		<style type="text/css">
+			div#result {
+				background-color: #fff;
+				box-shadow: 0 0  10px #333;
+				border-radius: 5px;
+				padding: 1%;
+			}
+			div#result p.cmd {
+				white-space: pre;
+			}
+			div#result #close {
+				cursor: pointer;
+				float: right;
+			}
+			input[type=text] { width: 100%; }
+			input[name=url] { width: 80%; }
+			input[name=url] + input[type=submit] { width: 19%; }
+			ul#messages {
+				padding: inherit;
+			}
+			ul#messages li {
+				background-color: #ffc;
+				box-shadow: 0 0  10px #bb9;
+				border-radius: 5px;
+				list-style: none;
+				margin-bottom: 1%;
+				padding: 1%;
+			}
+			ul#messages li.error {
+				background-color: #f77;
+				box-shadow: 0 0  10px #b33;
+			}
+			ul#messages li .close {
+				cursor: pointer;
+				float: right;
+			}
+
+			div#result, .out, .player, .download, form#result_form { display: none; }
+		</style>
+	</head>
+	<body>
+		<xi:include href="logo.html" />
+		<xi:include href="menu.html" />
+		<section id="content">
+			<h1>App</h1>
+			<form action="#">
+				<label accesskey="u" for="url">Address</label>
+				<input type="text" name="url" id="url" value="" />
+				<input type="submit" value="Hämta" />
+			</form>
+			<ul id="messages"></ul>
+			<p><form id="result_form">
+					<label>Visa:</label>
+					<input type="radio" name="action" value="show" checked="checked" /> <label>strömmar</label>
+					<input type="radio" name="action" value="download" /> <label>nedladdningskommandon</label>
+					<input type="radio" name="action" value="play" /> <label>uppspelningsskommandon</label>
+					<label class="out" accesskey="s" for="out">Filnamn:</label>
+					<input class="out" type="text" name="out" id="out" />
+					<label class="player" accesskey="s" for="out">Spelare:</label>
+					<select class="player" id="player"><option value="vlc">Vlc</option><option value="ffplay">Ffplay</option><option value="mplayer">Mplayer</option></select><br class="player" />
+					<input name="show_inputs" id="show_inputs" class="download" type="checkbox" /><label class="download">Visa textfält</label>
+			</form></p>
+			<div class="result" id="result">
+				<div id="close">Stäng</div>
+			</div>
+		</section>
+	</body>
+</html>

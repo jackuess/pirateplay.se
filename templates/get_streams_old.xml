@@ -1,0 +1,5 @@
+<return xmlns:py="http://genshi.edgewall.org/"> 
+	<py:for each="s in streams">
+		<cmd quality="${s['meta'].get('quality')}" subtitles="${s['meta'].get('subtitles')}">${s['url']}</cmd>
+	</py:for>
+</return>

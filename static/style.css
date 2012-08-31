@@ -1,0 +1,82 @@
+@import url(http://fonts.googleapis.com/css?family=Quattrocento);
+@import url(http://fonts.googleapis.com/css?family=Fugaz+One);
+
+a, a:visited {
+	color: #00e;
+	text-decoration: none;
+}
+
+body {
+	background-color: #f9f9f9;
+	font-family: 'Quattrocento', sans-serif;
+	margin: 0;
+	/*margin-left: auto;
+	margin-right: auto;
+	width: 80%*/
+}
+body > * {
+	margin-left: auto;
+	margin-right: auto;
+	/*width: 50%;*/
+}
+
+div#logo {
+	/*background-color: black;*/
+	background: -webkit-linear-gradient(top, #000, #555);
+	border-radius: 0 0 10px 0;
+	font-size: 1.3em;
+	color: white;
+	font-family: 'Fugaz One';
+	left: 0%;
+	padding: .5%;
+	position: absolute;
+	top: 0;
+	width: auto;
+}
+
+h1 { display: none; }
+
+h2:target {
+	border-left: 10px solid #ee2;
+	padding-left: 1%;
+}
+
+input[type='text'], option {
+	border: 1px solid black;
+	border-radius: 3px;
+	width: 100%;
+}
+
+label {
+	display: block;
+	margin-top: 1%;
+}
+input[type='checkbox'] + label, input[type='radio'] + label {
+	display: inline;
+}
+
+nav {
+	background-color: #fcfcfc;
+	box-shadow: inset 0px -3px 5px #ddd;
+	margin: 0;
+	margin-bottom: 2%;
+	padding-bottom: .9em;
+	width: 100%;
+}
+nav ul {
+	padding: inherit;
+	text-align: center;
+}
+nav li {
+	border-right: 2px solid black;
+	display: inline;
+	list-style: none;
+	padding-right: 1%;
+	padding-left: 1%;
+}
+nav li:last-child {
+	border: none;
+}
+section#content {
+	width: 60%;
+}

@@ -1,0 +1,59 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
+	<head>
+		<title>Ladda ner webb-tv med Pirateplay.se</title>
+		<link rel="stylesheet" href="static/style.css" type="text/css" />
+		<style type="text/css">
+			article#ingress {
+				background-color: #fffff9;
+				/*border: 3px solid #eee;*/
+				box-shadow: 0 0 7px #ddd;
+				/*border-radius: 15px;*/
+				padding: 1%;
+				width: 50%
+			}
+			section#get_started {
+				/*border: 1px solid black;*/
+				text-align: center
+			}
+			section#get_started a {
+				color: inherit;
+			}
+			section#get_started a:hover {
+				text-decoration: underline;
+			}
+			section#get_started header {
+				font-size: 2.5em;
+				font-weight: bold;
+			}
+			section#get_started div {
+				background-color: #f99;
+				box-shadow: 0 0 4px #555;
+				display: inline-block;
+				margin: .5%;
+				margin-top: 2%;
+				padding: 1%;
+				width: 20%;
+			}
+			section#get_started div:nth-child(2) {
+				background-color: #aca;
+			}
+			section#get_started div:nth-child(3) {
+				background-color: #eea;
+			}
+
+		</style>
+	</head>
+	<body>
+		<xi:include href="logo.html" />
+		<xi:include href="menu.html" />
+		<h1>Pirateplay.se</h1>
+		<article id="ingress"><p>SVT-play, TV4-play, TV3-play, Kanal 5-play och <a href="adress;application.html#services">andra liknande tjänster</a> gör det enkelt att se svensk TV över Internet. Pirateplay.se försöker på olika sätt göra det möjligt att ladda ner programmen i din dator.</p></article>
+		<section id="get_started">
+			<!--<h2>Kom igång</h2>-->
+			<div><header><a href="player.html">Pirateplayer</a></header><a href="player.html">Programmet Pirateplayer kan ladda program från de flesta svenska "playtjänsterna".</a></div>
+			<div><header><a href="guid.html">Guider</a></header><a href="guide.html">Pirateplay.se försöker samla instruktioner till hur man på olika sätt laddar ner svensk webb-tv.</a></div>
+			<div><header><a href="app.html">WebbApp</a></header><a href="app.html">Pirateplays webb-app hittar strömmar för TV-program.</a><br /><br /></div>
+		</section>
+	</body>
+</html>

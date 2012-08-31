@@ -1,0 +1,19 @@
+Går det att ladda ner från TV4-premium med Pirateplay(er)?
+<!-- inner_delim -->
+<p>Nej det gör det inte.</p>
+<!-- delim -->
+Kommer Pirateplay(er) i framtiden ha stöd för TV4-premium?
+<!-- inner_delim -->
+<p>Troligen inte. Jag prenumererar inte på TV4-premium och har alltså ingen möjlighet att vare sig utveckla, testa eller underhålla en sådan funktionalitet.</p>
+<p>Ovanstående svar gäller naturligtvis de andra kanalernas motsvarande betaltjänster.</p>
+<!-- delim -->
+Hur laddar jag ner från Sveriges Radio?
+<!-- inner_delim -->
+<p>Högerklicka på länken - den länk som annars startar SRs inbyggda spelare - till det program du vill lyssna på och välj "Kopiera länkadress" eller motsvarande. Klistra in länken på Pirateplay.se som vanligt. Pirateplay ger dig länken till m4a-filen (<a href="http://en.wikipedia.org/wiki/M4a#.MP4_versus_.M4A_filename_extensions">ungefär som en mp3-fil</a>) för radioprogrammet. Ladda ner och spara länken med t.ex. din webbläsare.</p>
+<p>För direktsändningar genereras en RTMP-länk vilken laddas ner med Rtmpdump i vanlig ordning. Se guiden.</p>
+<p><a href="player.html#bugs">I nuläget fungerar tyvärr inte SR i Pirateplayer</a>.</p>
+<p>Tänk på att många av SRs program finns som <a href="http://sv.wikipedia.org/wiki/Podcast">podcasts</a> och går att ladda ner direkt.</p>
+<!-- delim -->
+Kan du lägga funktionalitet "XX" till Pirateplay(er)?
+<!-- inner_delim -->
+<p>Har du någon idé om vad Pirateplay(er) borde göra eller hur det borde fungera är du givetvis välkommen att lämna ditt förslag till mig. Jag noterar naturligtvis alla nyktra och artigt framställda förslag, men kan inte på något sätt garantera att ett sådant förslag omsätts i något reellt. Minns att Pirateplay utvecklas av mig på fritid, utan ersättning, i mån av tid och lust.</p><p>Det fina är emellertid att Pirateplays källkod är <a href="http://sv.wikipedia.org/wiki/Fri_mjukvara">fri</a>. Det säkraste sättet att få Pirateplay att göra XX i framtiden är alltså att ladda ner källkoden (se Github-länkar på förstasidan och Pirateplayers undersida), modifiera den och skicka en patch till mig.</p>
