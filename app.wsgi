@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import cherrypy, json, re, sys
 from copy import deepcopy
 
@@ -11,6 +13,32 @@ class JSONPirateEncoder(json.JSONEncoder):
 		except AttributeError:
 			pass
 		return JSONEncoder.default(self, o)
+
+def relative_time(s):
+	if s>31536000:
+		t = s/31536000
+		singularis = pluralis = u"år"
+	elif s>2592000:
+		t = s/2592000;
+		singularis, pluralis = (u"månad", u"månader")
+	elif s>86400:
+		t = s/86400;
+		singularis, pluralis  = (u"dag", u"dagar")
+	elif s>3600:
+		t = s/3600;
+		singularis, pluralis = (u"timme", u"timmar")
+	elif s>60:
+		t = s/60;
+		singularis, pluralis = (u"minut", u"minuter")
+	else:
+		t = s;
+		singularis, pluralis = (u"sekund", u"sekunder")
+		
+	t = round(t)
+	if t>1:
+		return  "%d %s " % (t, pluralis)
+	else:
+		return "%d %s " % (t, singularis)
 
 class Root(object):
 	def __init__(self, template_dir):
@@ -85,7 +113,18 @@ class Root(object):
 	
 	@cherrypy.expose
 	def index_html(self):
-		return self._render_template(template_name = 'index.html')
+		from urllib2 import urlopen
+		import datetime
+		
+		now = datetime.datetime.now()
+		tweets = [{'text': Markup(re.sub(r'(https?://\S+)', '<a href="\\1">\\1</a>', tweet['text'], flags=re.IGNORECASE)),
+				'time': unicode(relative_time((now - datetime.datetime.strptime(tweet['created_at'], "%a %b %d %H:%M:%S +0000 %Y")).total_seconds()))}
+				for tweet in json.load(urlopen('http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&count=10'))]
+		
+		services_se = [s.to_dict() for s in services if len(s.items) > 0 and '\.se/' in s.items[0].re]
+		services_other = [s.to_dict() for s in services if len(s.items) > 0 and not '\.se/' in s.items[0].re]
+		
+		return self._render_template(template_name = 'index.html', args = dict(services_se = services_se, services_other = services_other, tweets = tweets))
 	
 	@cherrypy.expose
 	def app_html(self):
@@ -134,14 +173,14 @@ def application(environ, start_response):
 	if not base_dir in sys.path:
 		sys.path.append(base_dir)
 	global get_streams, services
-	from lib.main import get_streams, services
+	from lib.pirateplay import get_streams, services
 	
 	_config['/']['tools.staticdir.root'] = base_dir
 	cherrypy.tree.mount(Root(template_dir = base_dir + '/templates'), config = _config, script_name = environ.get('pirateplay_script_name', ''))
 	return cherrypy.tree(environ, start_response)
 
 if __name__ == "__main__":
-	from lib.main import get_streams, services
+	from lib.pirateplay import get_streams, services
 	
 	from os import getcwd
 	base_dir = getcwd()

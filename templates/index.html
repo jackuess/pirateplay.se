@@ -4,18 +4,18 @@
 		<title>Ladda ner webb-tv med Pirateplay.se</title>
 		<link rel="stylesheet" href="static/style.css" type="text/css" />
 		<style type="text/css">
-			article#ingress {
-				background-color: #fffff9;
-				/*border: 3px solid #eee;*/
-				box-shadow: 0 0 7px #ddd;
-				/*border-radius: 15px;*/
-				padding: 1%;
-				width: 50%
+			section#ingress {
+				margin-top:0;
+				width: 85%;
+				padding: 2%;
+				width: 95%;
 			}
 			section#get_started {
-				/*border: 1px solid black;*/
 				margin-top: 2%;
 				text-align: center
+			}
+			section#get_started p {
+				margin: 0;
 			}
 			section#get_started a {
 				color: inherit;
@@ -23,38 +23,64 @@
 			section#get_started a:hover {
 				text-decoration: underline;
 			}
-			section#get_started header {
+			.box h2 {
 				font-size: 2.5em;
 				font-weight: bold;
+				margin: 0;
 			}
 			section#get_started div {
-				background-color: #f99;
-				box-shadow: 0 0 4px #555;
-				display: inline-block;
-				margin: .5%;
-				padding: 1%;
-				vertical-align: top;
-				width: 20%;
+				width: 40.5%;
 			}
-			section#get_started div:nth-child(2) {
-				background-color: #aca;
+			ul.service-list { padding: 0; }
+			ul.service-list li {
+				display: inline;
+				list-style: none;
 			}
-			section#get_started div:nth-child(3) {
-				background-color: #eea;
+			ul.service-list li:after {
+				content: ', ';
 			}
-
+			ul.service-list li:last-child:after {
+				content: '.';
+			}
 		</style>
 	</head>
 	<body>
 		<xi:include href="logo.html" />
 		<xi:include py:with="selected='index.html'" href="menu.html" />
-		<article id="ingress">
-		<h1>Pirateplay.se</h1><p>SVT-play, TV4-play, TV3-play, Kanal 5-play och <a href="adress;application.html#services">andra liknande tjänster</a> gör det enkelt att se svensk TV över Internet. Pirateplay.se försöker på olika sätt göra det möjligt att ladda ner programmen i din dator.</p></article>
-		<section id="get_started">
-			<!--<h2>Kom igång</h2>-->
-			<div><header><a href="player.html">Pirateplayer</a></header><a href="player.html">Programmet Pirateplayer kan ladda ner program från de flesta svenska "playtjänsterna".</a><br /><br/></div>
-			<div><header><a href="library.html">Bibliotek</a></header><a href="library.html">Pirateplay.se försöker sammanställa användbara resurser för nedladdning av svensk webb-tv.</a></div>
-			<div><header><a href="app.html">WebbApp</a></header><a href="app.html">Pirateplays webb-app hittar strömmar för TV-program.</a><br /><br /><br /></div>
+		<section id="content">
+			<section id="ingress" class="box centered">
+				<h1>Pirateplay.se</h1><p>SVT-play, TV4-play, TV3-play, Kanal 5-play och <a href="#services">andra liknande tjänster</a> gör det enkelt att se svensk TV över Internet. Pirateplay.se försöker på olika sätt göra det möjligt att ladda ner programmen i din dator.</p>
+			</section>
+			<section id="get_started" class="box-container">
+				<div class="box box-red"><h2><a href="player.html">Pirateplayer</a></h2><p><a href="player.html">Programmet <em>Pirateplayer</em> kan ladda ner program från de flesta svenska "playtjänsterna".</a></p></div>
+				<div class="box box-green"><h2><a href="library.html">Bibliotek</a></h2><p><a href="library.html">Pirateplay.se försöker sammanställa användbara resurser för nedladdning av svensk webb-tv.</a></p></div>
+				<div class="box box-yellow"><h2><a href="app.html">WebbApp</a></h2><p><a href="app.html">Pirateplays webb-app hittar strömmar för TV-program.</a></p></div>
+				<div class="box box-black"><h2><a href="http://github.com/jackuess/pirateplay.se">Källkod</a></h2><p><a href="http://github.com/jackuess/pirateplay.se">Pirateplays källkod är fritt tillgänglig under</a> <a href="http://www.gnu.org/licenses/gpl.txt">GPL</a>.</p></div>
+			</section>
+			<section class="box-container" style="width: 100%;">
+				<article class="box" style="width: 58%">
+					<h2 id="services">Tjänster</h2><p>Följande tjänster stöds av Pirateplay.se/Pirateplayer:</p>
+					<h3>Svenska</h3>
+					<ul class="service-list">
+						<li py:for="s in services_se" py:if="'title' in s and 'url' in s"><a href="${s['url']}">${s['title']}</a></li>
+					</ul>
+					<h3>Utländska</h3>
+					<ul class="service-list">
+						<li py:for="s in services_other" py:if="'title' in s and 'url' in s"><a href="${s['url']}">${s['title']}</a></li>
+					</ul>
+				</article>
+				<article class="box" style="width: 35%;">
+					<h2>Uppdateringar</h2>
+					<p py:for="t in tweets[:4]">${t['time']} sedan: ${t['text']}</p>
+					<p class="centered"><a href="http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&amp;count=10">RSS</a>, <a href="http://twitter.com/pirateplay_se">Twitter</a>.</p>
+				</article>
+			</section>
+			<section class="box centered">
+				<h2>Bakgrund</h2>
+				<p>Varför behövs Pirateplay? Svenska licensbetalare har länge och rätteligen <a href="http://sv.wikipedia.org/wiki/Privatkopiering">privatkopierat</a> TV. I tidernas begynnelse gjordes det ofta med VHS-bandspelare, numera är det naturligare att göra det digitalt. Som TV-kanalerna misslyckas leverera lämplig funktionalitet själva måste tredjepartslösningar utvecklas. Därför utvecklar och underhåller jag Pirateplay.se och <a href="player.html">Pirateplayer</a></p>
+				<h2>Vem?</h2>
+				<p>Vem står för sidan? Det gör jag, <em>Jacques de Laval</em>, licensbetalare. Man når mig enklast per e-post: chucky snabela wrutschkow.org.</p>
+			</section>
 		</section>
 	</body>
 </html>
