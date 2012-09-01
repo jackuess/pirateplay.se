@@ -56,7 +56,7 @@ class Root(object):
 	@cherrypy.expose
 	def get_streams_js(self, url = 'http://www.tv4play.se/sport/ekwall_vs_lundh?title=ekwall_vs_lundh_med_may_mahlangu&videoid=2095439', rnd = None):
 		cherrypy.response.headers['Content-Type'] = 'application/json'
-		return self._jsencoder.encode(get_streams(url))
+		return self._jsencoder.encode(pirateplay.get_streams(url))
 
 	@cherrypy.expose
 	def get_streams_xml(self, url = 'http://www.tv4play.se/sport/ekwall_vs_lundh?title=ekwall_vs_lundh_med_may_mahlangu&videoid=2095439', rnd = None):
@@ -64,7 +64,7 @@ class Root(object):
 		
 		return self._render_template(template_name = 'get_streams.xml',
 									args = dict(streams = [s.to_dict()
-											for s in get_streams(url)]),
+											for s in pirateplay.get_streams(url)]),
 									type = 'xml')
 	
 	@cherrypy.expose
@@ -73,7 +73,7 @@ class Root(object):
 		
 		return self._render_template(template_name = 'get_streams_old.xml',
 									args = dict(streams = [s.to_dict()
-											for s in get_streams(url)]),
+											for s in pirateplay.get_streams(url)]),
 									type = 'xml')
 
 	def _convert_service_re(self, service):
@@ -89,9 +89,9 @@ class Root(object):
 		try:
 			titles = [t.lower() for t in titles.split(',')]
 		except AttributeError:
-			return services
+			return pirateplay.services
 		else:
-			return [s for s in services if s.title.lower() in titles]
+			return [s for s in pirateplay.services if s.title.lower() in titles]
 	
 	@cherrypy.expose
 	def services_js(self, titles = None, rnd = ''):
@@ -121,8 +121,8 @@ class Root(object):
 				'time': unicode(relative_time((now - datetime.datetime.strptime(tweet['created_at'], "%a %b %d %H:%M:%S +0000 %Y")).total_seconds()))}
 				for tweet in json.load(urlopen('http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&count=10'))]
 		
-		services_se = [s.to_dict() for s in services if len(s.items) > 0 and '\.se/' in s.items[0].re]
-		services_other = [s.to_dict() for s in services if len(s.items) > 0 and not '\.se/' in s.items[0].re]
+		services_se = [s.to_dict() for s in pirateplay.services if len(s.items) > 0 and '\.se/' in s.items[0].re]
+		services_other = [s.to_dict() for s in pirateplay.services if len(s.items) > 0 and not '\.se/' in s.items[0].re]
 		
 		return self._render_template(template_name = 'index.html', args = dict(services_se = services_se, services_other = services_other, tweets = tweets))
 	
@@ -172,15 +172,15 @@ def application(environ, start_response):
 	
 	if not base_dir in sys.path:
 		sys.path.append(base_dir)
-	global get_streams, services
-	from lib import get_streams, services
+	global pirateplay
+	import lib.pirateplay as pirateplay
 	
 	_config['/']['tools.staticdir.root'] = base_dir
 	cherrypy.tree.mount(Root(template_dir = base_dir + '/templates'), config = _config, script_name = environ.get('pirateplay_script_name', ''))
 	return cherrypy.tree(environ, start_response)
 
 if __name__ == "__main__":
-	from lib import get_streams, services
+	import lib.pirateplay as pirateplay
 	
 	from os import getcwd
 	base_dir = getcwd()
