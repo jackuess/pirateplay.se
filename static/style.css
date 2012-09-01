@@ -10,11 +10,8 @@ body {
 	background-color: #f9f9f9;
 	background-color: #F0EFE7;
 	font-family: 'Quattrocento', sans-serif;
-	font-size: 14px;
+	font-size: 16px;
 	margin: 0;
-	/*margin-left: auto;
-	margin-right: auto;
-	width: 80%*/
 }
 body > * {
 	margin-left: auto;
@@ -23,8 +20,9 @@ body > * {
 }
 
 div#logo {
-	/*background-color: black;*/
+	background-color: #333;
 	background: -webkit-linear-gradient(top, #000, #555);
+	background: -moz-linear-gradient(top, #000, #555);
 	border-radius: 0 0 10px 0;
 	font-size: 1.3em;
 	color: white;
@@ -39,7 +37,9 @@ div#logo {
 }
 
 h1 {
+	font-size: 2.5em;
 	margin-top: 2%;
+	margin-bottom: 4%;
 }
 
 h2:target {

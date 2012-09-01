@@ -96,6 +96,10 @@ class Root(object):
 		return self._render_template(template_name = 'api.html')
 	
 	@cherrypy.expose
+	def library_html(self):
+		return self._render_template(template_name = 'library.html')
+	
+	@cherrypy.expose
 	def qna_html(self):
 		qna_txt = open('qna.txt', 'r')
 		qna = dict([pair.split('<!-- inner_delim -->') for pair in qna_txt.read().decode('utf-8').split('<!-- delim -->')])
@@ -109,7 +113,7 @@ class Root(object):
 			return self._render_template(template_name = 'unfinished.html')
 		return unfinished
 	
-	guides_html = player_html = _unfinished_factory()
+	player_html = _unfinished_factory()
 
 _config = { 'global': {
 			'server.environment': 'production',
