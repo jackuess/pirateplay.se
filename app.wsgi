@@ -173,14 +173,14 @@ def application(environ, start_response):
 	if not base_dir in sys.path:
 		sys.path.append(base_dir)
 	global get_streams, services
-	from lib.pirateplay import get_streams, services
+	from lib import get_streams, services
 	
 	_config['/']['tools.staticdir.root'] = base_dir
 	cherrypy.tree.mount(Root(template_dir = base_dir + '/templates'), config = _config, script_name = environ.get('pirateplay_script_name', ''))
 	return cherrypy.tree(environ, start_response)
 
 if __name__ == "__main__":
-	from lib.pirateplay import get_streams, services
+	from lib import get_streams, services
 	
 	from os import getcwd
 	base_dir = getcwd()
