@@ -43,28 +43,30 @@ def relative_time(s):
 
 
 class Root(object):
-	def _add_to_site_map(func):
-		func.add_to_site_map = True
-		return func
-	
-	def _expose(template, type = 'xhtml'):
+	def _template(template, type = 'xhtml', sitemap_prio = '0'):
 		def decorator(func):
 			@cherrypy.expose
 			def wrapped(*args, **kwargs):
-				vars = func(*args, **kwargs)
+				cherrypy.response.headers['Content-Type'] = { 'xhtml': 'text/html', 'xml': 'application/xml' }[type]
 				
+				vars = func(*args, **kwargs)
 				this = args[0] #Self
 				
-				try:
-					this._templates[template]
-				except KeyError:
-					this._templates[template] = this._tmpl_loader.load(template)
-				
-				return this._templates[template].generate(**vars).render(type)
+				return this._render_template(template, vars, type)
 			
 			wrapped.template = template
+			wrapped.sitemap_prio = sitemap_prio
 			return wrapped
 		return decorator
+	
+	def _json(func):
+		@cherrypy.expose
+		def wrapped(*args, **kwargs):
+			cherrypy.response.headers['Content-Type'] = 'application/json'
+			js = func(*args, **kwargs)
+			this = args[0]
+			return this._jsencoder.encode(js)
+		return wrapped
 	
 	def __init__(self, template_dir):
 		self._tmpl_loader = TemplateLoader(template_dir, auto_reload=True)
@@ -77,29 +79,6 @@ class Root(object):
 		except KeyError:
 			self._templates[template_name] = self._tmpl_loader.load(template_name)
 		return self._templates[template_name].generate(**args).render(type)
-
-	@cherrypy.expose
-	def get_streams_js(self, url, rnd = None):
-		cherrypy.response.headers['Content-Type'] = 'application/json'
-		return self._jsencoder.encode(pirateplay.get_streams(url))
-
-	@cherrypy.expose
-	def get_streams_xml(self, url, rnd = None):
-		cherrypy.response.headers['Content-Type'] = 'application/xml'
-		
-		return self._render_template(template_name = 'get_streams.xml',
-									args = dict(streams = [s.to_dict()
-											for s in pirateplay.get_streams(url)]),
-									type = 'xml')
-	
-	@cherrypy.expose
-	def get_streams_old_xml(self, url, rnd = None):
-		cherrypy.response.headers['Content-Type'] = 'application/xml'
-		
-		return self._render_template(template_name = 'get_streams_old.xml',
-									args = dict(streams = [s.to_dict()
-											for s in pirateplay.get_streams(url)]),
-									type = 'xml')
 
 	def _convert_service_re(self, service):
 		s = deepcopy(service)
@@ -117,32 +96,34 @@ class Root(object):
 			return pirateplay.services
 		else:
 			return [s for s in pirateplay.services if s.title.lower() in titles]
-	
-	@cherrypy.expose
-	def services_js(self, titles = None, rnd = ''):
-		cherrypy.response.headers['Content-Type'] = 'application/json'
-		
-		s = self._filter_services(titles)
-		s = [self._convert_service_re(z) for z in s]
-		
-		return self._jsencoder.encode(s)
 
-	@cherrypy.expose
+	@_json
+	def get_streams_js(self, url, rnd = None):
+		return pirateplay.get_streams(url)
+
+	@_template('get_streams.xml', type='xml')
+	def get_streams_xml(self, url, rnd = None):
+		return {'streams': [s.to_dict() for s in pirateplay.get_streams(url)]}
+	
+	@_template('get_streams_old.xml', type='xml')
+	def get_streams_old_xml(self, url, rnd = None):
+		return { 'streams': [s.to_dict() for s in pirateplay.get_streams(url)] }
+	
+	@_json
+	def services_js(self, titles = None, rnd = ''):
+		s = self._filter_services(titles)
+		return [self._convert_service_re(z) for z in s]
+
+	@_template('services.xml', type='xml')
 	def services_xml(self, titles = None, rnd = ''):
-		cherrypy.response.headers['Content-Type'] = 'application/xml'
-		
-		return self._render_template(template_name = 'services.xml',
-									args = dict(services = [self._convert_service_re(s).to_dict()
-											for s in self._filter_services(titles)]),
-									type = 'xml')
+		return {'services': [self._convert_service_re(s).to_dict()
+							for s in self._filter_services(titles)]}
 	
-	@cherrypy.expose
+	@_template('sitemap.xml', 'xml')
 	def sitemap_xml(self):
-		cherrypy.response.headers['Content-Type'] = 'application/xml'
-		sites = [getattr(getattr(self, i), 'template') for i in dir(self) if getattr(getattr(self, i), 'template', False)]
-		return self._render_template(template_name = 'sitemap.xml', args = dict(sites = sites))
+		return { 'sites': [(getattr(getattr(self, i), 'template'), getattr(getattr(self, i), 'sitemap_prio')) for i in dir(self) if getattr(getattr(self, i), 'sitemap_prio', '0') != '0'] }
 	
-	@_expose('index.html')
+	@_template('index.html', sitemap_prio = '1.0')
 	def index(self):
 		from urllib2 import urlopen
 		import datetime
@@ -157,19 +138,19 @@ class Root(object):
 		
 		return dict(services_se = services_se, services_other = services_other, tweets = tweets)
 	
-	@_expose('app.html')
+	@_template('app.html', sitemap_prio = '0.5')
 	def app_html(self):
 		return  {}
 	
-	@_expose('api.html')
+	@_template('api.html', sitemap_prio = '0.5')
 	def api_html(self):
 		return {}
 	
-	@_expose('library.html')
+	@_template('library.html', sitemap_prio = '0.5')
 	def library_html(self):
 		return {}
 	
-	@_expose('qna.html')
+	@_template('qna.html', sitemap_prio = '0.5')
 	def qna_html(self):
 		qna_txt = open('data/qna.txt', 'r')
 		qna = dict([pair.split('<!-- inner_delim -->') for pair in qna_txt.read().decode('utf-8').split('<!-- delim -->')])
@@ -177,9 +158,10 @@ class Root(object):
 		
 		return {'qna': qna}
 	
-	@_expose('player.html')
+	@_template('player.html', sitemap_prio = '0.5')
 	def player_html(self):
 		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
+
 
 _config = { 'global': {
 			'server.environment': 'production',
