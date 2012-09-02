@@ -41,10 +41,31 @@ def relative_time(s):
 		return "%d %s " % (t, singularis)
 
 
+
 class Root(object):
 	def _add_to_site_map(func):
 		func.add_to_site_map = True
 		return func
+	
+	def _expose(template, type = 'xhtml'):
+		def decorator(func):
+			@cherrypy.expose
+			def wrapped(*args, **kwargs):
+				vars = func(*args, **kwargs)
+				
+				this = args[0] #Self
+				
+				try:
+					this._templates[template]
+				except KeyError:
+					this._templates[template] = this._tmpl_loader.load(template)
+				
+				return this._templates[template].generate(**vars).render(type)
+			
+			wrapped.template = template
+			return wrapped
+		return decorator
+	
 	def __init__(self, template_dir):
 		self._tmpl_loader = TemplateLoader(template_dir, auto_reload=True)
 		self._jsencoder = JSONPirateEncoder()
@@ -118,13 +139,11 @@ class Root(object):
 	@cherrypy.expose
 	def sitemap_xml(self):
 		cherrypy.response.headers['Content-Type'] = 'application/xml'
-		sites = [i for i in dir(self) if getattr(getattr(self, i), 'add_to_site_map', False)]
-		return '<sites><site>' + '</site><site>'.join(sites) + '</site></sites>'
-		
+		sites = [getattr(getattr(self, i), 'template') for i in dir(self) if getattr(getattr(self, i), 'template', False)]
+		return self._render_template(template_name = 'sitemap.xml', args = dict(sites = sites))
 	
-	@cherrypy.expose
-	@_add_to_site_map
-	def index_html(self):
+	@_expose('index.html')
+	def index(self):
 		from urllib2 import urlopen
 		import datetime
 		
@@ -136,39 +155,31 @@ class Root(object):
 		services_se = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
 		services_other = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and not '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
 		
-		return self._render_template(template_name = 'index.html', args = dict(services_se = services_se, services_other = services_other, tweets = tweets))
+		return dict(services_se = services_se, services_other = services_other, tweets = tweets)
 	
-	@cherrypy.expose
-	@_add_to_site_map
+	@_expose('app.html')
 	def app_html(self):
-		return self._render_template(template_name = 'app.html')
+		return  {}
 	
-	@cherrypy.expose
+	@_expose('api.html')
 	def api_html(self):
-		return self._render_template(template_name = 'api.html')
+		return {}
 	
-	@cherrypy.expose
+	@_expose('library.html')
 	def library_html(self):
-		return self._render_template(template_name = 'library.html')
+		return {}
 	
-	@cherrypy.expose
+	@_expose('qna.html')
 	def qna_html(self):
 		qna_txt = open('data/qna.txt', 'r')
 		qna = dict([pair.split('<!-- inner_delim -->') for pair in qna_txt.read().decode('utf-8').split('<!-- delim -->')])
 		qna = dict([(Markup(q.strip()), Markup(a.strip())) for q, a in qna.items()])
 		
-		return self._render_template(template_name = 'qna.html', args = {'qna': qna})
+		return {'qna': qna}
 	
-	def _unfinished(func):
-		@cherrypy.expose
-		def unfinished(self):
-			return self._render_template(template_name = 'unfinished.html')
-		return unfinished
-	
-	@cherrypy.expose
+	@_expose('player.html')
 	def player_html(self):
-		return self._render_template(template_name = 'player.html',
-									args = dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title'])))
+		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
 
 _config = { 'global': {
 			'server.environment': 'production',
