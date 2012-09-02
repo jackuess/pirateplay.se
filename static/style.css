@@ -16,11 +16,6 @@ body {
 	font-size: 16px;
 	margin: 0;
 }
-body > * {
-	margin-left: auto;
-	margin-right: auto;
-	/*width: 50%;*/
-}
 
 div#logo {
 	border-radius: 10px 10px 10px 10px;
@@ -33,7 +28,6 @@ div#logo {
 	padding-right: 2%;
 	position: absolute;
 	top: .3%;
-	width: auto;
 }
 
 h1 {
@@ -86,7 +80,7 @@ nav#menu {
 	top: 7%;
 }
 nav#menu ul { padding: inherit;
-	margin-left: 15%;  }
+	/*margin-left: 15%;*/  }
 nav#menu li {
 	font-size: 1.2em;
 	font-weight: bold;
@@ -94,11 +88,12 @@ nav#menu li {
 	padding: 3%;
 	list-style: none;
 	white-space: nowrap;
+padding:0;margin:0;
 }
 nav#menu li a, nav li a:visited {
 	color: black;
 }
-nav#menu li:nth-child(5) { margin-top: 20%;/*border-top: 1px solid #ddd;*/ }
+nav#menu li:nth-child(5) { margin-top: 1.0em; }
 nav#menu li a:hover, nav#menu li a.selected {
 	color: #f55;
 	text-decoration: none;
@@ -109,6 +104,7 @@ ul.box {
 }
 
 section#content {
+	margin-left: auto;margin-right:auto;
 	width: 60%;
 }
 
