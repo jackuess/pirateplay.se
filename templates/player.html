@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv">
+	<head>
+		<title>Pirateplayer</title>
+		<link rel="stylesheet" href="static/style.css" type="text/css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript">
+				function nthSibling (node) {
+					var i = 0
+					if (node.previousElementSibling)
+						while (node = node.previousElementSibling)
+							i++;
+					else
+						while (node = node.previousSibling)
+							if (node.nodeType === 1) i++;
+					return i;
+				}
+
+
+				function setOffset (e) {
+					$('#images').css('left', nthSibling(this) * -imgWidth);
+				}
+				function setOffsetR (e) {
+					var l = parseInt($('#images').css('left').slice(0, -2))
+					$('#images').css('left', (l + [-imgWidth*2, -imgWidth][nthSibling(this)]) % (imgWidth*(imgCount)));
+				}
+
+				var imgWidth = 0;
+				var imgCount = 0;
+				$(document).ready(function () {
+					imgWidth = $('#gallery').width();
+					imgCount = $('#images').children().length;
+					console.log(imgCount);
+					$('.gallery_index_rel').click(setOffsetR);
+				});
+		</script>
+		<style type="text/css">
+			img#player_logo {
+				float: left;
+			}
+			div#gallery {margin:0; padding: 0;
+				overflow: hidden;
+				width: 640px;
+			}
+			ul#images {
+				margin:0;
+				padding: 0;
+				position: relative;
+				width: 10000px;left:0;
+			}
+			ul#images li { display: inline; }
+			ul#images img {
+				display: inline;
+				height: auto;
+				vertical-align: top;
+				width: 640px;
+			}
+
+
+			div#gallery {
+				background-color: rgba(0, 0, 0, .2);
+				border-radius: 0.3em;
+				box-shadow: inset 0 1px 3px rgba(0,0,0,.2),0 1px rgba(255,255,255,.3);
+				margin-bottom: 20px;
+			}
+
+			h2#screens + section { text-align: center; }
+			div#gallery * { margin: 0; padding: 0; }
+			div#gallery {
+				margin: 0;
+				margin-left: auto;
+				margin-right: auto;
+				padding: 0;
+				width: 640px;
+				overflow: hidden;
+			}
+			div#gallery li { display: inline; list-style: none; margin: 0; }
+			.gallery_index_rel {
+				background-color: rgba(0, 0, 0, .3);
+				border-radius: 0.3em;
+				cursor: pointer;
+				font-weight: bold;
+				padding: 1em;
+				text-align: left;
+			}
+			.gallery_index_rel:hover { background-color: rgba(0, 0, 0, .4); }
+			.gallery_index_rel:first-of-type { float: left; }
+			.gallery_index_rel:last-of-type { float: right; }
+			ul#images {
+				position: relative;
+				transition: all 1s ease;
+				-moz-transition: all 1s ease;
+				-ms-transition: all 1s ease;
+				-o-transition: all 1s ease;
+				-webkit-transition: all 1s ease;
+				width: 1928px;
+				padding:0;
+			}
+			ul#images img {
+				display: inline;
+				height: auto;
+				vertical-align: top;
+				width: 640px;
+			}
+			ul#index li { cursor: pointer; }
+		</style>
+	</head>
+	<body>
+		<xi:include href="logo.html" />
+		<xi:include py:with="selected='player.html'" href="menu.html" />
+		<section id="content">
+			<h1>Pirateplayer</h1>
+			<section class="box">
+				<p><img id="player_logo" src="static/images/pirateplayer.png" />Pirateplayer är ett <a href="#license">fritt</a>, grafiskt program avsett att spela upp och ladda ner svensk webb-TV i <a href="#install">Windows, Mac OSX och Linux</a>.</p>
+				<p id="services">Pirateplayer kan ladda ner ifrån: <py:for each="s in services"><a href="${s.url}">${s.title}</a>, </py:for></p>
+				<p>Alltså; samma tjänster som Pirateplay.se stöder. Finns undertexter försöker Pirateplayer i många fall även ladda ner dem.</p>
+				<p>Pirateplayer använder biblioteken <a href="http://qt.nokia.com/">Qt</a>, <a href="http://rtmpdump.mplayerhq.hu/">librtmp</a> och <a href="api.html">API:n från Pirateplay.se</a>.</p>
+				<p><a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://pirateplay.se/"></a></p>
+				<noscript><p><a href="http://flattr.com/thing/361015/Pirateplay"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" /></a></p></noscript>
+			</section>
+			<ul class="box">
+				<li><a href="#screens">Skärmdumpar</a></li>
+				<li><a href="#install">Ladda ner och installera</a></li>
+				<li><a href="#history">Historik</a></li>
+				<li><a href="#bugs">Kända buggar</a></li>
+				<li><a href="#credits">Credits</a></li>
+				<li><a href="#license">Licens</a></li>
+			</ul>
+			<h2 id="screens">Skärmdumpar</h2>
+			<article class="box sect">
+				<!--<nav><ul id="index"><li>GNU/Linux/KDE</li><li>GNU/Linux/Wine</li><li>Mac OS X</li></ul></nav>-->
+				<p class="gallery_index_rel box box-black">&lt;</p>
+				<p class="gallery_index_rel box box-black">&gt;</p>
+				<div id="gallery">
+					<ul id="images">
+						<li><img src="static/images/screen_-_lin_v0_2.png" /></li>
+						<li><img src="static/images/screen_-_wine_v0_2.png" /></li>
+						<li><img src="static/images/screen_-_osx_v0_2.png" /></li>
+					</ul>
+				</div>
+			</article>
+			<h2 id="install">Ladda ner och installera</h2>
+			<article class="box">
+				<h3>Windows</h3>
+				<p>Ladda ner och kör <a href="http://github.com/downloads/jackuess/pirateplayer/ppinstaller-0_3.exe">installationsprogrammet</a>. Pirateplayer finns därefter tillgängligt från Startmenyn</p>
+				<h3>Archlinux</h3>
+				<p>Installera från med hjälp av <a href="http://aur.archlinux.org/packages.php?ID=53142">PKGBUILD</a> via <a href="https://wiki.archlinux.org/index.php/AUR">AUR</a>.</p>
+				<h3>Debian/Ubuntu</h3>
+				<ul><li>Kör <code>sudo aptitude install libqtcore4 libqtgui4 libqt4-xml libqt4-network phonon libphonon4 rtmpdump libqt4-svg libqtwebkit4</code></li><li>Hämta <a href="http://github.com/downloads/jackuess/pirateplayer/pirateplayer_0.3.1-1_i386.deb">deb-paktet</a>.</li><li>Gå till katalogen du hämtade deb-paktet till och kör <code>sudo dpkg -i pirateplayer_0.3.1-1_i386.deb</code></li><li>Pirateplayer är nu installerat och kan köras med <code>pirateplayer</code></li></ul>
+				<p>Obs: vill du kunna se/ladda ner från TV4-play måste Rtmpdump på din dator vara av version 2.1d eller nyare än 2.3</p>
+				<h3>Mac OSX</h3>
+				<p>Installera <a href="http://github.com/downloads/jackuess/pirateplayer/pirateplayer-v0_3_1.dmg">Apple diskavbild (dmg)</a>.</p>
+				<p>Tyvärr fungerar inte videouppspelning på Mac i nuläget. Åtgärdas förhoppningsvis framöver.</p>
+				<h3>Källkod</h3>
+				<p>Finns inte ditt operativsystem/distribution ovan kan du alltid kompilera och installera från <a href="http://github.com/jackuess/pirateplayer/">källkoden</a>.</p>
+				<p>Hör gärna av dig om du har möjlighet att bygga/testa paket för din favoritdistribution (chucky snabela wrutschkow.org).</p>
+			</article>
+			<h2 id="history">Historik</h2>
+			<article class="box">
+				<h3>Version 0.3.1 (2012-01-14)</h3>
+				<ul><li>Applikationsikon - tack till Bernard!</li></ul>
+				<h3>Version 0.3 (2012-01-11)</h3>
+				<ul>
+					<li>Viss möjlighet att återuppta avbrutna nedladdningar.</li>
+					<li>Inbyggd programväljare, ett slags fjärrkontroll.</li>
+					<li>Hantering av ompekande http-svar - gör att nedladdningar från Sveriges Radio fungerar.</li>
+					<li>TV4s undertexter sparas med filändelsen smi (tidigare smi?) för att inte fucka ur på Windows-system.</li>
+					<li>Buggfix: Nedladdning av program på över en timme avbryts ej längre.</li>
+				</ul>
+				<h3>
+					Version 0.2 (2011-11-11)&nbsp;
+					<a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://pirateplay.se/player"></a>
+					<noscript><a href="http://flattr.com/thing/435028/Pirateplayer-v0-2" target="_blank">
+					<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a></noscript>
+				</h3>
+				<ul>
+					<li>Parallella nedladdningar.</li>
+					<li>Inbyggd videospelare.</li>
+					<li>Nedladdning av undertexter.</li>
+					<li>Flertalet buggfixar.</li>
+					<li>Installationsprogram för Windows.</li>
+				</ul>
+				<h3>Version 0.1 (2011-10-12)</h3>
+				<ul><li>Första versionen!</li></ul>
+			</article>
+			<h2 id="bugs">Kända buggar</h2>
+			<article class="box">
+				<h3>Ladda ner från SR</h3>
+				<p><del>Fungerar inte i nuläget. Kommer åtgärdas i nästkommande version.</del><ins datetime="2012-01-11T22:10:00+0200">Fungerar sedan version 0.3!</ins></p>
+				<h3>Videouppspelning Mac</h3>
+				<p>Fungerar inte i nuläget.</p>
+				<h3>32-bitars Mac datorer</h3>
+				<p>Binären borde vara byggd som "universell". Pirateplayer fungerar i nuläget bara på 64-bitars macar. <!-- http://doc.qt.nokia.com/4.7-snapshot/developing-on-mac.html#universal-binaries --></p>
+			</article>
+			<h2 id="credits">Credits</h2>
+			<article class="box">
+				<p>Stort tack till Bernard för OSX builden och ikonen!</p>
+				<p>Stort tack till A J för testning av Ubuntu/Debian-paketet!</p>
+			</article>
+			<h2 id="license">Licens</h2>
+			<article class="box">
+				<p><a href="http://www.gnu.org/licenses/gpl.txt">GNU General Public License version 3</a></p>
+			</article>
+		</section>
+	</body>
+</html>

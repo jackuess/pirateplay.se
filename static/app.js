@@ -1,5 +1,5 @@
 function rtmpDumpCmd(url, out) {
-	return 'rtmpdump -r  -o "' + out + '" ' +
+	return 'rtmpdump  -o "' + out + '" -r ' +
 			(url.replace(/playpath=/, '-y ')
 				.replace(/swfVfy=1 swfUrl=/, '-W ')
 				.replace(/app=/, '-a ')
@@ -13,9 +13,12 @@ function stripExt(s) {
 function messages() {
 	this.push = function (msg, type) {
 		if (typeof type === 'undefined')
-			var r = $('<li>' + msg + '</li>');
-		else
-			var r = $('<li class=' + type + '>' + msg + '</li>');
+			var color = 'yellow';
+		else if (type == 'success')
+			var color = 'green';
+		else if (type == 'error')
+			var color = 'red';
+		var r = $('<li class="box box-' + color + '">' + msg + '</li>');
 		var close = $('<span class="close">Stäng</span>');
 		close.click(function () { $(this).parent().remove(); });
 		r.prepend(close);
@@ -53,7 +56,7 @@ function streamRepresentation(stream) {
 				cmd = 'php AdobeHDS.php --delete --manifest "' + streamLink + '" --outfile "' + args.out + '"';
 			else
 				cmd = 'wget -O "' + args.out + '" "' + streamLink + '"';
-			console.log(args.show_inputs);
+			
 			if (args.show_inputs)
 				r.append('<input type="text" class="cmd" value=\'' + cmd + "' />");
 			else
@@ -88,7 +91,7 @@ function streamCollection(streams) {
 	});
 
 	this.render = function (args) {
-		$('#result :not(#close)').remove();
+		$('#result :not(.close)').remove();
 		$(this.currStreams).each(function (i, s) {
 			s.render(args);
 		});
@@ -110,7 +113,7 @@ function onStreams(streams) {
 	var countingWords = ['Noll', 'En', 'Två', 'Tre', 'Fyra', 'Fem', 'Sex', 'Sju', 'Åtta', 'Nio', 'Tio', 'Elva', 'Tolv', 'Tretton'];
 
 	myMessages.flush();
-	myMessages.push((streams.length < 14 ? countingWords[streams.length] : streams.length) + ' ' + (streams.length == 1 ? 'ström funnen!' : 'strömmar funna!'));
+	myMessages.push((streams.length < 14 ? countingWords[streams.length] : streams.length) + ' ' + (streams.length == 1 ? 'ström funnen!' : 'strömmar funna!'), 'success');
 	myStreamCollection.render(getForm());
 }
 
@@ -146,7 +149,7 @@ $(document).ready(function () {
 	$('#out').keyup(function () { myStreamCollection.render(getForm()); });
 	$('#player').click(function () { myStreamCollection.render(getForm()); });
 	$('#show_inputs').click(function () { myStreamCollection.render(getForm()); });
-	$('#close').click(function () { $('#result').hide(); $('#result_form').hide(); });
+	$('#result .close').click(function () { $('#result').hide(); $('#result_form').hide(); });
 	$('.download').hide(); //Avoiding countering CSS rules
 	$('input[name="action"]').click(function () {
 		if ($(this).val() == 'show')
@@ -157,4 +160,5 @@ $(document).ready(function () {
 			{ $('.out').hide(); $('.player').show(); $('.download').show(); }
 		myStreamCollection.render(getForm());
 	});
+	$('#url').focus();
 });

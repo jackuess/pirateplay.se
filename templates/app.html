@@ -1,17 +1,13 @@
-<html  xmlns:py="http://genshi.edgewall.org/"
-		xmlns:xi="http://www.w3.org/2001/XInclude">
+<!DOCTYPE html>
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv">
 	<head>
 		<title>App</title>
 		<link rel="stylesheet" href="static/style.css" type="text/css" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script type="text/javascript" src="static/app.js"></script>
 		<style type="text/css">
-			div#result {
-				background-color: #fff;
-				box-shadow: 0 0  10px #333;
-				border-radius: 5px;
-				padding: 1%;
-			}
 			div#result p.cmd {
 				white-space: pre;
 			}
@@ -24,20 +20,10 @@
 			input[name=url] + input[type=submit] { width: 19%; }
 			ul#messages {
 				padding: inherit;
-			}
-			ul#messages li {
-				background-color: #ffc;
-				box-shadow: 0 0  10px #bb9;
-				border-radius: 5px;
 				list-style: none;
-				margin-bottom: 1%;
-				padding: 1%;
 			}
-			ul#messages li.error {
-				background-color: #f77;
-				box-shadow: 0 0  10px #b33;
-			}
-			ul#messages li .close {
+			
+			.close {
 				cursor: pointer;
 				float: right;
 			}
@@ -67,8 +53,8 @@
 					<select class="player" id="player"><option value="vlc">Vlc</option><option value="ffplay">Ffplay</option><option value="mplayer">Mplayer</option></select><br class="player" />
 					<input name="show_inputs" id="show_inputs" class="download" type="checkbox" /><label class="download">Visa textfält</label>
 			</form></p>
-			<div class="result" id="result">
-				<div id="close">Stäng</div>
+			<div class="result box" id="result">
+				<div class="close">Stäng</div>
 			</div>
 		</section>
 	</body>

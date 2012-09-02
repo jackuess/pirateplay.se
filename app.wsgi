@@ -40,7 +40,11 @@ def relative_time(s):
 	else:
 		return "%d %s " % (t, singularis)
 
+
 class Root(object):
+	def _add_to_site_map(func):
+		func.add_to_site_map = True
+		return func
 	def __init__(self, template_dir):
 		self._tmpl_loader = TemplateLoader(template_dir, auto_reload=True)
 		self._jsencoder = JSONPirateEncoder()
@@ -54,12 +58,12 @@ class Root(object):
 		return self._templates[template_name].generate(**args).render(type)
 
 	@cherrypy.expose
-	def get_streams_js(self, url = 'http://www.tv4play.se/sport/ekwall_vs_lundh?title=ekwall_vs_lundh_med_may_mahlangu&videoid=2095439', rnd = None):
+	def get_streams_js(self, url, rnd = None):
 		cherrypy.response.headers['Content-Type'] = 'application/json'
 		return self._jsencoder.encode(pirateplay.get_streams(url))
 
 	@cherrypy.expose
-	def get_streams_xml(self, url = 'http://www.tv4play.se/sport/ekwall_vs_lundh?title=ekwall_vs_lundh_med_may_mahlangu&videoid=2095439', rnd = None):
+	def get_streams_xml(self, url, rnd = None):
 		cherrypy.response.headers['Content-Type'] = 'application/xml'
 		
 		return self._render_template(template_name = 'get_streams.xml',
@@ -68,7 +72,7 @@ class Root(object):
 									type = 'xml')
 	
 	@cherrypy.expose
-	def get_streams_old_xml(self, url = 'http://www.tv4play.se/sport/ekwall_vs_lundh?title=ekwall_vs_lundh_med_may_mahlangu&videoid=2095439', rnd = None):
+	def get_streams_old_xml(self, url, rnd = None):
 		cherrypy.response.headers['Content-Type'] = 'application/xml'
 		
 		return self._render_template(template_name = 'get_streams_old.xml',
@@ -112,6 +116,14 @@ class Root(object):
 									type = 'xml')
 	
 	@cherrypy.expose
+	def sitemap_xml(self):
+		cherrypy.response.headers['Content-Type'] = 'application/xml'
+		sites = [i for i in dir(self) if getattr(getattr(self, i), 'add_to_site_map', False)]
+		return '<sites><site>' + '</site><site>'.join(sites) + '</site></sites>'
+		
+	
+	@cherrypy.expose
+	@_add_to_site_map
 	def index_html(self):
 		from urllib2 import urlopen
 		import datetime
@@ -121,12 +133,13 @@ class Root(object):
 				'time': unicode(relative_time((now - datetime.datetime.strptime(tweet['created_at'], "%a %b %d %H:%M:%S +0000 %Y")).total_seconds()))}
 				for tweet in json.load(urlopen('http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&count=10'))]
 		
-		services_se = [s.to_dict() for s in pirateplay.services if len(s.items) > 0 and '\.se/' in s.items[0].re]
-		services_other = [s.to_dict() for s in pirateplay.services if len(s.items) > 0 and not '\.se/' in s.items[0].re]
+		services_se = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
+		services_other = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and not '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
 		
 		return self._render_template(template_name = 'index.html', args = dict(services_se = services_se, services_other = services_other, tweets = tweets))
 	
 	@cherrypy.expose
+	@_add_to_site_map
 	def app_html(self):
 		return self._render_template(template_name = 'app.html')
 	
@@ -146,13 +159,16 @@ class Root(object):
 		
 		return self._render_template(template_name = 'qna.html', args = {'qna': qna})
 	
-	def _unfinished_factory():
+	def _unfinished(func):
 		@cherrypy.expose
 		def unfinished(self):
 			return self._render_template(template_name = 'unfinished.html')
 		return unfinished
 	
-	player_html = _unfinished_factory()
+	@cherrypy.expose
+	def player_html(self):
+		return self._render_template(template_name = 'player.html',
+									args = dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title'])))
 
 _config = { 'global': {
 			'server.environment': 'production',

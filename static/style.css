@@ -91,6 +91,10 @@ nav li a:hover, nav li a.selected {
 	text-decoration: none;
 }
 
+ul.box {
+	padding-left: 5%;
+}
+
 section#content {
 	width: 60%;
 }

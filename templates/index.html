@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html xmlns:py="http://genshi.edgewall.org/"
-	xmlns:xi="http://www.w3.org/2001/XInclude">
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv">
 	<head>
 		<title>Ladda ner webb-tv med Pirateplay.se</title>
 		<link rel="stylesheet" href="static/style.css" type="text/css" />
@@ -59,7 +61,7 @@
 			</section>
 			<section class="box-container" style="width: 100%;">
 				<article class="box" style="width: 58%">
-					<h2 id="services">Tjänster</h2><p>Följande tjänster stöds av Pirateplay.se/Pirateplayer:</p>
+					<h2 id="services">Tjänster</h2><p>Följande TV-tjänster stöds av Pirateplay.se/Pirateplayer:</p>
 					<h3>Svenska</h3>
 					<ul class="service-list">
 						<li py:for="s in services_se" py:if="'title' in s and 'url' in s"><a href="${s['url']}">${s['title']}</a></li>

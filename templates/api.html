@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html xmlns:py="http://genshi.edgewall.org/"
-	xmlns:xi="http://www.w3.org/2001/XInclude">
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv">
 	<head>
 		<title>API</title>
 		<link rel="stylesheet" href="static/style.css" type="text/css" />
@@ -8,21 +10,10 @@
 				background-color: #fff;
 				display: block;
 			}
-			h2 {
-				border-top: 2px solid #ddd;
-				padding-top: 1%;
-			}
-			section>h2, h2:first-of-type {
-				border-top: none
-			}
 			var {
 				color: #494;
 				font-weight: bold;
 				font-style: normal
-			}
-			section#toc {
-				background-color: #fff;
-				border-radius: 10px;
 			}
 		</style>
 	</head>
@@ -32,7 +23,7 @@
 		<section id="content">
 			<h1>API</h1>
 			<p>Base url: <a href="http://pirateplay.se/">http://pirateplay.se/</a></p>
-			<section id="toc"><h2>Table of contents</h2>
+			<section class="box"><h2>Table of contents</h2>
 			<ul>
 				<li><a href="#get_streams_xml">get_streams.xml</a></li>
 				<li><a href="#get_streams_js">get_streams.js</a></li>
