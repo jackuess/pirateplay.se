@@ -1,4 +1,4 @@
-<nav xmlns:py="http://genshi.edgewall.org/">
+<nav xmlns:py="http://genshi.edgewall.org/" id="menu">
 	<ul>
 		<li py:def="list_item(url, title)" py:choose="url == selected">
 			<a py:when="True" class="selected" href="${url}">${title}</a>

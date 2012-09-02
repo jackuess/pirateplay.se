@@ -47,11 +47,27 @@ h2:target {
 	padding-left: 1%;
 }
 
+input {
+	border: 2px solid #666;
+	border-radius: 5px;
+	font-size: 1.2em;
+}
+
 input[type='text'], option {
-	border: 1px solid black;
-	border-radius: 3px;
 	width: 100%;
 }
+
+input[type="submit"] {
+	background-color: #333;
+	background: -webkit-linear-gradient(bottom, #000, #888);
+	background: -moz-linear-gradient(bottom, #000, #888);
+	color: #eee;
+	padding-left: 2%;
+	padding-right: 2%;
+}
+input[type="submit"]:active {
+	background: -webkit-linear-gradient(top, #000, #888);
+	background: -moz-linear-gradient(top, #000, #888);}
 
 label {
 	display: block;
@@ -61,20 +77,17 @@ input[type='checkbox'] + label, input[type='radio'] + label {
 	display: inline;
 }
 
-nav {
-	/*background-color: #fcfcfc;
-	box-shadow: inset 0px -3px 5px #ddd;*/
+nav#menu {
 	left: .3%;
 	margin: 0;
 	margin-bottom: 2%;
 	padding-bottom: .9em;
-	/*width: 100%;*/
 	position: absolute;
 	top: 7%;
 }
-nav ul { padding: inherit;
+nav#menu ul { padding: inherit;
 	margin-left: 15%;  }
-nav li {
+nav#menu li {
 	font-size: 1.2em;
 	font-weight: bold;
 	/*padding-left: 5%;*/
@@ -82,11 +95,11 @@ nav li {
 	list-style: none;
 	white-space: nowrap;
 }
-nav li a, nav li a:visited {
+nav#menu li a, nav li a:visited {
 	color: black;
 }
-nav li:nth-child(5) { margin-top: 20%;/*border-top: 1px solid #ddd;*/ }
-nav li a:hover, nav li a.selected {
+nav#menu li:nth-child(5) { margin-top: 20%;/*border-top: 1px solid #ddd;*/ }
+nav#menu li a:hover, nav#menu li a.selected {
 	color: #f55;
 	text-decoration: none;
 }
