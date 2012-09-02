@@ -1,0 +1,2 @@
+WSGI application
+Depedencies: Genshi, CherryPy

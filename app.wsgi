@@ -43,6 +43,8 @@ def relative_time(s):
 
 
 class Root(object):
+	# Decorators: _template, _json
+	
 	def _template(template, type = 'xhtml', sitemap_prio = '0'):
 		def decorator(func):
 			@cherrypy.expose
@@ -67,6 +69,8 @@ class Root(object):
 			this = args[0]
 			return this._jsencoder.encode(js)
 		return wrapped
+	
+	# Class functions:
 	
 	def __init__(self, template_dir):
 		self._tmpl_loader = TemplateLoader(template_dir, auto_reload=True)
