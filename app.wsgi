@@ -153,7 +153,7 @@ class Root(object):
 	
 	@cherrypy.expose
 	def qna_html(self):
-		qna_txt = open('qna.txt', 'r')
+		qna_txt = open('data/qna.txt', 'r')
 		qna = dict([pair.split('<!-- inner_delim -->') for pair in qna_txt.read().decode('utf-8').split('<!-- delim -->')])
 		qna = dict([(Markup(q.strip()), Markup(a.strip())) for q, a in qna.items()])
 		
