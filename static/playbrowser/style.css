@@ -1,0 +1,119 @@
+html, body {
+/* 	background-color: #eee; */
+	background-color: #222;
+	color: #eee;
+	font-family: sans-serif;
+	height: 100%;
+	margin: 0;
+	width: 100%;
+}
+a {
+	text-decoration: none;
+}
+h1 {
+	background-color: #444;
+	background-image: -webkit-linear-gradient(top, #333, #222);
+	background-image: -moz-linear-gradient(top, #333, #222);
+	color: #c33;
+	margin-top: 0;
+	padding: 0.2em;
+	text-align: center;
+	text-shadow: 0.05em 0.05em 0.1em black;
+}
+h2 {
+	color: #bbb;
+}
+li {
+	color: #ccc;
+	cursor: pointer;
+	list-style: none;
+	text-shadow: 0.13em 0.13em 0.1em black;
+	display: block;
+	text-indent: 1.0em;
+	padding: 0.5em;
+}
+ul, h1, h2, form, p.message {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+ul {
+	padding: 0px;
+}
+ul#content {
+	background-color: #733;
+	background-image: -webkit-linear-gradient(top, #833, #733);
+	background-image: -moz-linear-gradient(top, #833, #733);
+	border-radius: 0.3em;
+	box-shadow: 0.0em 0.0em 2.0em #000;
+	max-height: 75%;
+	margin-top: 0;
+	overflow-y: auto;
+}
+ul#content li:hover, ul#content li.selected {
+	background-color: #444;
+}
+ul#content li:first-child:hover {
+	border-radius: 0.3em 0.3em 0.0em 0.0em;
+}
+ul#content li:last-child:hover {
+	border-radius: 0.0em 0.0em 0.3em 0.3em;
+}
+ul#content li a {
+	color: inherit;
+	font-weight: bold;
+}
+ul#selector {
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+ul#selector li {
+	background-color: #333;
+	background-image: -webkit-linear-gradient(top, #333, #222);
+	background-image: -moz-linear-gradient(top, #333, #222);
+	display: inline;
+	text-align: center;
+}
+ul#selector li:hover {
+	background-color: #444;
+	background-image: -webkit-linear-gradient(top, #444, #333);
+	background-image: -moz-linear-gradient(top, #444, #333);
+}
+ul#selector li:first-child {
+	border-radius: 0.3em 0.0em 0.0em 0.0em;
+}
+ul#selector li:last-child {
+	border-radius: 0.0em 0.3em 0.0em 0.0em;
+}
+#back_button {
+	background: black;
+	border: 0.2em solid #111;
+	border-left: none;
+	border-radius: 0em 0.7em 0.7em 0em;
+	color: #ccc;
+	cursor: pointer;
+	display: none;
+	font-weight: bold;
+	padding: 1.0em;
+	position: fixed;
+	text-decoration: none;
+}
+#back_button:hover {
+	background-color: #111;
+}
+#back_button.enabled { display: block; }
+#txtFilter {
+	border: none;
+	border-radius: 0.3em;
+	box-shadow: 0.0em 0.0em 2.0em #000;
+	color: #999;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: 1.5em;
+	text-indent: 0.5em;
+	width: 100%;
+}
+#txtFilter:focus {
+	color: inherit;
+	font-style: normal;
+}

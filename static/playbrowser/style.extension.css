@@ -1,0 +1,23 @@
+ul, form, p.message {
+	clear: both;
+	width: 90%;
+}
+h1 {
+	display: none;
+}
+h2 {
+	float: right;
+	margin-right: 5%;
+	width: auto;
+}
+ul#content {
+	max-height: inherit;
+}
+ul#content li a {
+	display: block;
+	font-weight: inherit;
+}
+#back_button {
+	position: relative;
+	float: left;
+}

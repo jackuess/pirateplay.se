@@ -110,8 +110,13 @@ class Root(object):
 		return {'streams': [s.to_dict() for s in pirateplay.get_streams(url)]}
 	
 	@_template('get_streams_old.xml', type='xml')
-	def get_streams_old_xml(self, url, rnd = None):
-		return { 'streams': [s.to_dict() for s in pirateplay.get_streams(url)] }
+	def get_streams_old_xml(self, url, librtmp = '0', output_file = '-', parent_function = ''):
+		streams = pirateplay.get_streams(url)
+		
+		if streams[0].url.startswith('rtmp') and librtmp == '0':
+			return { 'streams': [{'url': pirateplay.rtmpdump_cmd(s.url, output_file), 'meta': s.metadict()} for s in streams] }
+		else:
+			return { 'streams': [s.to_dict() for s in streams] }
 	
 	@_json
 	def services_js(self, titles = None, rnd = ''):
@@ -184,7 +189,7 @@ def application(environ, start_response):
 	chdir(base_dir)
 	
 	if not base_dir in sys.path:
-		sys.path.append(base_dir)
+		sys.path.insert(0, base_dir)
 	global pirateplay
 	import lib.pirateplay as pirateplay
 	
@@ -200,4 +205,4 @@ if __name__ == "__main__":
 	
 	_config['global']['server.socket_port'] = 8081
 	_config['/']['tools.staticdir.root'] = base_dir
-	cherrypy.quickstart(Root(template_dir = base_dir + '/templates'), config = _config, script_name='/pirateplay2')
+	cherrypy.quickstart(Root(template_dir = base_dir + '/templates'), config = _config, script_name='/')
