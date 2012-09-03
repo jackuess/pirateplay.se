@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 		xmlns:py="http://genshi.edgewall.org/">
 	<url py:for="s in sites">
-		<loc>${s[0]}</loc>
-		<priority>http://pirateplay.se/${s[1]}</priority>
+		<loc>http://pirateplay.se/${s[0]}</loc>
+		<priority>${s[1]}</priority>
 	</url>
 </urlset>
