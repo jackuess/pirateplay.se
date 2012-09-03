@@ -3,6 +3,6 @@
 		xmlns:py="http://genshi.edgewall.org/">
 	<url py:for="s in sites">
 		<loc>${s[0]}</loc>
-		<priority>${s[1]}</priority>
+		<priority>http://pirateplay.se/${s[1]}</priority>
 	</url>
 </urlset>
