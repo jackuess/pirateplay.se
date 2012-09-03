@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import cherrypy, json, re, sys
+import cherrypy, json, os, os.path, re, sys
 from copy import deepcopy
 
 from genshi.template import TemplateLoader
@@ -170,12 +170,18 @@ class Root(object):
 	@_template('player.html', sitemap_prio = '0.8')
 	def player_html(self):
 		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
+	
+	@_template('notfound.html')
+	def default(self, arg):
+		cherrypy.response.status = 404
+		return {}
 
 
 def _config(base_dir, port = 80):
 	return { 'global': {
 			'server.environment': 'production',
 			'server.socket_host': '0.0.0.0',
+			'request.show_tracebacks': False,
 			'server.socket_port': port },
 		'/': {
 			'tools.encode.on': True,
@@ -186,26 +192,31 @@ def _config(base_dir, port = 80):
 			'tools.staticdir.dir': 'static' },
 		'/googleda06c6c176f69c2f.html': {
 			'tools.staticfile.on': True,
-			'tools.staticfile.filename': base_dir + '/googleda06c6c176f69c2f.html' } }
+			'tools.staticfile.filename': os.path.join(base_dir, 'googleda06c6c176f69c2f.html') } }
 
 def application(environ, start_response):
-	from os import chdir
 	base_dir = environ.get('pirateplay_base_dir', '')
 	port = int(environ.get('pirateplay_port', '80'))
-	chdir(base_dir)
+	os.chdir(base_dir)
 	
 	if not base_dir in sys.path:
 		sys.path.insert(0, base_dir)
 	global pirateplay
 	import lib.pirateplay as pirateplay
 	
-	cherrypy.tree.mount(Root(template_dir = base_dir + '/templates'), config = _config(base_dir, port), script_name = environ.get('pirateplay_script_name', ''))
+	config = _config(base_dir, port)
+	
+	cherrypy.tree.mount(Root(template_dir = os.path.join(base_dir, 'templates')), config = config, script_name = environ.get('pirateplay_script_name', ''))
+	cherrypy.config.update(config)
 	return cherrypy.tree(environ, start_response)
 
 if __name__ == "__main__":
 	import lib.pirateplay as pirateplay
 	
-	from os import getcwd
-	base_dir = getcwd()
+	base_dir = os.getcwd()
 	
-	cherrypy.quickstart(Root(template_dir = base_dir + '/templates'), config = _config(base_dir, 8081), script_name='/')
+	config = _config(base_dir, 8081)
+	config['global']['request.show_tracebacks'] = True
+	cherrypy.config.update(config)
+	
+	cherrypy.quickstart(Root(template_dir = os.path.join(base_dir, 'templates')), config = config, script_name='/')
