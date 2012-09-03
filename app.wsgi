@@ -179,7 +179,7 @@ def _config(base_dir, port = 80):
 			'server.socket_port': port },
 		'/': {
 			'tools.encode.on': True,
-			'tools.encode.encoding': 'utf8' },
+			'tools.encode.encoding': 'utf-8' },
 		'/static': {
 			'tools.staticdir.on': True,
 			'tools.staticdir.root': base_dir,
