@@ -123,6 +123,7 @@ function requestStreams(e) {
 	if (pattern.test(url)) {
 		$.get('get_streams.js', { url: url, rnd: + $.now() }, onStreams);
 		myMessages.push('Laddar...');
+		document.location = '#' + url;
 	}
 	else
 		myMessages.push('Ogiltig address!', 'error');
@@ -144,8 +145,9 @@ var myMessages = new messages();
 var pattern = new RegExp('^.*');
 
 $(document).ready(function () {
+	var adressForm = $('form:first');
 	$.get('services.js', { rnd: $.now() }, setPattern);
-	$('form:first').submit(requestStreams);
+	adressForm.submit(requestStreams);
 	$('#out').keyup(function () { myStreamCollection.render(getForm()); });
 	$('#player').click(function () { myStreamCollection.render(getForm()); });
 	$('#show_inputs').click(function () { myStreamCollection.render(getForm()); });
@@ -161,4 +163,10 @@ $(document).ready(function () {
 		myStreamCollection.render(getForm());
 	});
 	$('#url').focus();
+	
+	var hashUrl = document.location.hash.substr(1);
+	if(hashUrl != '') {
+		$('#url').val(hashUrl);
+		adressForm.trigger('submit');
+	}
 });
