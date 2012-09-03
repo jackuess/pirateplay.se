@@ -1,3 +1,4 @@
 .htaccess
 *.pyc
 *.sh
+static/piwik_init.js
