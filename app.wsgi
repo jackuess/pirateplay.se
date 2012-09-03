@@ -172,20 +172,26 @@ class Root(object):
 		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
 
 
-_config = { 'global': {
+def _config(base_dir, port = 80):
+	return { 'global': {
 			'server.environment': 'production',
 			'server.socket_host': '0.0.0.0',
-			'server.socket_port': 8080 },
+			'server.socket_port': port },
 		'/': {
 			'tools.encode.on': True,
 			'tools.encode.encoding': 'utf8' },
 		'/static': {
 			'tools.staticdir.on': True,
-			'tools.staticdir.dir': 'static' } }
+			'tools.staticdir.root': base_dir,
+			'tools.staticdir.dir': 'static' },
+		'/googleda06c6c176f69c2f.html': {
+			'tools.staticfile.on': True,
+			'tools.staticfile.filename': base_dir + '/googleda06c6c176f69c2f.html' } }
 
 def application(environ, start_response):
 	from os import chdir
 	base_dir = environ.get('pirateplay_base_dir', '')
+	port = int(environ.get('pirateplay_port', '80'))
 	chdir(base_dir)
 	
 	if not base_dir in sys.path:
@@ -193,8 +199,7 @@ def application(environ, start_response):
 	global pirateplay
 	import lib.pirateplay as pirateplay
 	
-	_config['/']['tools.staticdir.root'] = base_dir
-	cherrypy.tree.mount(Root(template_dir = base_dir + '/templates'), config = _config, script_name = environ.get('pirateplay_script_name', ''))
+	cherrypy.tree.mount(Root(template_dir = base_dir + '/templates'), config = _config(base_dir, port), script_name = environ.get('pirateplay_script_name', ''))
 	return cherrypy.tree(environ, start_response)
 
 if __name__ == "__main__":
@@ -203,6 +208,4 @@ if __name__ == "__main__":
 	from os import getcwd
 	base_dir = getcwd()
 	
-	_config['global']['server.socket_port'] = 8081
-	_config['/']['tools.staticdir.root'] = base_dir
-	cherrypy.quickstart(Root(template_dir = base_dir + '/templates'), config = _config, script_name='/')
+	cherrypy.quickstart(Root(template_dir = base_dir + '/templates'), config = _config(base_dir, 8081), script_name='/')

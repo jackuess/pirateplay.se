@@ -1,2 +1,3 @@
 SetEnv pirateplay_base_dir /path/to/pirateplay/
-SetEnv pirateplay_script_name /pirateplay
+SetEnv pirateplay_script_name /
+SetEnv pirateplay_port 80
