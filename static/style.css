@@ -59,7 +59,7 @@ input[type="submit"] {
 	padding-left: 2%;
 	padding-right: 2%;
 }
-input[type="submit"]:active {
+input[type="submit"]:active, div#logo:active {
 	background: -webkit-linear-gradient(top, #000, #888);
 	background: -moz-linear-gradient(top, #000, #888);}
 
