@@ -376,7 +376,7 @@ disney_jr = RequestChain(title = 'Disney Junior', url = 'http://www.disney.se/di
 
 
 
-services = [svtplay, svtplay_hls, svtplay_http,
+services = [svtplay, svtplay_hls, svtplay_hds, svtplay_http,
 			urplay,
 			sr,
 			tv3play, tv6play, tv8play, mtg_alt,

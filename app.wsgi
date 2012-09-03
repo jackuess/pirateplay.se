@@ -34,11 +34,16 @@ def relative_time(s):
 		t = s;
 		singularis, pluralis = (u"sekund", u"sekunder")
 		
-	t = round(t)
+	t = int(round(t))
+	try:
+		ts = [u'Noll', u'En', u'Två', u'Tre', u'Fyra', u'Fem', u'Sex', u'Sju', u'Åtta', u'Nio', u'Tio', u'Elva', u'Tolv'][t]
+	except IndexError:
+		ts = str(t)
+	
 	if t>1:
-		return  "%d %s " % (t, pluralis)
+		return  "%s %s " % (ts, pluralis)
 	else:
-		return "%d %s " % (t, singularis)
+		return "%s %s " % (ts, singularis)
 
 
 
