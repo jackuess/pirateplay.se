@@ -167,7 +167,7 @@ class Root(object):
 		
 		return {'qna': qna}
 	
-	@_template('player.html', sitemap_prio = '0.5')
+	@_template('player.html', sitemap_prio = '0.8')
 	def player_html(self):
 		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
 
