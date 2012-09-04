@@ -51,65 +51,60 @@ def service_handler(*args, **kwargs):
     value = cherrypy.serving.request._json_inner_handler(*args, **kwargs)
     return js_encoder.encode(value)
 
-
-
-
-class Root():
-	def _add_to_sitemap(loc, priority = '0'):
-		def decorator(func):
-			func._sitemap = { 'loc': loc, 'priority': priority }
-			return func
-		return decorator
+class GenshiHandler():
+	def __init__(self, template, next_handler, type):
+		self.template = template
+		self.next_handler = next_handler
+		self.type = type
 	
-	def template(template, type = 'xhtml', sitemap_prio = '0'):
-		def decorator(func):
-			def wrapped(*args, **kwargs):
-				cherrypy.response.headers['Content-Type'] = { 'xhtml': 'text/html', 'xml': 'application/xml' }[type]
-				
-				vars = func(*args, **kwargs)
-				this = args[0] #Self
-				
-				return this._render_template(template, vars, type)
-			return wrapped
-		return decorator
-		
-	def __init__(self, template_dir):
-		self._tmpl_loader = TemplateLoader(template_dir, auto_reload=True)
-		self._jsencoder = JSONPirateEncoder()
-		self._templates = {}
+	def __call__(self):
+		vars = self.next_handler()
+		stream = self.template.generate(**vars)
+		cherrypy.response.headers['Content-Type'] = { 'xhtml': 'text/html', 'xml': 'application/xml' }[self.type]
+		return stream.render(self.type)
 
-	def _render_template(self, template_name, args = {}, type = 'xhtml'):
-		return self._tmpl_loader.load(template_name).generate(**args).render(type)
 
-	def _convert_service_re(self, service):
-		s = deepcopy(service)
-		try:
-			s.items[0].re = re.sub(r'(\(\?P<\w+>)|(\(\?:)', '(', service.items[0].re)
-		except IndexError:
-			return service
-		else:
-			return s
-		
-	def _filter_services(self, titles):
-		try:
-			titles = [t.lower() for t in titles.split(',')]
-		except AttributeError:
-			return pirateplay.services
-		else:
-			return [s for s in pirateplay.services if s.title.lower() in titles]
+class GenshiLoader():
+	def __init__(self):
+		self.loader = None
+	
+	def __call__(self, filename, dir, auto_reload = False, type = 'xhtml', sitemap_prio = '-1'):
+		print filename, auto_reload
+		if self.loader == None:
+			self.loader = TemplateLoader(dir, auto_reload=auto_reload)
+		template = self.loader.load(filename)
+		cherrypy.request.handler = GenshiHandler(template, cherrypy.request.handler, type)
 
+genshi_template = GenshiLoader()
+cherrypy.tools.genshi_template = cherrypy.Tool('before_handler', genshi_template)
+
+
+sitemap = {}
+def add_to_sitemap(priority = '0'):
+	def decorator(func):
+		sitemap['.'.join(func.__name__.replace('index', '/').rsplit('_', 1))] = priority
+		return func
+	return decorator
+
+class Api():
+	@cherrypy.expose
+	@add_to_sitemap('0.5')
+	@cherrypy.tools.genshi_template(filename='api.html')
+	def manual_html(self):
+		return {}
+	
 	@cherrypy.expose
 	@cherrypy.tools.json_out(handler = service_handler)
 	def get_streams_js(self, url, rnd = None):
 		return pirateplay.get_streams(url)
 
 	@cherrypy.expose
-	@template('get_streams.xml', type='xml')
+	@cherrypy.tools.genshi_template(filename='get_streams.xml', type='xml')
 	def get_streams_xml(self, url, rnd = None):
 		return {'streams': [s.to_dict() for s in pirateplay.get_streams(url)]}
 	
 	@cherrypy.expose(alias = 'generate_application.xml')
-	@template('get_streams_old.xml', type='xml')
+	@cherrypy.tools.genshi_template(filename='get_streams_old.xml', type='xml')
 	def get_streams_old_xml(self, url, librtmp = '0', output_file = '-', parent_function = ''):
 		streams = pirateplay.get_streams(url)
 		
@@ -127,27 +122,45 @@ class Root():
 		return [self._convert_service_re(z) for z in s]
 
 	@cherrypy.expose
-	@template('services.xml', type='xml')
+	@cherrypy.tools.genshi_template(filename='services.xml', type='xml')
 	def services_xml(self, titles = None, rnd = ''):
 		return {'services': [self._convert_service_re(s).to_dict()
 							for s in self._filter_services(titles)]}
+
+class Root():
+	def __init__(self):
+		self.sitemap = {}
+
+	def _convert_service_re(self, service):
+		s = deepcopy(service)
+		try:
+			s.items[0].re = re.sub(r'(\(\?P<\w+>)|(\(\?:)', '(', service.items[0].re)
+		except IndexError:
+			return service
+		else:
+			return s
+		
+	def _filter_services(self, titles):
+		try:
+			titles = [t.lower() for t in titles.split(',')]
+		except AttributeError:
+			return pirateplay.services
+		else:
+			return [s for s in pirateplay.services if s.title.lower() in titles]
 	
 	@cherrypy.expose
-	@template('sitemap.xml', 'xml')
+	@cherrypy.tools.genshi_template(filename='sitemap.xml', type='xml')
 	def sitemap_xml(self):
-		return { 'sites': [getattr(getattr(self, i), '_sitemap')
-							for i in dir(self)
-							if getattr(getattr(self, i), '_sitemap', None) != None] }
+		return { 'sites': sitemap }
 	
 	@cherrypy.expose
 	def sitemap_html(self):
-		return '<br />'.join(['<a href="%s">%s</a>' % ((getattr(getattr(self, i), '_sitemap')['loc'],)*2)
-							for i in dir(self)
-							if getattr(getattr(self, i), '_sitemap', None) != None])
+		return '<br />'.join(['<a href="%s">%s</a>' % ((i,)*2)
+							for i in sitemap])
 	
 	@cherrypy.expose
-	@_add_to_sitemap('/', '1.0')
-	@template('index.html', sitemap_prio = '1.0')
+	@cherrypy.tools.genshi_template(filename='index.html')
+	@add_to_sitemap('1.0')
 	def index(self):
 		from urllib2 import urlopen
 		import datetime
@@ -163,26 +176,21 @@ class Root():
 		return dict(services_se = services_se, services_other = services_other, tweets = tweets)
 	
 	@cherrypy.expose
-	@_add_to_sitemap('app.html', '0.5')
-	@template('app.html')
+	@add_to_sitemap('0.5')
+	@cherrypy.tools.genshi_template(filename='app.html')
 	def app_html(self):
 		return  {}
 	
-	@cherrypy.expose
-	@_add_to_sitemap('api.html', '0.5')
-	@template('api.html')
-	def api_html(self):
-		return {}
 	
 	@cherrypy.expose
-	@_add_to_sitemap('library.html', '0.5')
-	@template('library.html')
+	@add_to_sitemap('0.5')
+	@cherrypy.tools.genshi_template(filename='library.html')
 	def library_html(self):
 		return {}
 	
 	@cherrypy.expose
-	@_add_to_sitemap('qna.html', '0.5')
-	@template('qna.html')
+	@add_to_sitemap('0.5')
+	@cherrypy.tools.genshi_template(filename='qna.html')
 	def qna_html(self):
 		qna_txt = open('data/qna.txt', 'r')
 		qna = dict([pair.split('<!-- inner_delim -->') for pair in qna_txt.read().decode('utf-8').split('<!-- delim -->')])
@@ -191,15 +199,17 @@ class Root():
 		return {'qna': qna}
 	
 	@cherrypy.expose
-	@_add_to_sitemap('player.html', '0.8')
-	@template('player.html')
+	@add_to_sitemap('0.8')
+	@cherrypy.tools.genshi_template(filename='player.html')
 	def player_html(self):
 		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
 	
-	@template('notfound.html')
+	@cherrypy.tools.genshi_template(filename='notfound.html')
 	def default(self, *args, **kwargs):
 		cherrypy.response.status = 404
 		return {}
+	
+	api = Api()
 
 
 def get_streams_old_xml(url):
@@ -212,11 +222,13 @@ def _config(base_dir, port = 80):
 			'server.environment': 'production',
 			'server.socket_host': '0.0.0.0',
 			'request.show_tracebacks': False,
-			'server.socket_port': port },
+			'server.socket_port': port,
+			'tools.genshi_template.dir': os.path.join(base_dir, 'templates'),
+			'tools.genshi_template.auto_reload': False },
 		'/': {
 			#'request.dispatch': cherrypy.dispatch.Dispatcher(translate=maketrans(';', '_')),
 			'tools.encode.on': True,
-			'tools.encode.encoding': 'utf-8' },
+			'tools.encode.encoding': 'utf-8'},
 		'/static': {
 			'tools.staticdir.on': True,
 			'tools.staticdir.root': base_dir,
@@ -241,7 +253,7 @@ def application(environ, start_response):
 	
 	config = _config(base_dir, port)
 	
-	cherrypy.tree.mount(Root(template_dir = os.path.join(base_dir, 'templates')), config = config, script_name = environ.get('pirateplay_script_name', ''))
+	cherrypy.tree.mount(Root(), config = config, script_name = environ.get('pirateplay_script_name', ''))
 	cherrypy.config.update(config)
 	return cherrypy.tree(environ, start_response)
 
@@ -252,6 +264,7 @@ if __name__ == "__main__":
 	
 	config = _config(base_dir, 8081)
 	config['global']['request.show_tracebacks'] = True
+	config['global']['tools.genshi_template.auto_reload'] = True
 	cherrypy.config.update(config)
 	
-	cherrypy.quickstart(Root(template_dir = os.path.join(base_dir, 'templates')), config = config, script_name='')
+	cherrypy.quickstart(Root(), config = config, script_name='')
