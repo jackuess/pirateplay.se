@@ -120,7 +120,8 @@ class Api():
 	def get_streams_xml(self, url, rnd = None):
 		return {'streams': [s.to_dict() for s in pirateplay.get_streams(url)]}
 	
-	@cherrypy.expose(alias = 'generate_application.xml')
+	#@cherrypy.expose(alias = 'generate_application.xml')
+	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='api/get_streams_old.xml', type='xml')
 	def get_streams_old_xml(self, url, librtmp = '0', output_file = '-', parent_function = ''):
 		streams = pirateplay.get_streams(url)
@@ -210,6 +211,7 @@ class Root():
 		return {}
 	
 	api = Api()
+	generate_application_xml = api.get_streams_old_xml
 
 
 def get_streams_old_xml(url):
