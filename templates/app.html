@@ -2,7 +2,7 @@
 <html xmlns:py="http://genshi.edgewall.org/"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	lang="sv">
-	<xi:include href="default_header.html" />
+	<xi:include href="layout.html" />
 	<head>
 		<title>App</title>
 		<link rel="stylesheet" href="static/style.css" type="text/css" />
@@ -28,30 +28,26 @@
 		</style>
 	</head>
 	<body>
-		<xi:include href="logo.html" />
-		<xi:include py:with="selected='app.html'" href="menu.html" />
-		<section id="content">
-			<h1>App</h1>
-			<form action="#">
-				<label accesskey="u" for="url">Address</label>
-				<input type="text" name="url" id="url" value="" />
-				<input type="submit" value="Hämta" />
-			</form>
-			<ul id="messages"></ul>
-			<p><form id="result_form">
-					<label>Visa:</label>
-					<input type="radio" name="action" value="show" checked="checked" /> <label>strömmar</label>
-					<input type="radio" name="action" value="download" /> <label>nedladdningskommandon</label>
-					<input type="radio" name="action" value="play" /> <label>uppspelningsskommandon</label>
-					<label class="out" accesskey="s" for="out">Filnamn:</label>
-					<input class="out" type="text" name="out" id="out" />
-					<label class="player" accesskey="s" for="out">Spelare:</label>
-					<select class="player" id="player"><option value="vlc">Vlc</option><option value="ffplay">Ffplay</option><option value="mplayer">Mplayer</option></select><br class="player" />
-					<input name="show_inputs" id="show_inputs" class="download" type="checkbox" /><label class="download">Visa textfält</label>
-			</form></p>
-			<div class="result box" id="result">
-				<div class="close">Stäng</div>
-			</div>
-		</section>
+		<h1>App</h1>
+		<form action="#">
+			<label accesskey="u" for="url">Address</label>
+			<input type="text" name="url" id="url" value="" />
+			<input type="submit" value="Hämta" />
+		</form>
+		<ul id="messages"></ul>
+		<p><form id="result_form">
+				<label>Visa:</label>
+				<input type="radio" name="action" value="show" checked="checked" /> <label>strömmar</label>
+				<input type="radio" name="action" value="download" /> <label>nedladdningskommandon</label>
+				<input type="radio" name="action" value="play" /> <label>uppspelningsskommandon</label>
+				<label class="out" accesskey="s" for="out">Filnamn:</label>
+				<input class="out" type="text" name="out" id="out" />
+				<label class="player" accesskey="s" for="out">Spelare:</label>
+				<select class="player" id="player"><option value="vlc">Vlc</option><option value="ffplay">Ffplay</option><option value="mplayer">Mplayer</option></select><br class="player" />
+				<input name="show_inputs" id="show_inputs" class="download" type="checkbox" /><label class="download">Visa textfält</label>
+		</form></p>
+		<div class="result box" id="result">
+			<div class="close">Stäng</div>
+		</div>
 	</body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/" py:strip="">
+	<py:match xmlns:py="http://genshi.edgewall.org/" path="head" once="true">
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+			<meta name="description" content="Pirateplay gör det möjligt att spara webb-TV-program från SVT-play (och TV4-play, TV3-play etc.) i din dator." />
+			<meta name="keywords" content="rippa spara rtmp rtmpdump play svt tv4 tv3 kanal5 tv6 tv8 kanal9 aftonbladet ur vimeo" />
+			<link rel="alternate" type="application/rss+xml" title="Uppdateringar via Twitter" href="http://twitter.com/statuses/user_timeline.rss?screen_name=pirateplay_se" />
+			<link rel="stylesheet" href="${url('/static/style.css')}" type="text/css" />
+			<!--[if lt IE 9]>
+			<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+			<![endif]-->
+			<!-- Piwik --> 
+			<script type="text/javascript">
+				var pkBaseURL = (("https:" == document.location.protocol) ? "https://wrutschkow.org/piwik/" : "http://wrutschkow.org/piwik/");
+				document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript" src="${url('static/piwik_init.js')}"></script>
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+			${select('*')}
+		</head>
+	</py:match>
+	<py:match path="body" once="true">
+		<body>
+			<div id="logo" class="box-black">pirate<span style="color: #f55">play</span>
+				<audio id="anthem">
+					<source src="static/shaba_ranks_-_pirates_anthem.ogg" type="audio/ogg" />
+					<source src="static/shaba_ranks_-_pirates_anthem.mp3" type="audio/mpeg" />
+				</audio>
+				<script type="text/javascript">
+					var anthem = $('#anthem')[0];
+					$('#logo').click(function (e) {
+						anthem.paused ? anthem.play() : anthem.pause();
+					});
+				</script>
+			</div>
+			<nav id="menu">
+				<ul>
+					<li py:def="list_item(adress, title)" py:choose="url('/' + adress) == url()">
+						<a py:when="True" class="selected" href="${url('/' + adress)}">${title}</a>
+						<a py:when="False" href="${url('/' + adress)}">${title}</a>
+					</li>
+					${list_item('./', 'Förstasida')}
+					${list_item('app.html', 'App')}
+					${list_item('player.html', 'Pirateplayer')}
+					${list_item('api/manual.html', 'API')}
+					${list_item('library.html', 'Bibliotek')}
+					${list_item('qna.html', 'Frågor o svar')}
+				</ul>
+			</nav>
+			<section id="content">${select('*|text()')}</section>
+		</body>
+	</py:match>
+</html>

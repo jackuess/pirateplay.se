@@ -3,7 +3,7 @@
 import cherrypy, json, os, os.path, re, sys
 from copy import deepcopy
 
-from genshi.template import TemplateLoader
+from genshi.template import Context, TemplateLoader
 from genshi.core import Markup
 
 class JSONPirateEncoder(json.JSONEncoder):
@@ -58,8 +58,9 @@ class GenshiHandler():
 		self.type = type
 	
 	def __call__(self):
-		vars = self.next_handler()
-		stream = self.template.generate(**vars)
+		context = Context(url=cherrypy.url)
+		context.push(self.next_handler())
+		stream = self.template.generate(context)
 		cherrypy.response.headers['Content-Type'] = { 'xhtml': 'text/html', 'xml': 'application/xml' }[self.type]
 		return stream.render(self.type)
 
@@ -69,7 +70,6 @@ class GenshiLoader():
 		self.loader = None
 	
 	def __call__(self, filename, dir, auto_reload = False, type = 'xhtml', sitemap_prio = '-1'):
-		print filename, auto_reload
 		if self.loader == None:
 			self.loader = TemplateLoader(dir, auto_reload=auto_reload)
 		template = self.loader.load(filename)
@@ -87,9 +87,26 @@ def add_to_sitemap(priority = '0'):
 	return decorator
 
 class Api():
+	def _convert_service_re(self, service):
+		s = deepcopy(service)
+		try:
+			s.items[0].re = re.sub(r'(\(\?P<\w+>)|(\(\?:)', '(', service.items[0].re)
+		except IndexError:
+			return service
+		else:
+			return s
+		
+	def _filter_services(self, titles):
+		try:
+			titles = [t.lower() for t in titles.split(',')]
+		except AttributeError:
+			return pirateplay.services
+		else:
+			return [s for s in pirateplay.services if s.title.lower() in titles]
+		
 	@cherrypy.expose
 	@add_to_sitemap('0.5')
-	@cherrypy.tools.genshi_template(filename='api.html')
+	@cherrypy.tools.genshi_template(filename='api/manual.html')
 	def manual_html(self):
 		return {}
 	
@@ -99,12 +116,12 @@ class Api():
 		return pirateplay.get_streams(url)
 
 	@cherrypy.expose
-	@cherrypy.tools.genshi_template(filename='get_streams.xml', type='xml')
+	@cherrypy.tools.genshi_template(filename='api/get_streams.xml', type='xml')
 	def get_streams_xml(self, url, rnd = None):
 		return {'streams': [s.to_dict() for s in pirateplay.get_streams(url)]}
 	
 	@cherrypy.expose(alias = 'generate_application.xml')
-	@cherrypy.tools.genshi_template(filename='get_streams_old.xml', type='xml')
+	@cherrypy.tools.genshi_template(filename='api/get_streams_old.xml', type='xml')
 	def get_streams_old_xml(self, url, librtmp = '0', output_file = '-', parent_function = ''):
 		streams = pirateplay.get_streams(url)
 		
@@ -122,7 +139,7 @@ class Api():
 		return [self._convert_service_re(z) for z in s]
 
 	@cherrypy.expose
-	@cherrypy.tools.genshi_template(filename='services.xml', type='xml')
+	@cherrypy.tools.genshi_template(filename='api/services.xml', type='xml')
 	def services_xml(self, titles = None, rnd = ''):
 		return {'services': [self._convert_service_re(s).to_dict()
 							for s in self._filter_services(titles)]}
@@ -130,23 +147,6 @@ class Api():
 class Root():
 	def __init__(self):
 		self.sitemap = {}
-
-	def _convert_service_re(self, service):
-		s = deepcopy(service)
-		try:
-			s.items[0].re = re.sub(r'(\(\?P<\w+>)|(\(\?:)', '(', service.items[0].re)
-		except IndexError:
-			return service
-		else:
-			return s
-		
-	def _filter_services(self, titles):
-		try:
-			titles = [t.lower() for t in titles.split(',')]
-		except AttributeError:
-			return pirateplay.services
-		else:
-			return [s for s in pirateplay.services if s.title.lower() in titles]
 	
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='sitemap.xml', type='xml')

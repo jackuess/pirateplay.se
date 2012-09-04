@@ -121,7 +121,7 @@ function requestStreams(e) {
 	var url = $('#url').val();
 
 	if (pattern.test(url)) {
-		$.get('get_streams.js', { url: url, rnd: + $.now() }, onStreams);
+		$.get('api/get_streams.js', { url: url, rnd: + $.now() }, onStreams);
 		myMessages.push('Laddar...');
 		document.location = '#' + url;
 	}
@@ -146,7 +146,7 @@ var pattern = new RegExp('^.*');
 
 $(document).ready(function () {
 	var adressForm = $('form:first');
-	$.get('services.js', { rnd: $.now() }, setPattern);
+	$.get('api/services.js', { rnd: $.now() }, setPattern);
 	adressForm.submit(requestStreams);
 	$('#out').keyup(function () { myStreamCollection.render(getForm()); });
 	$('#player').click(function () { myStreamCollection.render(getForm()); });

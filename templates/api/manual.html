@@ -2,7 +2,7 @@
 <html xmlns:py="http://genshi.edgewall.org/"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	lang="sv">
-	<xi:include href="default_header.html" />
+	<xi:include href="../layout.html" />
 	<head>
 		<title>API</title>
 		<style type="text/css">
@@ -18,85 +18,80 @@
 		</style>
 	</head>
 	<body>
-		<xi:include href="logo.html" />
-		<xi:include py:with="selected='api.html'" href="menu.html" />
-		<section id="content">
-			<h1>API</h1>
-			<p>Base url: <a href="http://pirateplay.se/">http://pirateplay.se/</a></p>
-			<section class="box"><h2>Table of contents</h2>
-			<ul>
-				<li><a href="#get_streams_xml">get_streams.xml</a></li>
-				<li><a href="#get_streams_js">get_streams.js</a></li>
-				<li><a href="#services_xml">services.xml</a></li>
-				<li><a href="#services_js">services.js</a></li>
-			</ul></section>
-			<h2 id="get_streams_xml">get_streams.xml</h2>
-			<p>Returns a list of stream urls and some meta info in XML-format for a program from any of the supported content providers.</p>
-			<h3>Parameters:</h3>
-			<ul>
-				<li>url=s Required; url of stream page.</li>
-				<li>rnd=s Optional; bogus parameter for for avoiding caching where necessary.</li>
-			</ul>
-			<h3>Response:</h3>
-			<p>Mime-type: application/xml</p>
-			<p><code>&lt;<var>streams</var>&gt;<br />
-	&nbsp;&nbsp;&lt;<var>stream</var> <var>quality</var>="<em>Relative quality of stream</em>" <var>subtitles</var>="<em>Subtitles</em>"&gt;<em>Url of stream</em>&lt;/<var>stream</var>&gt;<br />
-	&nbsp;&nbsp;...<br />
-	&lt;/<var>streams</var>&gt;</code></p>
-			<h3>Example</h3>
-			<p>Get stream of http://vimeo.com/: <a href="get_streams.xml?url=http%3A%2F%2Fvimeo.com%2F2">get_streams.xml?url=http%3A%2F%2Fvimeo.com%2F2</a></p>
-			<h2 id="get_streams_js">get_streams.js</h2>
-			<p>Returns a list of stream urls and some meta info in JSON-format for a program from any of the supported content providers.</p>
-			<h3>Parameters:</h3>
-			<ul>
-				<li>url=s Required; url of stream page.</li>
-				<li>rnd=s Optional; bogus parameter for for avoiding caching where necessary.</li>
-			</ul>
-			<h3>Response:</h3>
-			<p>Mime-type: application/json</p>
-			<code>[{<var>'url'</var>: <em>Url of stream</em>,<br />
-	<var>'meta'</var>: {<var>'quality'</var>: <em>Relative quality of stream</em>,<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'<var>subtitles</var>': <em>Subtitles of stream</em>}}, ...]</code>
-			<h3>Example</h3>
-			<p>Get stream of http://vimeo.com/: <a href="get_streams.js?url=http%3A%2F%2Fvimeo.com%2F2">get_streams.js?url=http%3A%2F%2Fvimeo.com%2F2</a></p>
-
+		<h1>API</h1>
+		<p>Base url: <a href="${url('.')})">${url('.')}</a></p>
+		<section class="box"><h2>Table of contents</h2>
+		<ul>
+			<li><a href="#get_streams_xml">get_streams.xml</a></li>
+			<li><a href="#get_streams_js">get_streams.js</a></li>
+			<li><a href="#services_xml">services.xml</a></li>
+			<li><a href="#services_js">services.js</a></li>
+		</ul></section>
+		<h2 id="get_streams_xml">get_streams.xml</h2>
+		<p>Returns a list of stream urls and some meta info in XML-format for a program from any of the supported content providers.</p>
+		<h3>Parameters:</h3>
+		<ul>
+			<li>url=s Required; url of stream page.</li>
+			<li>rnd=s Optional; bogus parameter for for avoiding caching where necessary.</li>
+		</ul>
+		<h3>Response:</h3>
+		<p>Mime-type: application/xml</p>
+		<p><code>&lt;<var>streams</var>&gt;<br />
+&nbsp;&nbsp;&lt;<var>stream</var> <var>quality</var>="<em>Relative quality of stream</em>" <var>subtitles</var>="<em>Subtitles</em>"&gt;<em>Url of stream</em>&lt;/<var>stream</var>&gt;<br />
+&nbsp;&nbsp;...<br />
+&lt;/<var>streams</var>&gt;</code></p>
+		<h3>Example</h3>
+		<p>Get stream of http://vimeo.com/: <a href="get_streams.xml?url=http%3A%2F%2Fvimeo.com%2F2">get_streams.xml?url=http%3A%2F%2Fvimeo.com%2F2</a></p>
+		<h2 id="get_streams_js">get_streams.js</h2>
+		<p>Returns a list of stream urls and some meta info in JSON-format for a program from any of the supported content providers.</p>
+		<h3>Parameters:</h3>
+		<ul>
+			<li>url=s Required; url of stream page.</li>
+			<li>rnd=s Optional; bogus parameter for for avoiding caching where necessary.</li>
+		</ul>
+		<h3>Response:</h3>
+		<p>Mime-type: application/json</p>
+		<code>[{<var>'url'</var>: <em>Url of stream</em>,<br />
+<var>'meta'</var>: {<var>'quality'</var>: <em>Relative quality of stream</em>,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'<var>subtitles</var>': <em>Subtitles of stream</em>}}, ...]</code>
+		<h3>Example</h3>
+		<p>Get stream of http://vimeo.com/: <a href="get_streams.js?url=http%3A%2F%2Fvimeo.com%2F2">get_streams.js?url=http%3A%2F%2Fvimeo.com%2F2</a></p>
 			<h2 id="services_xml">services.xml</h2>
-			<p>Returns a list of supported services (content providers), and some info on them in XML-format.</p>
-			<h3>Parameters:</h3>
-			<ul>
-				<li>titles=s Optional; set to specify services returned, by title. Case insensitive, comma separated list of services titles.</li>
-				<li>rnd=s Optional; bogus parameter for for avoiding caching where necessary.</li>
-			</ul>
-			<h3>Response:</h3>
-			<p>Mime-type: application/xml</p>
-			<p><code>&lt;<var>services</var>&gt;<br />
-	&nbsp;&nbsp;&lt;<var>service</var>&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>title</var>&gt;<em>Service title</em>&lt;/<var>title</var>&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>url</var>&gt;<em>Service url</em>&lt;/<var>url</var>&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>feed_url</var>&gt;<em>Feed of samplable urls</em>&lt;/<var>feed_url</var>&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>sample_url</var>&gt;<em>Sample url</em>&lt;/<var>sample_url</var>&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>test</var>&gt;<em>Regular expression for testing if a given url is supported by this service</em>&lt;/<var>test</var>&gt;<br />
-	&nbsp;&nbsp;&lt;/<var>service</var>&gt;<br />
-	&nbsp;&nbsp;...<br />
-	&lt;/<var>services</var>&gt;</code></p>
-			<h3>Example</h3>
-			<p>Get info on SVT-play and Vimeo-services: <a href="services.xml?titles=svt-play,vimeo">services.xml?titles=svt-play,vimeo</a></p>
-			<h2 id="services_js">services.js</h2>
-			<p>Returns a list of supported services (content providers), and some info on them in JSON-format.</p>
-			<h3>Parameters:</h3>
-			<ul>
-				<li>titles=s Optional; set to specify services returned, by title. Case insensitive, comma separated list of services titles.</li>
-				<li>rnd=s Optional; bogus parameter for for avoiding caching where necessary.</li>
-			</ul>
-			<h3>Response:</h3>
-			<p>Mime-type: application/json</p>
-			<p><code>[{"<var>title</var>": <em>Service title</em>,<br />
-	"<var>url</var>": <em>Service url</em>,<br />
-	"<var>test</var>": <em>Regular expression for testing if a given url is supported by this service</em>,<br />
-	"<var>feed_url</var>": <em>Feed of samplable urls</em>,<br />
-	"<var>sample_url</var>": <em>Sample url</em>}, ...]</code></p>
-			<h3>Example</h3>
-			<p>Get info on SVT-play and Vimeo-services: <a href="services.js?titles=svt-play,vimeo">services.js?titles=svt-play,vimeo</a></p>
-		</section>
+		<p>Returns a list of supported services (content providers), and some info on them in XML-format.</p>
+		<h3>Parameters:</h3>
+		<ul>
+			<li>titles=s Optional; set to specify services returned, by title. Case insensitive, comma separated list of services titles.</li>
+			<li>rnd=s Optional; bogus parameter for for avoiding caching where necessary.</li>
+		</ul>
+		<h3>Response:</h3>
+		<p>Mime-type: application/xml</p>
+		<p><code>&lt;<var>services</var>&gt;<br />
+&nbsp;&nbsp;&lt;<var>service</var>&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>title</var>&gt;<em>Service title</em>&lt;/<var>title</var>&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>url</var>&gt;<em>Service url</em>&lt;/<var>url</var>&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>feed_url</var>&gt;<em>Feed of samplable urls</em>&lt;/<var>feed_url</var>&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>sample_url</var>&gt;<em>Sample url</em>&lt;/<var>sample_url</var>&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>test</var>&gt;<em>Regular expression for testing if a given url is supported by this service</em>&lt;/<var>test</var>&gt;<br />
+&nbsp;&nbsp;&lt;/<var>service</var>&gt;<br />
+&nbsp;&nbsp;...<br />
+&lt;/<var>services</var>&gt;</code></p>
+		<h3>Example</h3>
+		<p>Get info on SVT-play and Vimeo-services: <a href="services.xml?titles=svt-play,vimeo">services.xml?titles=svt-play,vimeo</a></p>
+		<h2 id="services_js">services.js</h2>
+		<p>Returns a list of supported services (content providers), and some info on them in JSON-format.</p>
+		<h3>Parameters:</h3>
+		<ul>
+			<li>titles=s Optional; set to specify services returned, by title. Case insensitive, comma separated list of services titles.</li>
+			<li>rnd=s Optional; bogus parameter for for avoiding caching where necessary.</li>
+		</ul>
+		<h3>Response:</h3>
+		<p>Mime-type: application/json</p>
+		<p><code>[{"<var>title</var>": <em>Service title</em>,<br />
+"<var>url</var>": <em>Service url</em>,<br />
+"<var>test</var>": <em>Regular expression for testing if a given url is supported by this service</em>,<br />
+"<var>feed_url</var>": <em>Feed of samplable urls</em>,<br />
+"<var>sample_url</var>": <em>Sample url</em>}, ...]</code></p>
+		<h3>Example</h3>
+		<p>Get info on SVT-play and Vimeo-services: <a href="services.js?titles=svt-play,vimeo">services.js?titles=svt-play,vimeo</a></p>
 	</body>
 </html>

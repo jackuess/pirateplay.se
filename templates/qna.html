@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:py="http://genshi.edgewall.org/"
 	xmlns:xi="http://www.w3.org/2001/XInclude">
-	<xi:include href="default_header.html" />
+	<xi:include href="layout.html" />
 	<head>
 		<title>Frågor och svar</title>
 	</head>
 	<body>
-		<xi:include href="logo.html" />
-		<xi:include py:with="selected='qna.html'" href="menu.html" />
-		<section id="content">
-			<h1>Frågor och svar</h1>
-			<ul>
-				<li py:for="question in qna.keys()"><a href="#${question[:-1].replace(' ', '')}">${question}</a></li>
-			</ul>
-			<py:for each="q, a in qna.items()">
-				<h2 id="${q[:-1].replace(' ', '')}">${q}</h2>
-				${a}
-			</py:for>
-		</section>
+		<h1>Frågor och svar</h1>
+		<ul>
+			<li py:for="question in qna.keys()"><a href="#${question[:-1].replace(' ', '')}">${question}</a></li>
+		</ul>
+		<py:for each="q, a in qna.items()">
+			<h2 id="${q[:-1].replace(' ', '')}">${q}</h2>
+			${a}
+		</py:for>
 	</body>
 </html>
