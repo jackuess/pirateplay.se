@@ -2,6 +2,7 @@
 
 import cherrypy, json, os, os.path, re, sys
 from copy import deepcopy
+from urllib import quote
 
 from genshi.template import Context, TemplateLoader
 from genshi.core import Markup
@@ -50,7 +51,7 @@ class GenshiHandler():
 		self.type = type
 	
 	def __call__(self):
-		context = Context(url=cherrypy.url)
+		context = Context(url=cherrypy.url, quote=quote)
 		context.push(self.next_handler())
 		stream = self.template.generate(context)
 		cherrypy.response.headers['Content-Type'] = { 'xhtml': 'text/html', 'xml': 'application/xml' }[self.type]
