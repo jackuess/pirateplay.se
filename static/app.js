@@ -47,11 +47,15 @@ function streamRepresentation(stream) {
 		else
 			var streamLink = '<a href="' + this.stream.url + '">' + this.stream.url + '</a>';
 		
+		$('.howto').hide()
+		
 		if (args.mode == 'download') {
 			if (this.stream.url.match(/^rtmpe?:\/\//) != null)
 				cmd = rtmpDumpCmd(this.stream.url, args.out);
-			else if (this.stream.url.match(/\.m3u8/) != null)
+			else if (this.stream.url.match(/\.m3u8/) != null) {
+				$('#howto_hls').show()
 				cmd = 'ffmpeg -i "' + streamLink + '" -acodec copy -vcodec copy -bsf aac_adtstoasc "' + args.out + '"';
+			}
 			else if (this.stream.url.match(/manifest\.f4m/) != null)
 				cmd = 'php AdobeHDS.php --delete --manifest "' + streamLink + '" --outfile "' + args.out + '"';
 			else
@@ -91,7 +95,7 @@ function streamCollection(streams) {
 	});
 
 	this.render = function (args) {
-		$('#result :not(.close)').remove();
+		$('#result :not(.not-result)').remove();
 		$(this.currStreams).each(function (i, s) {
 			s.render(args);
 		});

@@ -181,6 +181,12 @@ class Root():
 	
 	@cherrypy.expose
 	@add_to_sitemap('0.5')
+	@cherrypy.tools.genshi_template(filename='hls_guide.html')
+	def hls_guide_html(self):
+		return {}
+	
+	@cherrypy.expose
+	@add_to_sitemap('0.5')
 	@cherrypy.tools.genshi_template(filename='qna.html')
 	def qna_html(self):
 		qna_txt = open('data/qna.txt', 'r')

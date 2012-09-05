@@ -24,7 +24,7 @@
 				list-style: none;
 			}
 
-			div#result, .out, .player, .download, form#result_form { display: none; }
+			div#result, .out, .player, .download, form#result_form, p.howto { display: none; }
 		</style>
 	</head>
 	<body>
@@ -47,7 +47,8 @@
 				<input name="show_inputs" id="show_inputs" class="download" type="checkbox" /><label class="download">Visa textfält</label>
 		</form></p>
 		<div class="result box" id="result">
-			<div class="close">Stäng</div>
+			<p class="not-result howto" id="howto_hls"><a class="not-result" href="hls_guide.html">Hur kör jag det här kommandot?</a></p>
+			<div class="not-result close">Stäng</div>
 		</div>
 	</body>
 </html>
