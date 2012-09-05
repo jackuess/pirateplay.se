@@ -6,15 +6,7 @@ from copy import deepcopy
 from genshi.template import Context, TemplateLoader
 from genshi.core import Markup
 
-class JSONPirateEncoder(json.JSONEncoder):
-	def default(self, o):
-		try:
-			return o.to_dict()
-		except AttributeError:
-			pass
-		return JSONEncoder.default(self, o)
-
-js_encoder = JSONPirateEncoder()
+sitemap = {}
 
 def relative_time(s):
 	if s>31536000:
@@ -49,7 +41,7 @@ def relative_time(s):
 
 def service_handler(*args, **kwargs):
     value = cherrypy.serving.request._json_inner_handler(*args, **kwargs)
-    return js_encoder.encode(value)
+    return pirateplay.js_encoder.encode(value)
 
 class GenshiHandler():
 	def __init__(self, template, next_handler, type):
@@ -78,8 +70,6 @@ class GenshiLoader():
 genshi_template = GenshiLoader()
 cherrypy.tools.genshi_template = cherrypy.Tool('before_handler', genshi_template)
 
-
-sitemap = {}
 def add_to_sitemap(priority = '0'):
 	def decorator(func):
 		sitemap['.'.join(func.__name__.replace('index', '/').rsplit('_', 1))] = priority
@@ -120,7 +110,6 @@ class Api():
 	def get_streams_xml(self, url, rnd = None):
 		return {'streams': [s.to_dict() for s in pirateplay.get_streams(url)]}
 	
-	#@cherrypy.expose(alias = 'generate_application.xml')
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='api/get_streams_old.xml', type='xml')
 	def get_streams_old_xml(self, url, librtmp = '0', output_file = '-', parent_function = ''):
@@ -169,7 +158,8 @@ class Root():
 		now = datetime.datetime.now()
 		tweets = [{'text': Markup(re.sub(r'(https?://\S+)', '<a href="\\1">\\1</a>', tweet['text'], flags=re.IGNORECASE)),
 				'time': unicode(relative_time((now - datetime.datetime.strptime(tweet['created_at'], "%a %b %d %H:%M:%S +0000 %Y")).total_seconds()))}
-				for tweet in json.load(urlopen('http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&count=10'))]
+				for tweet in json.load(urlopen('http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&count=10'))
+				if not tweet['text'].startswith('@')]
 		
 		services_se = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
 		services_other = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and not '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
@@ -214,17 +204,14 @@ class Root():
 	generate_application_xml = api.get_streams_old_xml
 
 
-def get_streams_old_xml(url):
-	return url
-
-def _config(base_dir, port = 80):
+def _config(base_dir):
 	from string import maketrans
 	
 	return { 'global': {
 			'server.environment': 'production',
 			'server.socket_host': '0.0.0.0',
 			'request.show_tracebacks': False,
-			'server.socket_port': port,
+			'server.socket_port': 80,
 			'tools.genshi_template.dir': os.path.join(base_dir, 'templates'),
 			'tools.genshi_template.auto_reload': False },
 		'/': {
@@ -245,7 +232,6 @@ def _config(base_dir, port = 80):
 
 def application(environ, start_response):
 	base_dir = environ.get('pirateplay_base_dir', '')
-	port = int(environ.get('pirateplay_port', '80'))
 	os.chdir(base_dir)
 	
 	if not base_dir in sys.path:
@@ -253,10 +239,12 @@ def application(environ, start_response):
 	global pirateplay
 	import lib.pirateplay as pirateplay
 	
-	config = _config(base_dir, port)
-	
-	cherrypy.tree.mount(Root(), config = config, script_name = environ.get('pirateplay_script_name', ''))
+	config = _config(base_dir)
+	config['global']['server.socket_port'] = environ.get('pirateplay_port', '80')
 	cherrypy.config.update(config)
+	
+	cherrypy.tree.mount(Root(), config = config, script_name = '')
+	
 	return cherrypy.tree(environ, start_response)
 
 if __name__ == "__main__":
@@ -264,7 +252,8 @@ if __name__ == "__main__":
 	
 	base_dir = os.getcwd()
 	
-	config = _config(base_dir, 8081)
+	config = _config(base_dir)
+	config['global']['server.socket_port'] = 8081
 	config['global']['request.show_tracebacks'] = True
 	config['global']['tools.genshi_template.auto_reload'] = True
 	cherrypy.config.update(config)
