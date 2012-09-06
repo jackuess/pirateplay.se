@@ -19,7 +19,3 @@ tools.staticdir.dir = 'static'
 tools.staticdir.on = True,
 tools.staticdir.root = config.base_dir
 tools.staticdir.dir = 'static/playbrowser'
-
-[/googleda06c6c176f69c2f.html]
-tools.staticfile.on = True
-tools.staticfile.filename = os.path.join(config.base_dir, 'googleda06c6c176f69c2f.html')

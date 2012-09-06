@@ -38,6 +38,9 @@ div#logo {
 	position: absolute;
 	top: .3%;
 }
+div#logo #play {
+	color: #f55;
+}
 
 h1 {
 	font-size: 2.5em;
@@ -141,14 +144,17 @@ section#content {
 .box-green {
 	background-color: #aca;
 	background: -webkit-linear-gradient(top, #bdb, #9b9);
+	/*background: #00A0B0*/
 }
 .box-red {
 	background-color: #f99;
 	background: -webkit-linear-gradient(top, #faa, #f88);
+	/*background: #CC333F*/
 }
 .box-yellow {
 	background-color: #eea;
 	background: -webkit-linear-gradient(top, #ffb, #e0e09f);
+	/*background: #EDC951*/
 }
 .box-container {
 	margin-top: 3%;

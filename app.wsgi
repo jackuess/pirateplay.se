@@ -21,7 +21,7 @@ def application(environ, start_response):
 	
 	cherrypy.config.update('config.ini')
 	
-	confdict = { 'global': { 'server.socket_port': int(environ.get('pirateplay_port', '80')) } }
+	confdict = { }
 	cherrypy.config.update(confdict)
 	
 	app = cherrypy.tree.mount(Root(), '', 'config.ini')
