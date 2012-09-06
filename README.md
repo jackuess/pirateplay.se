@@ -1,8 +1,8 @@
 # Pirateplay.se #
 The entire code for running [Pirateplay.se](http://pirateplay.se)
 
-Pirateplay.se can either be run as a WSGI application under ie. mod_wsgi, or
-as a stand alone webserver in it self (cherrypy.quickstart).
+Pirateplay.se can either be run as a WSGI application under ie. [mod_wsgi](http://code.google.com/p/modwsgi/), or
+as a stand alone webserver in it self ([cherrypy.quickstart](http://docs.cherrypy.org/dev/refman/cherrypy.html#cherrypy.quickstart)).
 
 ## Dependencies ##
 * [Python>=2.6](http://python.org/)
@@ -10,7 +10,7 @@ as a stand alone webserver in it self (cherrypy.quickstart).
 * [Genshi](http://genshi.edgewall.org/)
 
 ### Optional dependencies: ###
-PyAMF: for getting some streams from Brightcove
+[PyAMF](http://www.pyamf.org/): for getting some streams from Brightcove
 
 ## Installation notices ##
 config.ini must be present in root - a copy of config.ini.example should work
