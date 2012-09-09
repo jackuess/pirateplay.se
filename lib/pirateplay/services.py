@@ -121,6 +121,15 @@ tv4play_hds = RequestChain(
 							url_template = '%(url)s?hdcore=2.7.6',
 							meta_template = 'quality=%(bitrate)s kbps',
 							is_last = True)])
+tv4play_http = RequestChain(
+				items = [TemplateRequest(
+							re = r'(http://)?(www\.)?tv4play\.se/.*(videoid|vid)=(?P<id>\d+).*',
+							url_template = 'http://premium.tv4play.se/api/web/asset/%(id)s/play'),
+						TemplateRequest(
+							re = r'<url>(?P<url>http://[^<]+).*?(?=.*?(?P<sub>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
+							url_template = '%(url)s',
+							meta_template = 'subtitles=%(sub)s',
+							is_last = True)])
 fotbollskanalen = RequestChain(title = 'Fotbollskanalen', url = 'http://fotbollskanalen.se/', sample_url = 'http://www.fotbollskanalen.se/video/?videoid=2194841',
 				items = [ TemplateRequest(
 							re = r'(http://)?(www\.)?fotbollskanalen\.se/.*(videoid|vid)=(?P<id>\d+).*',
@@ -380,7 +389,7 @@ services = [svtplay, svtplay_hls, svtplay_hds, svtplay_http,
 			urplay,
 			sr,
 			tv3play, tv6play, tv8play, mtg_alt,
-			tv4play, tv4play_hds, fotbollskanalen,
+			tv4play, tv4play_hds, tv4play_http, fotbollskanalen,
 			kanal5play,
 			kanal9play,
 			youtube,
