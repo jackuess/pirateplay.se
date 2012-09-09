@@ -24,8 +24,8 @@ När jag försöker ladda ner ett program med Pirateplayer står det "Inkompatil
 <!-- delim -->
 Vilken filändelse bör jag ge mina nedladdade filer?
 <!-- inner_delim -->
-<p>Allting som strömmas över Rtmp är paketerat med <a href="http://en.wikipedia.org/wiki/Flv">Flv</a> som container format. Rtmpdump och Pirateplayer laddar ner dessa filer rakt av och de bör alltså ges namn som slutar på <em>.flv</em></p>
-<p>Ffmpeg kan om det används för att ladda ner en video omvandla till valfritt <a href="http://en.wikipedia.org/wiki/Video_container">container-format</a>. Man anger alltså filändelse utifrån vilket container-format man vill ha för videon. Vill man exempelvis att videon ska paketeras som MP4 anger man "namn<em>.mp4</em>" som filnamn.</p>
+<p>Allting som strömmas över Rtmp är paketerat med <a href="http://en.wikipedia.org/wiki/Flv">Flv</a> som <a href="http://en.wikipedia.org/wiki/Video_container">containerformat</a>. Rtmpdump och Pirateplayer laddar ner dessa filer rakt av och de bör alltså ges namn som slutar på <em>.flv</em></p>
+<p>Ffmpeg kan om det används för att ladda ner en video omvandla till valfritt containerformat. Man anger alltså filändelse utifrån vilket containerformat man vill ha för videon. Vill man exempelvis att videon ska paketeras som MP4 anger man "namn<em>.mp4</em>" som filnamn.</p>
 <!-- delim -->
 Jag lyckas inte ladda ner Rtmp-strömmar från TV4 med Rtmpdump - vad gör jag för fel?
 <!-- inner_delim -->
