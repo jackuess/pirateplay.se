@@ -135,6 +135,12 @@ class TemplateRequest:
 		
 		self.requests.append(req)
 
+def delete_empty_values(d):
+	for key in d.keys():
+		if d[key] == '':
+			del d[key]
+	return d
+
 class Stream:
 	def __init__(self, url, meta):
 		self.url = url
@@ -142,7 +148,7 @@ class Stream:
 	
 	def metadict(self):
 		try:
-			return dict([(x[0].strip(), x[1].strip()) for x in [i.strip().split('=') for i in self.meta.split(';')]])
+			return delete_empty_values(dict([(x[0].strip(), x[1].strip()) for x in [i.strip().split('=') for i in self.meta.split(';')]]))
 		except IndexError:
 			return {}
 	

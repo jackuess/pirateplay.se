@@ -1,10 +1,17 @@
 from urllib import unquote
+from urllib2 import HTTPRedirectHandler, urlopen
 from random import randint
 
 from rerequest import RequestChain, TemplateRequest
 
 def fix_playpath(url):
-	return url.replace('/mp4:', '/ playpath=mp4:')
+	return url.replace('/mp4:', '/ playpath=mp4:')	
+
+def remove_nullsubs(v):
+	if v.get('sub', '') != '':
+		if urlopen(v['sub']).read() == '':
+			v['sub'] = ''
+	return v
 
 try:
 	from pyamf import remoting
@@ -36,11 +43,11 @@ except ImportError:
 	def decode_bc(content):
 		pass
 
-from urllib2 import HTTPRedirectHandler
 from cStringIO import StringIO
 class redirect_handler(HTTPRedirectHandler):
 	def http_error_302(self, req, fp, code, msg, headers):
 		return StringIO(str(headers))
+
 
 svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
 				items = [TemplateRequest(
@@ -49,6 +56,7 @@ svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
 						TemplateRequest(
 							re = r'"url":"(?P<url>rtmp[^"]+)".*?"bitrate":(?P<bitrate>\d+)(?=.*?"subtitleReferences":\[{"url":"(?P<sub>[^"]*))',
 							url_template = '%(url)s swfVfy=1 swfUrl=http://www.svtplay.se/public/swf/video/svtplayer-2012.15.swf',
+							encode_vars = remove_nullsubs,
 							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s',
 							is_last = True)])
 svtplay_hls = RequestChain(
@@ -56,12 +64,13 @@ svtplay_hls = RequestChain(
 							re = r'^(http://)?(www\.)?svtplay\.se/(?P<path>.*)',
 							url_template = 'http://svtplay.se/%(path)s?type=embed&output=json'),
 						TemplateRequest(
-							re = r'"url":"(?P<url>http://[^"]+\.m3u8)"',
+							re = r'"url":"(?P<url>http://[^"]+\.m3u8)".*?subtitleReferences":\[{"url":"(?P<sub>[^"]*)',
 							url_template = '%(url)s'),
 						TemplateRequest(
 							re = r'RESOLUTION=(?P<resolution>\d+x\d+).*?(?P<url>http://[^\n]+)',
 							url_template = '%(url)s',
-							meta_template = 'quality=%(resolution)s',
+							encode_vars = remove_nullsubs,
+							meta_template = 'quality=%(resolution)s;subtitles=%(sub)s',
 							is_last = True)])
 svtplay_hds = RequestChain(#Not enabled!
 				items = [TemplateRequest(
