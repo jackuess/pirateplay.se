@@ -14,7 +14,7 @@ function finalEvent (e) {
 
 base2.DOM.bind(document);
 
-var agentIsPlayer = navigator.userAgent.indexOf("Pirateplayer") != -1;
+var agentIsPlayer = navigator.userAgent.toLowerCase().indexOf("pirateplayer") != -1;
 
 var currMenu;
 var cache = [];

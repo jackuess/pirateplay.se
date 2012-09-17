@@ -105,7 +105,7 @@
 			<p><img id="player_logo" src="static/images/pirateplayer.png" />Pirateplayer är ett <a href="#license">fritt</a>, grafiskt program avsett att spela upp och ladda ner svensk webb-TV i <a href="#install">Windows, Mac OSX och Linux</a>.</p>
 			<p id="services" class="no-external-ico">Pirateplayer kan ladda ner ifrån: <py:for each="s in services"><a href="${s.url}">${s.title}</a>, </py:for></p>
 			<p>Alltså; samma tjänster som Pirateplay.se stöder. Finns undertexter försöker Pirateplayer i många fall även ladda ner dem.</p>
-			<p>Pirateplayer använder biblioteken <a href="http://qt.nokia.com/">Qt</a>, <a href="http://rtmpdump.mplayerhq.hu/">librtmp</a> och <a href="api.html">API:n från Pirateplay.se</a>.</p>
+			<p>Pirateplayer använder biblioteken <a href="http://qt.nokia.com/">Qt</a>, <a href="http://rtmpdump.mplayerhq.hu/">librtmp</a>, programmet <a href="http://ffmpeg.org/">Ffmpeg</a> och <a href="api.html">API:n från Pirateplay.se</a>.</p>
 			<p><a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://pirateplay.se/"></a></p>
 			<noscript><p><a href="http://flattr.com/thing/361015/Pirateplay"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" /></a></p></noscript>
 		</section>
@@ -133,12 +133,12 @@
 		<h2 id="install">Ladda ner och installera</h2>
 		<article class="box">
 			<h3>Windows</h3>
-			<p>Ladda ner och kör <a href="http://github.com/downloads/jackuess/pirateplayer/ppinstaller-0_3.exe">installationsprogrammet</a>. Pirateplayer finns därefter tillgängligt från Startmenyn</p>
+			<p>Ladda ner och kör <a href="http://github.com/downloads/jackuess/pirateplayer/ppinstaller_-_v0_4_0.exe">installationsprogrammet</a>. Pirateplayer finns därefter tillgängligt från Startmenyn</p>
 			<h3>Archlinux</h3>
 			<p>Installera från med hjälp av <a href="http://aur.archlinux.org/packages.php?ID=53142">PKGBUILD</a> via <a href="https://wiki.archlinux.org/index.php/AUR">AUR</a>.</p>
 			<h3>Debian/Ubuntu</h3>
 			<ul><li>Kör <code>sudo aptitude install libqtcore4 libqtgui4 libqt4-xml libqt4-network phonon libphonon4 rtmpdump libqt4-svg libqtwebkit4</code></li><li>Hämta <a href="http://github.com/downloads/jackuess/pirateplayer/pirateplayer_0.3.1-1_i386.deb">deb-paktet</a>.</li><li>Gå till katalogen du hämtade deb-paktet till och kör <code>sudo dpkg -i pirateplayer_0.3.1-1_i386.deb</code></li><li>Pirateplayer är nu installerat och kan köras med <code>pirateplayer</code></li></ul>
-			<p>Obs: vill du kunna se/ladda ner från TV4-play måste Rtmpdump på din dator vara av version 2.1d eller nyare än 2.3</p>
+			<p>Obs: vill du kunna se/ladda ner från TV4-play måste Rtmpdump på din dator vara av version 2.1d eller nyare än version 2.3.</p>
 			<h3>Mac OSX</h3>
 			<p>Installera <a href="http://github.com/downloads/jackuess/pirateplayer/pirateplayer-v0_3_1.dmg">Apple diskavbild (dmg)</a>.</p>
 			<p>Tyvärr fungerar inte videouppspelning på Mac i nuläget. Åtgärdas förhoppningsvis framöver.</p>
@@ -148,6 +148,17 @@
 		</article>
 		<h2 id="history">Historik</h2>
 		<article class="box">
+			<h3>Version 0.4.0 (2012-09-17)</h3>
+			<ul>
+				<li>Stöd för HLS-strömmar (många av SVTs videos är numera av den typen).</li>
+				<li>Reorganisation av användargränssnittet.</li>
+				<li>Redigering av nedladdningsaddresser.</li>
+				<li>Uppspelning av strömmar i extern videospelare.</li>
+				<li>Videospelaren borttagen: många externa videospelare har numera möjlighet att spela upp RTMP/HLS-strömmar.</li>
+				<li>Visning av nyheter (via Twitter).</li>
+				<li>Möjlighet att återuppta avbrutna nedladdningar borttagen.</li>
+				<li>Användarinställningar.</li>
+			</ul>
 			<h3>Version 0.3.1 (2012-01-14)</h3>
 			<ul><li>Applikationsikon - tack till Bernard!</li></ul>
 			<h3>Version 0.3 (2012-01-11)</h3>
@@ -177,9 +188,9 @@
 		<h2 id="bugs">Kända buggar</h2>
 		<article class="box">
 			<h3>Ladda ner från SR</h3>
-			<p><del>Fungerar inte i nuläget. Kommer åtgärdas i nästkommande version.</del><ins datetime="2012-01-11T22:10:00+0200">Fungerar sedan version 0.3!</ins></p>
+			<p><del>Fungerar inte i nuläget. Kommer åtgärdas i nästkommande version.</del> <ins datetime="2012-01-11T22:10:00+0200">Fungerar sedan version 0.3!</ins></p>
 			<h3>Videouppspelning Mac</h3>
-			<p>Fungerar inte i nuläget.</p>
+			<p><del>Fungerar inte i nuläget.</del> <ins>Funktion borttagen sedan version 0.4.0.</ins></p>
 			<h3>32-bitars Mac datorer</h3>
 			<p>Binären borde vara byggd som "universell". Pirateplayer fungerar i nuläget bara på 64-bitars macar. <!-- http://doc.qt.nokia.com/4.7-snapshot/developing-on-mac.html#universal-binaries --></p>
 		</article>

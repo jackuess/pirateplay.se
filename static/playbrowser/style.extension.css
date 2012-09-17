@@ -6,6 +6,7 @@ h1 {
 	display: none;
 }
 h2 {
+	display: none;
 	float: right;
 	margin-right: 5%;
 	width: auto;
@@ -20,4 +21,7 @@ ul#content li a {
 #back_button {
 	position: relative;
 	float: left;
+}
+input#txtFilter {
+	margin-top: 2%;
 }
