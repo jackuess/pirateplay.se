@@ -8,9 +8,14 @@ def fix_playpath(url):
 	return url.replace('/mp4:', '/ playpath=mp4:')	
 
 def remove_nullsubs(v):
-	if v.get('sub', '') != '':
-		if urlopen(v['sub']).read() == '':
+	if urlopen(v['id']).read() == '':
 			v['sub'] = ''
+	return v
+
+def add_subs_kanal5(v):
+	suburl = 'http://www.kanal5play.se/api/subtitles/' + v['id']
+	if urlopen(suburl).read() != '[]':
+		v['sub'] = suburl
 	return v
 
 try:
@@ -157,7 +162,8 @@ kanal5play = RequestChain(title = 'Kanal5-play', url = 'http://kanal5play.se/', 
 						TemplateRequest(
 							re = r'"bitrate":(?P<bitrate>\d+).*?"source":"(?P<path>[^"]+)"(?=.*?"streamBaseUrl":"(?P<base>[^"]+)")',
 							url_template = '%(base)s playpath=%(path)s swfVfy=1 swfUrl=http://www.kanal5play.se/flash/StandardPlayer.swf',
-							meta_template = 'quality=%(bitrate)s; suffix-hint=flv',
+							meta_template = 'quality=%(bitrate)s; subtitles=%(sub)s; suffix-hint=flv',
+							encode_vars = add_subs_kanal5,
 							is_last = True)])
 
 kanal9play = RequestChain(title = 'Kanal9-play', url = 'http://kanal9play.se/', feed_url = 'http://www.kanal9play.se/rss?type=PROGRAM',
