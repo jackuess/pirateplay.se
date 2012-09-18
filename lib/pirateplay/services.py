@@ -86,7 +86,7 @@ svtplay_hds = RequestChain(#Not enabled!
 							re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
 							encode_vars = lambda v: { 'guid': ''.join(chr(65 + randint(0, 25)) for i in range(12)) },
 							url_template = '%(url)s?hdcore=2.8.0&g=%(guid)s',
-							meta_template = 'quality=dynamisk; suffix-hint=flv',
+							meta_template = 'quality=dynamisk; suffix-hint=flv; required-player-version=1',
 							is_last = True)])
 svtplay_http = RequestChain(
 				items = [TemplateRequest(

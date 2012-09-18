@@ -2,6 +2,7 @@
 	<py:for each="s in streams">
 		<stream quality="${s['meta'].get('quality')}"
 				subtitles="${s['meta'].get('subtitles')}"
-				suffix-hint="${s['meta'].get('suffix-hint')}">${s['url']}</stream>
+				suffix-hint="${s['meta'].get('suffix-hint')}"
+				required-player-version="${s['meta'].get('required-player-version', '0')}">${s['url']}</stream>
 	</py:for>
 </streams>
