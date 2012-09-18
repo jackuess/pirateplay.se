@@ -134,7 +134,7 @@ tv4play_hds = RequestChain(
 						TemplateRequest(
 							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<url>http://.*?\.mp4\.csmil/manifest\.f4m)</url>',
 							url_template = '%(url)s?hdcore=2.7.6',
-							meta_template = 'quality=%(bitrate)s kbps',
+							meta_template = 'quality=%(bitrate)s kbps; required-player-version=1',
 							is_last = True)])
 tv4play_http = RequestChain(
 				items = [TemplateRequest(
