@@ -57,7 +57,7 @@ svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
 							re = r'"url":"(?P<url>rtmp[^"]+)".*?"bitrate":(?P<bitrate>\d+)(?=.*?"subtitleReferences":\[{"url":"(?P<sub>[^"]*))',
 							url_template = '%(url)s swfVfy=1 swfUrl=http://www.svtplay.se/public/swf/video/svtplayer-2012.15.swf',
 							encode_vars = remove_nullsubs,
-							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s',
+							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; suffix-hint=flv',
 							is_last = True)])
 svtplay_hls = RequestChain(
 				items = [TemplateRequest(
@@ -70,7 +70,7 @@ svtplay_hls = RequestChain(
 							re = r'RESOLUTION=(?P<resolution>\d+x\d+).*?(?P<url>http://[^\n]+)',
 							url_template = '%(url)s',
 							encode_vars = remove_nullsubs,
-							meta_template = 'quality=%(resolution)s;subtitles=%(sub)s',
+							meta_template = 'quality=%(resolution)s;subtitles=%(sub)s; suffix-hint=mp4',
 							is_last = True)])
 svtplay_hds = RequestChain(#Not enabled!
 				items = [TemplateRequest(
@@ -80,7 +80,7 @@ svtplay_hds = RequestChain(#Not enabled!
 							re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
 							encode_vars = lambda v: { 'guid': ''.join(chr(65 + randint(0, 25)) for i in range(12)) },
 							url_template = '%(url)s?hdcore=2.8.0&g=%(guid)s',
-							meta_template = 'quality=dynamisk',
+							meta_template = 'quality=dynamisk; suffix-hint=flv',
 							is_last = True)])
 svtplay_http = RequestChain(
 				items = [TemplateRequest(
@@ -99,7 +99,7 @@ urplay = RequestChain(title = 'UR-play', url = 'http://urplay.se/', feed_url = '
 						TemplateRequest(
 							re = r'file=/(?P<url>[^&]+(?P<ext>mp[34]))(?:.*?captions.file=(?P<sub>[^&]+))?',
 							url_template = 'rtmp://streaming.ur.se/ playpath=%(ext)s:/%(url)s app=ondemand ',
-							meta_template = 'subtitles=%(sub)s;',
+							meta_template = 'subtitles=%(sub)s; suffix-hint=flv',
 							is_last = True)])
 
 sr = RequestChain(title = 'SR', url = 'http://sr.se/', feed_url = 'http://sverigesradio.se/api/rss/broadcast/516',
@@ -119,7 +119,7 @@ tv4play = RequestChain(title = 'TV4-play', url = 'http://tv4play.se/', feed_url 
 						TemplateRequest(
 							re = r'(<playbackStatus>(?P<status>\w+).*?)?<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?(?P<base>rtmpe?://[^<]+).*?(?P<url>mp4:/[^<]+)(?=.*?(?P<sub>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
 							url_template = '%(base)s playpath=%(url)s swfVfy=1 swfUrl=http://www.tv4play.se/flash/tv4playflashlets.swf',
-							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s',
+							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; suffix-hint=flv',
 							is_last = True)])
 tv4play_hds = RequestChain(
 				items = [TemplateRequest(
@@ -146,7 +146,7 @@ fotbollskanalen = RequestChain(title = 'Fotbollskanalen', url = 'http://fotbolls
 						TemplateRequest(
 							re = r'(<playbackStatus>(?P<status>\w+).*?)?<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?(?P<base>rtmpe?://[^<]+).*?(?P<url>mp4:/[^<]+)(?=.*?(?P<sub>http://anytime.tv4.se/multimedia/vman/smiroot/[^<]+))?',
 							url_template = '%(base)s swfVfy=1 swfUrl=http://www.tv4play.se/flash/tv4playflashlets.swf playpath=%(url)s',
-							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s',
+							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; suffix-hint=flv',
 							is_last = True)])
 
 
@@ -157,7 +157,7 @@ kanal5play = RequestChain(title = 'Kanal5-play', url = 'http://kanal5play.se/', 
 						TemplateRequest(
 							re = r'"bitrate":(?P<bitrate>\d+).*?"source":"(?P<path>[^"]+)"(?=.*?"streamBaseUrl":"(?P<base>[^"]+)")',
 							url_template = '%(base)s playpath=%(path)s swfVfy=1 swfUrl=http://www.kanal5play.se/flash/StandardPlayer.swf',
-							meta_template = 'quality=%(bitrate)s',
+							meta_template = 'quality=%(bitrate)s; suffix-hint=flv',
 							is_last = True)])
 
 kanal9play = RequestChain(title = 'Kanal9-play', url = 'http://kanal9play.se/', feed_url = 'http://www.kanal9play.se/rss?type=PROGRAM',
@@ -174,7 +174,7 @@ kanal9play = RequestChain(title = 'Kanal9-play', url = 'http://kanal9play.se/', 
 							decode_content = decode_bc,
 							re = r'"(?P<height>\d+)x(?P<width>\d+):(?P<URL>[^&]+)&(?P<path>[^"]+)";',
 							url_template = '%(URL)s swfVfy=1 swfUrl=http://admin.brightcove.com/viewer/us1.25.04.01.2011-05-24182704/connection/ExternalConnection_2.swf playpath=%(path)s',
-							meta_template = 'quality=%(height)sx%(width)s',
+							meta_template = 'quality=%(height)sx%(width)s; suffix-hint=flv',
 							is_last = True)])
 
 
@@ -186,7 +186,7 @@ tv3play = RequestChain(title = 'TV3-play', url = 'http://tv3play.se/',
 						TemplateRequest(
 							re = r'<SamiFile>(?P<sub>[^<]*).*<Video>.*<BitRate>(?P<bitrate>\d+).*?<Url><!\[CDATA\[(?P<url>rtmp[^\]]+)',
 							url_template = '%(url)s swfVfy=1 swfUrl=http://flvplayer.viastream.viasat.tv/play/swf/player120328.swf',
-							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s',
+							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; suffix-hint=flv',
 							decode_url = fix_playpath,
 							is_last = True)])
 mtg_alt = RequestChain(
@@ -199,7 +199,7 @@ mtg_alt = RequestChain(
 						TemplateRequest(
 							re = r'<Url>(?P<url>[^<]+)',
 							url_template = '%(url)s swfVfy=1 swfUrl=http://flvplayer.viastream.viasat.tv/play/swf/player120328.swf',
-							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s',
+							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; suffix-hint=flv',
 							decode_url = fix_playpath,
 							is_last = True)])
 #Dummies: TV6-play and TV8-play is caught by tv3play and mtg_alt
@@ -243,7 +243,7 @@ aftonbladet = RequestChain(title = 'Aftonbladet-TV', url = 'http://aftonbladet.s
 							re = r'playerWidth:\s(?P<width>\d+).*?playerHeight:\s(?P<height>\d+).*?videoUrl:\s"(?P<base>rtmp://([^/]+)/[^/]+/)(?P<url>[^"]+)".*?videoIsLive:\s(?P<live>true|false)',
 							url_template = '%(base)s playpath=%(url)s live=%(live)s',
 							decode_url = lambda url: url.replace('live=true', 'live=1').replace(' live=false', ''),
-							meta_template = 'quality=%(width)sx%(height)s',
+							meta_template = 'quality=%(width)sx%(height)s; suffix-hint=flv',
 							is_last = True)])
 aftonbladet_http = RequestChain(#title = 'Aftonbladet-TV', url = 'http://aftonbladet.se/',
 				items = [TemplateRequest(
@@ -277,7 +277,7 @@ elitserien_play = RequestChain(title = 'Elitserien-play', url = 'http://elitseri
 							decode_content = decode_bc,
 							re = r'"(?P<height>\d+)x(?P<width>\d+):(?P<URL>[^&]+)&(?P<path>[^\?]+)(?P<query>\?[^"]+)";',
 							url_template = '%(URL)s%(query)s swfVfy=1 swfUrl=http://admin.brightcove.com/viewer/us1.25.04.01.2011-05-24182704/connection/ExternalConnection_2.swf playpath=%(path)s',
-							meta_template = 'quality=%(height)sx%(width)s',
+							meta_template = 'quality=%(height)sx%(width)s; suffix-hint=flv',
 							is_last = True)])
 
 nrk = RequestChain(title = 'NRK nett-TV', url = 'http://nrk.no/nett-tv/',
@@ -291,7 +291,7 @@ nrk = RequestChain(title = 'NRK nett-TV', url = 'http://nrk.no/nett-tv/',
 						TemplateRequest(
 							re = r'href="(?P<url>mms://[^"]+)"',
 							url_template = '%(url)s',
-							meta_template = '',
+							meta_template = 'suffix-hint=wmv',
 							is_last = True)])
 
 dr = RequestChain(title = 'DR-TV', url = 'http://dr.dk/tv',
@@ -309,7 +309,7 @@ dr = RequestChain(title = 'DR-TV', url = 'http://dr.dk/tv',
 							re = r'"uri":"(?P<rtmp_base>rtmpe?:\\/\\/vod\.dr\.dk\\/cms\\/)(?P<rtmp_path>[^"]+).*?"bitrateKbps":(?P<bitrate>\d+)',
 							decode_url = lambda url: url.replace('\\', ''),
 							url_template = '%(rtmp_base)s playpath=%(rtmp_path)s swfVfy=1 swfUrl=http://www.dr.dk/assets/swf/program-player.swf',
-							meta_template = 'quality=%(bitrate)s kbps',
+							meta_template = 'quality=%(bitrate)s kbps; suffix-hint=flv',
 							is_last = True)])
 
 ceskatelevize = RequestChain(title = 'Ceskatelevize', url = '',
@@ -330,7 +330,7 @@ ceskatelevize = RequestChain(title = 'Ceskatelevize', url = '',
 							decode_url = lambda url: url.replace('&amp;', '&'),
 							headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:5.0) Gecko/20100101 Firefox/5.0'},
 							url_template = '%(base)s app=%(app)s playpath=%(play_path)s swfVfy=1 swfUrl=http://img7.ceskatelevize.cz/libraries/player/flashPlayer.swf?version=1.44.5',
-							meta_template = 'quality=%(quality)s',
+							meta_template = 'quality=%(quality)s; suffix-hint=flv',
 							is_last = True)])
 
 expressen = RequestChain(title = 'Expressen-TV', url = 'http://expressen.se/tv/',
@@ -343,7 +343,7 @@ expressen = RequestChain(title = 'Expressen-TV', url = 'http://expressen.se/tv/'
 						TemplateRequest(
 							re = r'<vurl bitrate="(?P<bitrate>\d+)"><!\[CDATA\[(?P<base>rtmpe?://[^/]+/[^/]+)/(?P<play_path>[^\]]+)(\.flv)?',
 							url_template = '%(base)s playpath=%(play_path)s swfVfy=1 swfUrl=http://www.expressen.se%(swf_path)s',
-							meta_template = 'quality=%(bitrate)s',
+							meta_template = 'quality=%(bitrate)s; suffix-hint=flv',
 							is_last = True)])
 
 cnbc = RequestChain(title = 'CNBC', url = 'http://cnbc.com/',
@@ -355,7 +355,7 @@ cnbc = RequestChain(title = 'CNBC', url = 'http://cnbc.com/',
 							url_template = '%(xml_url)s'),
 						TemplateRequest(
 							re = r'<choice>\s*<url>(?P<rtmp_url>rtm.+?)</url>',
-							url_template = '%(rtmp_url)s',
+							url_template = '%(rtmp_url)s; suffix-hint=flv',
 							meta_template = '',
 							is_last = True)])
 
@@ -370,7 +370,7 @@ discovery = RequestChain(title = 'Discovery', url = 'http://dsc.discovery.com/',
 							re = r'(<meta\s+name="httpBase"\s+content="(?P<base>[^"]+)".*?)?<video\s+src="(?P<path>[^"]+)"\s+system-bitrate="(?P<bitrate>\d+)"',
 							url_template = '%(base)s/%(path)s',
 							encode_vars = lambda d: { 'bitrate': str(int(d['bitrate'])/1000) },
-							meta_template = 'quality=%(bitrate)s kbps', is_last = True)])
+							meta_template = 'quality=%(bitrate)s kbps; suffix-hint=flv', is_last = True)])
 
 das_erste = RequestChain(title = 'Das Erste Mediathek', url = 'http://mediathek.daserste.de/',
 				items = [ TemplateRequest(
@@ -379,7 +379,7 @@ das_erste = RequestChain(title = 'Das Erste Mediathek', url = 'http://mediathek.
 						TemplateRequest(
 							re = r'mediaCollection\.addMediaStream\(\d,\s(?P<quality>\d),\s"(?P<base>[^"]+)",\s"(?P<path>[^"]+)"',
 							url_template = '%(base)s playpath=%(path)s',
-							meta_template = 'quality=%(quality)s',
+							meta_template = 'quality=%(quality)s; suffix-hint=flv',
 							is_last = True)])
 
 disney_jr = RequestChain(title = 'Disney Junior', url = 'http://www.disney.se/disney-junior/innehall/video.jsp',
@@ -389,7 +389,7 @@ disney_jr = RequestChain(title = 'Disney Junior', url = 'http://www.disney.se/di
 						TemplateRequest(
 							re = r"config\.firstVideoSource\s=\s'(?P<play_path>[^']+)'.*?config\.rtmpeServer\s=\s'(?P<base>[^']+)'",
 							url_template = '%(base)s playpath=mp4:/%(play_path)s swfVfy=1 swfUrl=http://www.disney.se/cms_res/disney-junior/flash/video_hub_player/disney_player.swf',
-							meta_template = '',
+							meta_template = 'suffix-hint=flv',
 							is_last = True)])
 
 

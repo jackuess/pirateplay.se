@@ -1,5 +1,7 @@
 <streams xmlns:py="http://genshi.edgewall.org/"> 
 	<py:for each="s in streams">
-		<stream quality="${s['meta'].get('quality')}" subtitles="${s['meta'].get('subtitles')}">${s['url']}</stream>
+		<stream quality="${s['meta'].get('quality')}"
+				subtitles="${s['meta'].get('subtitles')}"
+				suffix-hint="${s['meta'].get('suffix-hint')}">${s['url']}</stream>
 	</py:for>
 </streams>
