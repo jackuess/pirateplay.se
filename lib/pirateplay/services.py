@@ -8,7 +8,8 @@ def fix_playpath(url):
 	return url.replace('/mp4:', '/ playpath=mp4:')	
 
 def remove_nullsubs(v):
-	if urlopen(v['id']).read() == '':
+	if v.get('sub', '') != '':
+		if urlopen(v['sub']).read() == '':
 			v['sub'] = ''
 	return v
 
