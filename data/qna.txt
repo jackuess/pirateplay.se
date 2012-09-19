@@ -20,7 +20,7 @@ Kan du lägga funktionalitet <em>XX</em> till Pirateplay(er)?
 <!-- delim -->
 När jag försöker ladda ner ett program med Pirateplayer står det "Inkompatilbel ström. Testa appen på Pirateplay.se". Vad beror detta på?
 <!-- inner_delim -->
-<p>Pirateplayer klarar i nuläget inte av alla videoströmmar från Svt- och TV4-play. Exempelvis fungerar inte de nya <a href="http://en.wikipedia.org/wiki/HTTP_Live_Streaming">HLS-</a> och <a href="http://en.wikipedia.org/wiki/Adaptive_bitrate_streaming#Adobe_Dynamic_Streaming_for_Flash">HDS-</a> strömmarna de börjat använda. Med <a href="app.html">Appen</a>, kommandotolken och rätt verktyg går det ändå att ladda ner de flesta program. Läs gärna vidare i min <a href="hls_guide.html">guide</a>.</p>
+<p><del>Pirateplayer klarar i nuläget inte av alla videoströmmar från Svt- och TV4-play. Exempelvis fungerar inte de nya <a href="http://en.wikipedia.org/wiki/HTTP_Live_Streaming">HLS-</a> och <a href="http://en.wikipedia.org/wiki/Adaptive_bitrate_streaming#Adobe_Dynamic_Streaming_for_Flash">HDS-</a> strömmarna de börjat använda. Med <a href="app.html">Appen</a>, kommandotolken och rätt verktyg går det ändå att ladda ner de flesta program. Läs gärna vidare i min <a href="hls_guide.html">guide</a>.</del> <ins>Sedan version 0.4.0 klarar Pirateplayer av dessa strömmar. <a href="player.html#install">Installera</a> senate versionen.</p>
 <!-- delim -->
 Vilken filändelse bör jag ge mina nedladdade filer?
 <!-- inner_delim -->
@@ -30,3 +30,7 @@ Vilken filändelse bör jag ge mina nedladdade filer?
 Jag lyckas inte ladda ner Rtmp-strömmar från TV4 med Rtmpdump - vad gör jag för fel?
 <!-- inner_delim -->
 <p>För att ladda ner från TV4 behöver du antingen en riktigt ny version av Rtmpdump (inga officiella binärer finns för Windows), eller den gamla 2.1d (<a href="http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.1d-windows.zip">windows-nedladdning</a>).</p>
+<!-- delim -->
+När jag kör försöker kör ett nedladdningskommando i Ubuntu/Debiand får jag följande meddlande: "*** THIS PROGRAM IS DEPRECATED *** This program is only provided for compatibility and will be removed in a future release. Please use avconv instead.". Vad beror detta på?
+<!-- inner_delim -->
+<p>Debian (och därmed Ubuntu) har bestämt sig för att satsa på en <a href="http://sv.wikipedia.org/wiki/Fork">fork</a> av Ffmpeg-projektet. En av följderna av detta är att kommandot som förut hette "ffmpeg" nu heter "avconv". För att köra ett ffmpeg-kommando i Debian/Ubuntu byter du lämpligen ut "ffmpeg" mot "avconv" i kommandot.</p>
