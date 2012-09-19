@@ -31,6 +31,6 @@ Jag lyckas inte ladda ner Rtmp-strömmar från TV4 med Rtmpdump - vad gör jag f
 <!-- inner_delim -->
 <p>För att ladda ner från TV4 behöver du antingen en riktigt ny version av Rtmpdump (inga officiella binärer finns för Windows), eller den gamla 2.1d (<a href="http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.1d-windows.zip">windows-nedladdning</a>).</p>
 <!-- delim -->
-När jag kör försöker kör ett nedladdningskommando i Ubuntu/Debiand får jag följande meddlande: "*** THIS PROGRAM IS DEPRECATED *** This program is only provided for compatibility and will be removed in a future release. Please use avconv instead.". Vad beror detta på?
+När jag kör försöker kör ett nedladdningskommando i Ubuntu/Debian får jag följande meddlande: "*** THIS PROGRAM IS DEPRECATED *** This program is only provided for compatibility and will be removed in a future release. Please use avconv instead.". Vad beror detta på?
 <!-- inner_delim -->
 <p>Debian (och därmed Ubuntu) har bestämt sig för att satsa på en <a href="http://sv.wikipedia.org/wiki/Fork">fork</a> av Ffmpeg-projektet. En av följderna av detta är att kommandot som förut hette "ffmpeg" nu heter "avconv". För att köra ett ffmpeg-kommando i Debian/Ubuntu byter du lämpligen ut "ffmpeg" mot "avconv" i kommandot.</p>
