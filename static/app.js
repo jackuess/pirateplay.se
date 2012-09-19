@@ -54,7 +54,7 @@ function streamRepresentation(stream) {
 				cmd = rtmpDumpCmd(this.stream.url, args.out);
 			else if (this.stream.url.match(/\.m3u8/) != null) {
 				$('#howto_hls').show()
-				cmd = 'ffmpeg -i "' + streamLink + '" -acodec copy -vcodec copy -bsf aac_adtstoasc "' + args.out + '"';
+				cmd = 'ffmpeg -i "' + streamLink + '" -acodec copy -vcodec copy -absf aac_adtstoasc "' + args.out + '"';
 			}
 			else if (this.stream.url.match(/manifest\.f4m/) != null)
 				cmd = 'php AdobeHDS.php --delete --manifest "' + streamLink + '" --outfile "' + args.out + '"';

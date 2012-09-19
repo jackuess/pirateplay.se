@@ -78,7 +78,7 @@ svtplay_hls = RequestChain(
 							encode_vars = remove_nullsubs,
 							meta_template = 'quality=%(resolution)s;subtitles=%(sub)s; suffix-hint=mp4',
 							is_last = True)])
-svtplay_hds = RequestChain(#Not enabled!
+svtplay_hds = RequestChain(
 				items = [TemplateRequest(
 							re = r'^(http://)?(www\.)?svtplay\.se/(?P<path>.*)',
 							url_template = 'http://svtplay.se/%(path)s?type=embed&output=json'),
