@@ -94,7 +94,7 @@
 				padding: 1em;
 				text-align: left;
 			}
-			.gallery_index_rel:hover { background-color: rgba(0, 0, 0, .4); }
+			.gallery_index_rel:hover { background-color: rgba(0, 0, 0, .4); color: #f55; }
 			.gallery_index_rel:first-of-type { float: left; }
 			.gallery_index_rel:last-of-type { float: right; }
 		</style>
@@ -119,13 +119,17 @@
 		</ul>
 		<h2 id="screens">Skärmdumpar</h2>
 		<article class="box sect">
-			<nav class="centered"><ul id="index" class="box box-black"><li>GNU/Linux/KDE</li><li>GNU/Linux/Wine</li><li>Mac OS X</li></ul></nav>
+			<nav class="centered"><ul id="index" class="box box-black">
+				<li>GNU/Linux/XFCE</li>
+				<li>GNU/Linux/KDE</li>
+				<li>Mac OS X</li>
+			</ul></nav>
 			<p class="gallery_index_rel box box-black">&lt;</p>
 			<p class="gallery_index_rel box box-black">&gt;</p>
 			<div id="gallery">
 				<ul id="images">
+					<li><img src="static/images/screen_-_mint_v0_4_3.png" /></li>
 					<li><img src="static/images/screen_-_lin_v0_2.png" /></li>
-						<li><img src="static/images/screen_-_wine_v0_2.png" /></li>
 					<li><img src="static/images/screen_-_osx_v0_2.png" /></li>
 				</ul>
 			</div>
@@ -137,8 +141,7 @@
 			<h3>Archlinux</h3>
 			<p>Installera från med hjälp av <a href="http://aur.archlinux.org/packages.php?ID=62902">denna PKGBUILD</a> via <a href="https://wiki.archlinux.org/index.php/AUR">AUR</a>.</p>
 			<h3>Debian/Ubuntu</h3>
-			<p><em>0.4.3 är på väg.</em></p>
-			<ul><li>Kör <code>sudo aptitude install libqtcore4 libqtgui4 libqt4-xml libqt4-network libqt4-svg libqtwebkit4 rtmpdump ffmpeg</code></li><li>Hämta <a href="http://github.com/downloads/jackuess/pirateplayer/pirateplayer_0.3.1-1_i386.deb">deb-paktet</a>.</li><li>Gå till katalogen du hämtade deb-paktet till och kör <code>sudo dpkg -i pirateplayer_0.3.1-1_i386.deb</code></li><li>Pirateplayer är nu installerat och kan köras med <code>pirateplayer</code></li></ul>
+			<ul><li>Öppna terminalen.</li><li>Kör <code>sudo aptitude install libqtcore4 libqtgui4 libqt4-xml libqt4-network libqt4-svg libqtwebkit4 rtmpdump ffmpeg</code></li><li>Hämta <a href="http://github.com/downloads/jackuess/pirateplayer/pirateplayer_0.4.3-1_i386.deb">deb-paktet</a>.</li><li>Gå till katalogen du hämtade deb-paktet till och kör <code>sudo dpkg -i pirateplayer_0.4.3-1_i386.deb</code></li><li>Pirateplayer är nu installerat och kan köras med <code>pirateplayer</code></li></ul>
 			<p>Obs: vill du kunna se/ladda ner från TV4-play måste Rtmpdump på din dator vara av version 2.1d eller nyare än version 2.3.</p>
 			<h3>Mac OSX</h3>
 			<p>Installera <a href="http://github.com/downloads/jackuess/pirateplayer/pirateplayer-v0_4_3.dmg">Apple diskavbild (dmg)</a>.</p>

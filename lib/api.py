@@ -53,7 +53,9 @@ class Api():
 		
 		if streams[0].url.startswith('rtmp') and librtmp == '0':
 			return { 'streams': [{'url': pirateplay.rtmpdump_cmd(s.url, output_file), 'meta': s.metadict()} for s in streams] }
-		elif '.m3u8' in streams[0].url or 'manifest.f4m' in streams[0].url:
+		elif '.m3u8' in streams[0].url:
+			return { 'streams': [{ 'meta': { 'quality': u'Inkompatibel ström. Uppgradera Pirateplayer.' }, 'url': 'http://localhost/' }] }
+		elif 'manifest.f4m' in streams[0].url:
 			return { 'streams': [{ 'meta': { 'quality': u'Inkompatibel ström. Testa appen på Pirateplay.se.' }, 'url': 'http://localhost/' }] }
 		else:
 			return { 'streams': [s.to_dict() for s in streams] }
