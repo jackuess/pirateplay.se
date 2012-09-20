@@ -287,19 +287,14 @@ elitserien_play = RequestChain(title = 'Elitserien-play', url = 'http://elitseri
 							meta_template = 'quality=%(height)sx%(width)s; suffix-hint=flv',
 							is_last = True)])
 
-nrk = RequestChain(title = 'NRK nett-TV', url = 'http://nrk.no/nett-tv/',
+nrk = RequestChain(title = 'NRK-TV', url = 'http://tv.nrk.no/',
 				items = [ TemplateRequest(
-							re = r'(http://)?(www\.)?nrk+.no/nett-tv/(?P<url>.+)',
-							headers = {'Cookie': 'NetTV2.0Speed=7336'},
-							url_template = 'http://nrk.no/nett-tv/%(url)s'),
+							re = r'(http://)?tv.nrk.no/(?P<path>.+)',
+							url_template = 'http://tv.nrk.no/%(path)s'),
 						TemplateRequest(
-							re = r'name="Url" value="(?P<url>[^"]+)',
-							url_template = '%(url)s'),
-						TemplateRequest(
-							re = r'href="(?P<url>mms://[^"]+)"',
-							url_template = '%(url)s',
-							meta_template = 'suffix-hint=wmv',
-							is_last = True)])
+							re = r'data-media="(?P<manifest>[^"]+)".*?data-subtitlesurl\s?=\s?"(?P<subs>[^"]+)',
+							url_template = '%(manifest)s?hdcore=2.7.6',
+							meta_template = 'quality=dynamisk; subtitles=http://tv.nrk.no%(subs)s; suffix-hint=flv', is_last = True) ])
 
 dr = RequestChain(title = 'DR-TV', url = 'http://dr.dk/tv',
 				items = [ TemplateRequest(
