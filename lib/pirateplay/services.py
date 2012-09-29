@@ -173,7 +173,7 @@ kanal9play = RequestChain(title = 'Kanal9-play', url = 'http://kanal9play.se/', 
 							url_template = 'http://kanal9play.se/%(url)s'),
 						TemplateRequest(
 							re = r'@videoPlayer" value="(?P<video_player>[^"]+)"',
-							url_template = 'http://c.brightcove.com//services/messagebroker/amf?playerKey=AQ~~,AAAABUmivxk~,SnCsFJuhbr0vfwrPJJSL03znlhz-e9bk',
+							url_template = 'http://c.brightcove.com/services/messagebroker/amf?playerKey=AQ~~,AAAABUmivxk~,SnCsFJuhbr0vfwrPJJSL03znlhz-e9bk',
 							headers = { 'Content-type': 'application/x-amf' },
 							encode_vars = lambda match_vars: { 'bc_data': brightcovedata(match_vars['video_player'], 811317479001, 22710239001, '9f79dd85c3703b8674de883265d8c9e606360c2e') },
 							data_template = '%(bc_data)s'),
