@@ -14,7 +14,7 @@ a[href^="http://"] {
 	background: url("images/Icon_External_Link.png") center right no-repeat;
 	padding-right: 13px;
 }
-a[href^="http://pirateplay.se"], .no-external-ico a {
+a[href^="http://pirateplay.se"], a[href^="http://www.pirateplay.se"], .no-external-ico a {
 	background: none;
 	padding-right: 0;
 }
