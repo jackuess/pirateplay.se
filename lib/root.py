@@ -52,13 +52,17 @@ class Root():
 	@cherrypy.tools.genshi_template(filename='index.html')
 	@sitemap.add_to_sitemap('1.0')
 	def index(self):
-		from urllib2 import urlopen
+		from urllib2 import urlopen, HTTPError
 		import datetime, json, re
 		
+		try:
+			tweets = json.load(urlopen('http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&count=200'))
+		except HTTPError:
+			tweets = []
 		now = datetime.datetime.now()
 		tweets = [{'text': Markup(re.sub(r'(https?://\S+)', '<a href="\\1">\\1</a>', tweet['text'], flags=re.IGNORECASE)),
 				'time': unicode(relative_time((now - datetime.datetime.strptime(tweet['created_at'], "%a %b %d %H:%M:%S +0000 %Y")).total_seconds()))}
-				for tweet in json.load(urlopen('http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&count=200'))
+				for tweet in tweets
 				if not tweet['text'].startswith('@')]
 		
 		services_se = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
