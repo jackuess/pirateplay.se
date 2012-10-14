@@ -8,7 +8,7 @@
 	<body with="this_url='http://pirateplay.se:8081/library.html'">
 		<py:match path="a[matches(@href, 'library.html$')]" once="true"><a class="selected" py:attrs="select('@*')">${select('text()')}</a></py:match>
 		<h1>${title}</h1>
-		<p>Med <a href="http://ffmpeg.org/">Ffmpeg</a> och Pirateplay.se kan du ladda ner många av de program från <a href="http://svtplay.se/">Svt-play</a> som inte går att ladda ner med <a href="player.html">Pirateplayer</a>.</p>
+		<p>Med <a href="http://ffmpeg.org/">Ffmpeg</a> och Pirateplay.se kan du ladda ner många av de program från <a href="http://svtplay.se/">Svt-play</a> som <del>inte går att ladda ner med <a href="player.html">Pirateplayer</a></del> <ins><a href="player.html">Pirateplayer</a> kan numera ladda ner HLS-strömmar</ins>.</p>
 		<p>Wikipedia har en <a href="http://en.wikipedia.org/wiki/HTTP_Live_Streaming">artikel</a> om "HTTP Live Streaming" (HLS).</p>
 		<h2>Installera Ffmpeg</h2>
 		<h3>Linux</h3>
@@ -22,7 +22,7 @@
 		<p>Välj "Visa nedladdningskommando" och ange filnamn i textrutan. Du kan om du vill vara säker på var filen hamnar ange en absolut sökväg. I Windows skulle detta kunna vara exempelvis: "C:\users\Användare\Mina dokument\test.mp4" - för att få videon sparad som "test.mp4" i din dokumentkatalog.</p>
 		<p>Ett nedladdningskommando är nu genererat och klart att använda. Kopiera kommando till klippbordet (vanligen Ctrl+C). Det kan vara enklare att markera kommandot om du växlar till textfält genom att bocka för "Visa textfält".</p>
 		<h2>Kör ditt kommando</h2>
-		<p>Klistra in kommandot från klippbordet (högerklicka och välj "Klistra in" eller motsvarande) och tryck Enter. Kommandot körs nu förhoppningsvis och sparar videon i din dator.</p>
+		<p>I din <a href="http://sv.wikipedia.org/wiki/Kommandotolk">kommandotolk</a>: klistra in kommandot från klippbordet (högerklicka och välj "Klistra in" eller motsvarande) och tryck Enter. Kommandot körs nu förhoppningsvis och sparar videon i din dator.</p>
 		<p>Det bör se ut ungefär så här: <img src="static/images/cmd_screen_ffmpeg.png" /></p>
 	</body>
 </html>
