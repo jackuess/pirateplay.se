@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv"
+	py:with="title='Ladda ner Adobe HDS-strömmar med Pirateplay.se och AdobeHDS.php'">
+	<xi:include href="layout.html" />
+	<head><title>${title}</title></head>
+	<body with="this_url='http://pirateplay.se:8081/library.html'">
+		<py:match path="a[matches(@href, 'library.html$')]" once="true"><a class="selected" py:attrs="select('@*')">${select('text()')}</a></py:match>
+		<h1>${title}</h1>
+		<p>Med <a href="http://php.net">PHP</a>-skriptet <a href="http://stream-recorder.com/forum/adobe-hds-downloader-t12074.html">AdobeHDS.php</a>, skrivet av signaturen <a href="http://github.com/K-S-V">KSV</a>, och Pirateplay.se kan du ner en del av de program från <a href="http://svtplay.se/">Svt-play</a> och <a href="http://tv4play.se/">Tv4-play</a> som inte går att ladda ner med <a href="player.html">Pirateplayer</a>.</p>
+		<h2>Installera PHP</h2>
+		<h3>Linux</h3>
+		<p>Förhoppningsvis finns en uppdaterad version av PHP i din distribution. Installera den som du installerar andra program.</p>
+		<h3>Mac OS X</h3>
+		<p>PHP följer (så vitt jag förstår) som standard med OS X.</p>
+		<h3>Windows</h3>
+		<ul>
+			<li>Ladda ner <a href="http://windows.php.net/downloads/releases/php-5.4.7-Win32-VC9-x86.zip">php-5.4.7-Win32-VC9-x86.zip</a>.</li>
+			<li>Extrahera arkivet till en lämplig katalog (exempelvis C:\PHP).</li>
+			<li>Ladda ner denna <a href="static/PHP.ini">php.ini</a> till PHP-katalogen (C:\PHP i exemplet ovan).</li>
+			<li>Gå till inställningar för miljövariabler: Start->Control Panel->System and Security->System->Advanced system settings->Environment Variables.</li>
+			<li>Lägg semikolon följt av PHP-katalogen till variabeln "Path". Sparade du PHP i C:\PHP ska alltså ";C:\PHP" läggas till Path-variabeln.</li>
+			<li>Testa att PHP är installerat och tillgängligt genom att öppna ett kommandotolksfönster, skriva <code>php -v</code> och trycka <code>Enter</code>. Detta bör ge en kort utmatning med information om din PHP-installation.</li>
+		</ul>
+		<h2>Installera AdobeHDS.php</h2>
+		<p>Ladda ner <a href="http://raw.github.com/K-S-V/Scripts/master/AdobeHDS.php">AdobeHDS.php</a> till valfri katalog.</p>
+		<h2>Generera ett nedladdningskommando</h2>
+		<p>Gå till <a href="app.html">Appen</a>. Mata in adressen till det du vill ladda ner i adressfältet och tryck hämta. Vänta en stund: förhoppningsvis hittar Appen strömmar till videon.</p>
+		<p>Välj "Visa nedladdningskommando" och ange filnamn i textrutan. Du kan om du vill vara säker på var filen hamnar ange en absolut sökväg. I Windows skulle detta kunna vara exempelvis: "C:\users\Användare\Mina dokument\test.mp4" - för att få videon sparad som "test.mp4" i din dokumentkatalog.</p>
+		<p>Ett nedladdningskommando är nu genererat och klart att använda. Kopiera kommando till klippbordet (vanligen Ctrl+C). Det kan vara enklare att markera kommandot om du växlar till textfält genom att bocka för "Visa textfält".</p>
+		<h2>Kör ditt kommando</h2>
+		<p>I din <a href="http://sv.wikipedia.org/wiki/Kommandotolk">kommandotolk</a>:</p>
+		<ul>
+			<li>Navigera till katalogen du sparade AdobeHDS.php i med kommandot cd följt av mellanslag och katalogens sökväg (ex: <code>cd C:\Users\username</code>).</li>
+			<li>klistra in kommandot från klippbordet (högerklicka och välj "Klistra in" eller motsvarande) och tryck <code>Enter</code>.</li>
+			<li>Kommandot körs nu förhoppningsvis och sparar videon i din dator.</li>
+		</ul>
+		<p>Om du möts av meddlandet <blockquote>Unknown packet type 10 encountered! Encrypted fragments can't be recovered.</blockquote> betyder det att strömmen inte går att ladda ner. Krypterade HDS-strömmar går i dagsläget inte att ladda ner. (Ska man vara nogrann går strömfragmenten att ladda ner, inte att sammanfoga.)</p>
+	</body>
+</html>

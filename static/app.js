@@ -56,8 +56,10 @@ function streamRepresentation(stream) {
 				$('#howto_hls').show()
 				cmd = 'ffmpeg -i "' + streamLink + '" -acodec copy -vcodec copy -absf aac_adtstoasc "' + args.out + '"';
 			}
-			else if (this.stream.url.match(/manifest\.f4m/) != null)
+			else if (this.stream.url.match(/manifest\.f4m/) != null) {
+				$('#howto_hds').show()
 				cmd = 'php AdobeHDS.php --delete --manifest "' + streamLink + '" --outfile "' + args.out + '"';
+			}
 			else
 				cmd = 'wget -O "' + args.out + '" "' + streamLink + '"';
 			
