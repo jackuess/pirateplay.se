@@ -14,6 +14,7 @@ tools.encode.encoding = 'utf-8'
 tools.staticdir.on = True,
 tools.staticdir.root = config.base_dir
 tools.staticdir.dir = 'static'
+tools.staticdir.content_types = { 'ini': 'application/x-download' }
 
 [/playbrowser]
 tools.staticdir.on = True,
