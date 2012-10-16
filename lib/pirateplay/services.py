@@ -120,7 +120,7 @@ sr = RequestChain(title = 'SR', url = 'http://sr.se/', feed_url = 'http://sverig
 
 tv4play = RequestChain(title = 'TV4-play', url = 'http://tv4play.se/', feed_url = 'http://www.tv4play.se/rss/sport/ekwall_vs_lundh',
 				items = [TemplateRequest(
-							re = r'(http://)?(www\.)?tv4play\.se/.*(videoid|vid)=(?P<id>\d+).*',
+							re = r'(http://)?(www\.)?tv4play\.se/.*(videoid|video_id|vid)=(?P<id>\d+).*',
 							url_template = 'http://premium.tv4play.se/api/web/asset/%(id)s/play'),
 						TemplateRequest(
 							re = r'(<playbackStatus>(?P<status>\w+).*?)?<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?(?P<base>rtmpe?://[^<]+).*?(?P<url>mp4:/[^<]+)(?=.*?(?P<sub>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
