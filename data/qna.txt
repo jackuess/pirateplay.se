@@ -11,26 +11,31 @@ Hur laddar jag ner från Sveriges Radio?
 <!-- inner_delim -->
 <p>Högerklicka på länken - den länk som annars startar SRs inbyggda spelare - till det program du vill lyssna på och välj "Kopiera länkadress" eller motsvarande. Klistra in länken på Pirateplay.se som vanligt. Pirateplay ger dig länken till m4a-filen (<a href="http://en.wikipedia.org/wiki/M4a#.MP4_versus_.M4A_filename_extensions">ungefär som en mp3-fil</a>) för radioprogrammet. Ladda ner och spara länken med t.ex. din webbläsare.</p>
 <p>För direktsändningar genereras en RTMP-länk vilken laddas ner med Rtmpdump i vanlig ordning. Se guiden.</p>
-<p><a href="player.html#bugs">I nuläget fungerar tyvärr inte SR i Pirateplayer</a>.</p>
+<p><del><a href="player.html#bugs">I nuläget fungerar tyvärr inte SR i Pirateplayer</a>.</del> <ins>Fungerar sedan version 0.3.</ins></p>
 <p>Tänk på att många av SRs program finns som <a href="http://sv.wikipedia.org/wiki/Podcast">podcasts</a> och går att ladda ner direkt.</p>
 <!-- delim -->
-Kan du lägga funktionalitet <em>XX</em> till Pirateplay(er)?
+Kan du lägga funktionalitet <em>X</em> till Pirateplay(er)?
 <!-- inner_delim -->
-<p>Har du någon idé om vad Pirateplay(er) borde göra eller hur det borde fungera är du givetvis välkommen att lämna ditt förslag till mig. Jag noterar naturligtvis alla nyktra och artigt framställda förslag, men kan inte på något sätt garantera att ett sådant förslag omsätts i något reellt. Minns att Pirateplay utvecklas av mig på fritid, utan ersättning, i mån av tid och lust.</p><p>Det fina är emellertid att Pirateplays källkod är <a href="http://sv.wikipedia.org/wiki/Fri_mjukvara">fri</a>. Det säkraste sättet att få Pirateplay att göra <em>XX</em> i framtiden är alltså att ladda ner källkoden (se Github-länkar på förstasidan och Pirateplayers undersida), modifiera den och skicka en patch till mig.</p>
+<p>Pirateplays källkod är <a href="http://sv.wikipedia.org/wiki/Fri_mjukvara">fri</a>. Det säkraste sättet att få Pirateplay att göra <em>X</em> i framtiden är att ladda ner källkoden (<a href="http://github.com/jackuess/pirateplay.se">Pirateplay.se</a>, <a href="http://github.com/jackuess/pirateplayer/">Pirateplayer</a>), modifiera den och skicka en patch till mig.</p>
 <!-- delim -->
 När jag försöker ladda ner ett program med Pirateplayer står det "Inkompatilbel ström. Testa appen på Pirateplay.se". Vad beror detta på?
 <!-- inner_delim -->
-<p><del>Pirateplayer klarar i nuläget inte av alla videoströmmar från Svt- och TV4-play. Exempelvis fungerar inte de nya <a href="http://en.wikipedia.org/wiki/HTTP_Live_Streaming">HLS-</a> och <a href="http://en.wikipedia.org/wiki/Adaptive_bitrate_streaming#Adobe_Dynamic_Streaming_for_Flash">HDS-</a> strömmarna de börjat använda. Med <a href="app.html">Appen</a>, kommandotolken och rätt verktyg går det ändå att ladda ner de flesta program. Läs gärna vidare i min <a href="hls_guide.html">guide</a>.</del> <ins>Sedan version 0.4.0 klarar Pirateplayer av dessa strömmar. <a href="player.html#install">Installera</a> senate versionen.</p>
+<p><del>Pirateplayer klarar i nuläget inte av alla videoströmmar från Svt- och Tv4-play. Exempelvis fungerar inte de nya <a href="http://en.wikipedia.org/wiki/HTTP_Live_Streaming">HLS-</a> och <a href="http://en.wikipedia.org/wiki/Adaptive_bitrate_streaming#Adobe_Dynamic_Streaming_for_Flash">HDS-</a> strömmarna de börjat använda. Med <a href="app.html">Appen</a>, kommandotolken och rätt verktyg går det ändå att ladda ner de flesta program. Läs gärna vidare i min <a href="hls_guide.html">guide</a>.</del> <ins>Sedan version 0.4.0 klarar Pirateplayer av HLS-strömmar. <a href="player.html#install">Installera</a> senate versionen. För att ladda ner HDS-strömmar har jag skrivit <a href="hds_guide.html">en guide</a>.</p>
 <!-- delim -->
 Vilken filändelse bör jag ge mina nedladdade filer?
 <!-- inner_delim -->
 <p>Allting som strömmas över Rtmp är paketerat med <a href="http://en.wikipedia.org/wiki/Flv">Flv</a> som <a href="http://en.wikipedia.org/wiki/Video_container">containerformat</a>. Rtmpdump och Pirateplayer laddar ner dessa filer rakt av och de bör alltså ges namn som slutar på <em>.flv</em></p>
 <p>Ffmpeg kan om det används för att ladda ner en video omvandla till valfritt containerformat. Man anger alltså filändelse utifrån vilket containerformat man vill ha för videon. Vill man exempelvis att videon ska paketeras som MP4 anger man "namn<em>.mp4</em>" som filnamn.</p>
+<p>För HLS-strömmar (nedladdade med Ffmpeg) verkar resultatet bli bäst om "mp4" ges som filändelse.</p>
 <!-- delim -->
 Jag lyckas inte ladda ner Rtmp-strömmar från TV4 med Rtmpdump - vad gör jag för fel?
 <!-- inner_delim -->
 <p>För att ladda ner från TV4 behöver du antingen en riktigt ny version av Rtmpdump (inga officiella binärer finns för Windows), eller den gamla 2.1d (<a href="http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.1d-windows.zip">windows-nedladdning</a>).</p>
 <!-- delim -->
-När jag kör försöker kör ett nedladdningskommando i Ubuntu/Debian får jag följande meddlande: "*** THIS PROGRAM IS DEPRECATED *** This program is only provided for compatibility and will be removed in a future release. Please use avconv instead.". Vad beror detta på?
+När jag försöker köra ett nedladdningskommando i Ubuntu/Debian får jag följande meddlande: "*** THIS PROGRAM IS DEPRECATED *** This program is only provided for compatibility and will be removed in a future release. Please use avconv instead.". Vad beror detta på?
 <!-- inner_delim -->
 <p>Debian (och därmed Ubuntu) har bestämt sig för att satsa på en <a href="http://sv.wikipedia.org/wiki/Fork">fork</a> av Ffmpeg-projektet. En av följderna av detta är att kommandot som förut hette "ffmpeg" nu heter "avconv". För att köra ett ffmpeg-kommando i Debian/Ubuntu byter du lämpligen ut "ffmpeg" mot "avconv" i kommandot.</p>
+<!-- delim -->
+Jag lyckas inte ladda ner med Pirateplayer. Jag trycker på "Hämta" och Pirateplayer tycks hitta videon, men knappen "Ladda ner" är grånad och inaktiverad. Gör jag något fel?
+<!-- inner_delim -->
+<p>För att "Ladda ner"-knappen ska aktiveras måste du först ange ett filnamn att spara till. Gör detta antingen i textrutan med etiketten: "Ladda ner till", eller i dialogfönstret som presenteras om du trycker på "Bläddra"-knappen efter nämnda textruta.</p>
