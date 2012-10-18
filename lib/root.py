@@ -36,6 +36,11 @@ def relative_time(s):
 		return  "%s %s " % (ts, pluralis)
 	else:
 		return "%s %s " % (ts, singularis)
+		
+def format_tweet(s):
+	import re
+	s = re.sub(r'(https?://\S+)', '<a href="\\1">\\1</a>', s, flags=re.IGNORECASE)
+	return re.sub(r'(@([^\s]+))', '<a href="http://twitter.com/\\2">\\1</a>', s, flags=re.IGNORECASE)
 
 class Root():
 	@cherrypy.expose
@@ -52,23 +57,21 @@ class Root():
 	@cherrypy.tools.genshi_template(filename='index.html')
 	@sitemap.add_to_sitemap('1.0')
 	def index(self):
-		from urllib2 import urlopen, HTTPError
-		import datetime, json, re
+		import datetime, twitter
 		
-		try:
-			tweets = json.load(urlopen('http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&count=200'))
-		except HTTPError:
-			tweets = []
 		now = datetime.datetime.now()
-		tweets = [{'text': Markup(re.sub(r'(https?://\S+)', '<a href="\\1">\\1</a>', tweet['text'], flags=re.IGNORECASE)),
-				'time': unicode(relative_time((now - datetime.datetime.strptime(tweet['created_at'], "%a %b %d %H:%M:%S +0000 %Y")).total_seconds()))}
-				for tweet in tweets
-				if not tweet['text'].startswith('@')]
+		api = twitter.Api()
+		tweets = api.GetUserTimeline('pirateplay_se', count=200)
+			
+		twitter = [{ 'text':  Markup(format_tweet(t.text)),
+					'time': relative_time((now - datetime.datetime.strptime(t.created_at, '%a %b %d %H:%M:%S +0000 %Y')).total_seconds()) }
+					for t in tweets
+					if not t.text.startswith('@')]
 		
 		services_se = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
 		services_other = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and not '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
 		
-		return dict(services_se = services_se, services_other = services_other, tweets = tweets)
+		return dict(services_se = services_se, services_other = services_other, tweets = twitter)
 	
 	@cherrypy.expose
 	@sitemap.add_to_sitemap('0.5')
