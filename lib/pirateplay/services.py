@@ -393,6 +393,17 @@ disney_jr = RequestChain(title = 'Disney Junior', url = 'http://www.disney.se/di
 							url_template = '%(base)s playpath=mp4:/%(play_path)s swfVfy=1 swfUrl=http://www.disney.se/cms_res/disney-junior/flash/video_hub_player/disney_player.swf',
 							meta_template = 'suffix-hint=flv',
 							is_last = True)])
+							
+vgtv = RequestChain(title = 'VGTV', url = 'http://vgtv.no/',
+				items = [ TemplateRequest(
+							re = r'(http://)?(www\.)?vgtv\.no/.*id=(?P<id>\d+)',
+							url_template = 'http://www.vgtv.no/data/actions/videostatus/?id=%(id)s'),
+						TemplateRequest(
+							re = r'{"width":(?P<width>\d+),"height":(?P<height>\d+),"bitrate":(?P<bitrate>\d+),"paths":\[{"address":"(?P<adress>[^"]+)","port":80,"application":"","path":"(?P<path>download\\/[^"]+)","filename":"(?P<filename>[^"]+)"}\]}',
+							url_template = 'http://%(adress)s/%(path)s/%(filename)s',
+							decode_url = lambda url: url.replace('\\/', '/'),
+							meta_template = 'quality=%(width)sx%(height)s',
+							is_last = True)])
 
 
 
@@ -415,4 +426,5 @@ services = [svtplay, svtplay_hls, svtplay_hds, svtplay_http,
 			cnbc,
 			discovery,
 			das_erste,
-			disney_jr]
+			disney_jr,
+			vgtv]
