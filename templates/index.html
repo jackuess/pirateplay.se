@@ -6,47 +6,29 @@
 	<head>
 		<title>Ladda ner webb-tv med Pirateplay.se</title>
 		<style type="text/css">
-			p.flattr {
-				position: absolute;
+			p.flattr { position: absolute;
 				right: 1%;
-				top: 1%;
-			}
-			section#ingress {
-				margin-top: 2%;
+				top: 1% }
+			section#ingress { margin-top: 2%;
 				padding: 2%;
 				position: relative;
-				width: 95%;
-			}
-			section#get_started {
-				margin-top: 2%;
-				text-align: center
-			}
-			section#get_started p {
-				margin: 0;
-			}
-			section#get_started a {
-				color: inherit;
-			}
-			section#get_started a:hover {
-				text-decoration: underline;
-			}
+				width: 95% }
+			section#get_started { margin-top: 2%;
+				text-align: center }
+			section#get_started p { margin: 0 }
+			section#get_started a { color: inherit }
+			section#get_started a:hover { text-decoration: underline }
 			section#get_started .box { border-radius: 4px; margin: 1%; padding: 1.5%; width: 40.5% }
-			section#get_started .box h2 { color: #111;
-				font-size: 2.5em;
+			section#get_started .box h2 { font-size: 2.5em;
 				font-weight: bold;
 				margin: 0;
 				margin-bottom: 1% }
 			ul.service-list { padding: 0; }
 			ul.service-list li {
 				display: inline;
-				list-style: none;
-			}
-			ul.service-list li:after {
-				content: ', ';
-			}
-			ul.service-list li:last-child:after {
-				content: '.';
-			}
+				list-style: none }
+			ul.service-list li:after { content: ', ' }
+			ul.service-list li:last-child:after { content: '.' }
 			.tweet:nth-of-type(even) { background-color: #f5f5f5; border: 1px solid #e0e0e0; border-left: none; border-right: none }
 			.tweet .timestamp { color: #555; font-size: .9em; white-space: pre; }
 		</style>
@@ -61,11 +43,11 @@
 		<section id="get_started" class="box-container">
 			<div class="box box-red"><h2><a href="player.html">Pirateplayer</a></h2><p><a href="player.html">Programmet <em>Pirateplayer</em> kan ladda ner program från de flesta svenska "playtjänsterna".</a></p></div>
 			<div class="box box-green"><h2><a href="library.html">Bibliotek</a></h2><p><a href="library.html">Pirateplay.se försöker sammanställa användbara resurser för nedladdning av svensk webb-tv.</a></p></div>
-			<div class="box box-yellow"><h2><a href="app.html">WebbApp</a></h2><p><a href="app.html">Pirateplays webb-app hittar strömmar för TV-program.</a></p></div>
-			<div class="box box-black no-external-ico"><h2><a href="http://github.com/jackuess/pirateplay.se">Källkod</a></h2><p><a href="http://github.com/jackuess/pirateplay.se">Pirateplays källkod är fritt tillgänglig under</a> <a href="http://www.gnu.org/licenses/gpl.txt">GPL</a>.</p></div>
+			<div class="box box-yellow"><h2><a href="app.html">WebbApp</a></h2><p><a href="app.html">Pirateplays webb-app hittar adresser till strömmar för TV-program.</a></p></div>
+			<div class="box box-blue no-external-ico"><h2><a href="http://github.com/jackuess/pirateplay.se">Källkod</a></h2><p><a href="http://github.com/jackuess/pirateplay.se">Pirateplays källkod är fritt tillgänglig under</a> <a href="http://www.gnu.org/licenses/gpl.txt">GPL</a>.</p></div>
 		</section>
 		<section class="box-container" style="width: 100%;">
-			<article class="box no-external-ico" style="width: 45%">
+			<article class="box no-external-ico" style="width: 46%">
 				<h2 id="services">Tjänster</h2><p>Följande TV-tjänster stöds av Pirateplay.se/Pirateplayer:</p>
 				<h3>Svenska</h3>
 				<ul class="service-list">
@@ -76,7 +58,7 @@
 					<li py:for="s in services_other" py:if="'title' in s and 'url' in s"><a href="${s['url']}">${s['title']}</a></li>
 				</ul>
 			</article>
-			<article class="box" style="width: 45%">
+			<article class="box" style="width: 46%">
 				<h2>Uppdateringar</h2>
 				<p class="tweet" py:for="t in tweets[:5]">${t['text']} <span class="timestamp">${t['time']} sedan</span>.</p>
 				<p class="centered"><a href="http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&amp;count=10">RSS</a>, <a href="http://twitter.com/pirateplay_se">Twitter</a>.</p>

@@ -134,13 +134,16 @@ section#content { display: inline-block;
 .box.centered { margin-left: auto;
 	margin-right: auto;
 	text-align: left }
-.box-green, .box-red, .box-yellow, .box-black { text-shadow: 0 1px 2px #ddd }
+.box-green, .box-red, .box-yellow, .box-black, .box-blue { text-shadow: 0 1px 2px #ddd }
 .box-black { background-color: #333;
 	background: -moz-linear-gradient(bottom, #000, #666);
 	background: -webkit-linear-gradient(bottom, #000, #666);
 	border: 1px solid #000;
 	color: #eee;
 }
+.box-blue { background-color: #6B9CB2;
+	background: -webkit-linear-gradient(top, #81BBD6, #6B9CB2);
+	border-color: #53798A }
 .box-green { background-color: #aca;
 	background: -moz-linear-gradient(top, #bdb, #9b9);
 	background: -webkit-linear-gradient(top, #bdb, #9b9);
