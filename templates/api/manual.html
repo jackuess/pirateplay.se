@@ -5,17 +5,6 @@
 	<xi:include href="../layout.html" />
 	<head>
 		<title>API</title>
-		<style type="text/css">
-			code {
-				background-color: #fff;
-				display: block;
-			}
-			var {
-				color: #494;
-				font-weight: bold;
-				font-style: normal
-			}
-		</style>
 	</head>
 	<body>
 		<h1>API</h1>
@@ -36,7 +25,7 @@
 		</ul>
 		<h3>Response:</h3>
 		<p>Mime-type: application/xml</p>
-		<p><code>&lt;<var>streams</var>&gt;<br />
+		<p class="code-block"><code>&lt;<var>streams</var>&gt;<br />
 &nbsp;&nbsp;&lt;<var>stream</var> <var>quality</var>="<em>Relative quality of stream</em>" <var>subtitles</var>="<em>Subtitles</em>"&gt;<em>Url of stream</em>&lt;/<var>stream</var>&gt;<br />
 &nbsp;&nbsp;...<br />
 &lt;/<var>streams</var>&gt;</code></p>
@@ -51,9 +40,9 @@
 		</ul>
 		<h3>Response:</h3>
 		<p>Mime-type: application/json</p>
-		<code>[{<var>'url'</var>: <em>Url of stream</em>,<br />
+		<p class="code-block"><code>[{<var>'url'</var>: <em>Url of stream</em>,<br />
 <var>'meta'</var>: {<var>'quality'</var>: <em>Relative quality of stream</em>,<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'<var>subtitles</var>': <em>Subtitles of stream</em>}}, ...]</code>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'<var>subtitles</var>': <em>Subtitles of stream</em>}}, ...]</code></p>
 		<h3>Example</h3>
 		<p>Get stream of http://vimeo.com/: <a href="get_streams.js?url=http%3A%2F%2Fvimeo.com%2F2">get_streams.js?url=http%3A%2F%2Fvimeo.com%2F2</a></p>
 			<h2 id="services_xml">services.xml</h2>
@@ -65,7 +54,7 @@
 		</ul>
 		<h3>Response:</h3>
 		<p>Mime-type: application/xml</p>
-		<p><code>&lt;<var>services</var>&gt;<br />
+		<p class="code-block"><code>&lt;<var>services</var>&gt;<br />
 &nbsp;&nbsp;&lt;<var>service</var>&gt;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>title</var>&gt;<em>Service title</em>&lt;/<var>title</var>&gt;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&lt;<var>url</var>&gt;<em>Service url</em>&lt;/<var>url</var>&gt;<br />
@@ -86,7 +75,7 @@
 		</ul>
 		<h3>Response:</h3>
 		<p>Mime-type: application/json</p>
-		<p><code>[{"<var>title</var>": <em>Service title</em>,<br />
+		<p class="code-block"><code>[{"<var>title</var>": <em>Service title</em>,<br />
 "<var>url</var>": <em>Service url</em>,<br />
 "<var>test</var>": <em>Regular expression for testing if a given url is supported by this service</em>,<br />
 "<var>feed_url</var>": <em>Feed of samplable urls</em>,<br />

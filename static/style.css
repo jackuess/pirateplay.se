@@ -1,11 +1,8 @@
 @import url(http://fonts.googleapis.com/css?family=Quattrocento);
 @import url(http://fonts.googleapis.com/css?family=Fugaz+One);
 
-a, a:visited {
-	/*color: #00e;*/
-	color: #f00;
-	text-decoration: none;
-}
+a, a:visited { color: #f00;
+	text-decoration: none }
 a:hover {
 	text-decoration: underline;
 }
@@ -19,28 +16,27 @@ a[href^="http://pirateplay.se"], a[href^="http://www.pirateplay.se"], .no-extern
 	padding-right: 0;
 }
 
+blockquote { font-style: italic }
+blockquote, code, .code-block { background-color: #f5f5f5 }
+blockquote, .code-block { border-left: 7px solid #e5e5e5; display: block; margin-left: 0; padding: 1% }
+
 body {
 	background-color: #f0efe7;
 	font-family: 'Quattrocento', sans-serif;
 	font-size: 16px;
-	margin: 0;
+	margin: 0;text-align: center
 }
 
-div#logo {
-	border-radius: 10px 10px 10px 10px;
+div#logo { border-radius: 10px 10px 0px 0px;
 	font-size: 1.3em;
 	color: white;
 	font-family: 'Fugaz One';
-	left: .3%;
-	padding: .5%;
-	padding-left: 2%;
-	padding-right: 2%;
-	position: absolute;
-	top: .3%;
-}
-div#logo #play {
-	color: #f55;
-}
+	padding: 2%;
+	text-align: center;
+	text-shadow: none }
+div#logo:active { background: -moz-linear-gradient(top, #000, #666);
+	background: -webkit-linear-gradient(top, #000, #666) }
+div#logo #play { color: #f55 }
 
 h1 {
 	font-size: 2.5em;
@@ -53,27 +49,30 @@ h2:target {
 	padding-left: 1%;
 }
 
-input {
-	border: 2px solid #666;
+header { border-radius: 10px 10px 6px 6px;
+	box-shadow: 0 0 3px #777;
+	display: inline-block;
+	margin: 1%;
+	margin-right: 2%;
+	min-width: 220px;
+	width: 18%;
+	text-align: left;
+	vertical-align: top }
+
+input, .btn { border: 1px solid #ccc;
 	border-radius: 5px;
-	font-size: 1.2em;
-}
+	padding: 4px }
 
 input[type='text'], option {
 	width: 100%;
 }
 
-input[type="submit"] {
-	background-color: #333;
-	background: -webkit-linear-gradient(bottom, #000, #888);
-	background: -moz-linear-gradient(bottom, #000, #888);
-	color: #eee;
-	padding-left: 2%;
-	padding-right: 2%;
-}
-input[type="submit"]:active, div#logo:active {
-	background: -webkit-linear-gradient(top, #000, #888);
-	background: -moz-linear-gradient(top, #000, #888);}
+input[type='submit'], .btn { background-color: #eee;
+	background: -moz-linear-gradient(top, #f0f0f0, #e5e5e5);
+	background: -webkit-linear-gradient(top, #f0f0f0, #e5e5e5) }
+input[type='submit']:active, .btn:active { background-color: #ccc;
+	background: -moz-linear-gradient(bottom, #f0f0f0, #e5e5e5);
+	background: -webkit-linear-gradient(bottom, #f0f0f0, #e5e5e5) }
 
 label {
 	display: block;
@@ -83,25 +82,13 @@ input[type='checkbox'] + label, input[type='radio'] + label {
 	display: inline;
 }
 
-nav#menu {
-	left: .3%;
-	margin: 0;
-	margin-bottom: 2%;
-	padding-bottom: .9em;
-	position: absolute;
-	top: 7%;
-}
-nav#menu ul { padding: inherit;
-	/*margin-left: 15%;*/  }
+nav#menu ul { background-color: #fff; border-radius: 0 0 10px 10px; margin: 0; padding: 5% }
 nav#menu li {
 	font-size: 1.2em;
 	font-weight: bold;
-	/*padding-left: 5%;*/
-	padding: 3%;
 	list-style: none;
 	white-space: nowrap;
-padding:0;margin:0;
-}
+	margin: 1% }
 nav#menu li a, nav li a:visited {
 	color: black;
 }
@@ -111,22 +98,28 @@ nav#menu li a:hover, nav#menu li a.selected {
 	text-decoration: none;
 }
 
-ul.box {
-	padding-left: 5%;
-}
+ul { list-style-type: square }
+ul.box { padding-left: 5% }
 
-section#content {
-	margin-left: auto;margin-right:auto;
+var { color: #494;
+	font-weight: bold;
+	font-style: normal }
+
+section#content { display: inline-block;
+	text-align: left;
 	width: 60%;
 }
 
-
 .box {
 	background-color: #fffff9;
+	background: -moz-linear-gradient(top, #fff, #ffe);
 	background: -webkit-linear-gradient(top, #fff, #ffe);
-	box-shadow: 0 0 5px #777;
+	/*box-shadow: 0 0 3px #777;*/
+	border: 1px solid #bbb;
+	border-radius: 4px;
 	margin: .5%;
 	margin-top: 3%;
+	min-width: 300px;
 	padding: 1%;
 	vertical-align: top;
 }
@@ -135,25 +128,42 @@ section#content {
 	margin-right: auto;
 	text-align: left;
 }
+.box-green, .box-red, .box-yellow, .box-black { text-shadow: 0 1px 2px #ddd }
 .box-black {
 	background-color: #333;
-	background: -webkit-linear-gradient(bottom, #000, #666);
 	background: -moz-linear-gradient(bottom, #000, #666);
+	background: -webkit-linear-gradient(bottom, #000, #666);
+	box-shadow: none;
+	border: 1px solid #000;
 	color: #eee;
 }
 .box-green {
 	background-color: #aca;
+	background: -moz-linear-gradient(top, #bdb, #9b9);
 	background: -webkit-linear-gradient(top, #bdb, #9b9);
+	box-shadow: none;
+	border: 1px solid #898;
 	/*background: #00A0B0*/
+	/*background: -webkit-linear-gradient(top, #bdb, #5B6D5B);*/
 }
 .box-red {
 	background-color: #f99;
+	background: -moz-linear-gradient(top, #faa, #f88);
 	background: -webkit-linear-gradient(top, #faa, #f88);
+	box-shadow: none;
+	border: 1px solid #b66;
 	/*background: #CC333F*/
+	/*background: -webkit-linear-gradient(top, #BF4444, #782A2A);*/
+	/*color: #e5e5e5;*/
 }
 .box-yellow {
 	background-color: #eea;
+	background: -moz-linear-gradient(top, #ffb, #e0e09f);
 	background: -webkit-linear-gradient(top, #ffb, #e0e09f);
+	box-shadow: none;
+	border: 1px solid #bb6;
+	/*color: #e5e5e5;*/
+	/*background: -webkit-linear-gradient(top, #90735F, #4C3C32);*/
 	/*background: #EDC951*/
 }
 .box-container {
@@ -166,3 +176,9 @@ section#content {
 	text-align: left;
 }
 .centered { text-align: center }
+
+
+@media all and (max-width: 800px) {
+	header, section#content { width: 100% }
+	.box { min-width: none; margin-left: 0; margin-right: 0 }
+}

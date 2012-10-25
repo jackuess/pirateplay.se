@@ -24,7 +24,7 @@
 				}
 				function setOffsetR (e) {
 					var l = parseInt($('#images').css('left').slice(0, -2))
-					$('#images').css('left', (l + [-imgWidth*2, -imgWidth][nthSibling(this)-1]) % (imgWidth*(imgCount)));
+					$('#images').css('left', (l + [-imgWidth*2, -imgWidth][(nthSibling(this)-1)/2]) % (imgWidth*(imgCount)));
 				}
 
 				var imgWidth = 0;
@@ -41,11 +41,12 @@
 				float: left;
 			}
 
-			div#gallery {
+			div#gallery { display: inline-block;
 				margin: 0;
 				margin-left: auto;
 				margin-right: auto;
 				padding: 0;
+				vertical-align: top;
 				width: 640px;
 				overflow: hidden;
 			}
@@ -86,17 +87,12 @@
 			}
 			ul#index li:hover { color: #f55; }
 
-			.gallery_index_rel {
-				background-color: rgba(0, 0, 0, .3);
-				border-radius: 0.3em;
-				cursor: pointer;
+			.gallery_index_rel { cursor: pointer;display: inline-block;
 				font-weight: bold;
-				padding: 1em;
-				text-align: left;
-			}
-			.gallery_index_rel:hover { background-color: rgba(0, 0, 0, .4); color: #f55; }
-			.gallery_index_rel:first-of-type { float: left; }
-			.gallery_index_rel:last-of-type { float: right; }
+				padding: 1%;
+				text-align: left }
+			/*.gallery_index_rel:first-of-type { float: left; }
+			.gallery_index_rel:last-of-type { float: right; }*/
 		</style>
 	</head>
 	<body>
@@ -118,14 +114,13 @@
 			<li><a href="#license">Licens</a></li>
 		</ul>
 		<h2 id="screens">Skärmdumpar</h2>
-		<article class="box sect">
-			<nav class="centered"><ul id="index" class="box box-black">
+		<article class="box">
+			<nav class="centered"><ul id="index" class="box">
 				<li>GNU/Linux/KDE</li>
 				<li>GNU/Linux/XFCE</li>
 				<li>Mac OS X</li>
 			</ul></nav>
-			<p class="gallery_index_rel box box-black">&lt;</p>
-			<p class="gallery_index_rel box box-black">&gt;</p>
+			<p class="gallery_index_rel btn">&lt;</p>
 			<div id="gallery">
 				<ul id="images">
 					<li><img src="static/images/screen_-_kde_v0_4_4.png" /></li>
@@ -133,6 +128,7 @@
 					<li><img src="static/images/screen_-_osx_v0_4_3.png" /></li>
 				</ul>
 			</div>
+			<p class="gallery_index_rel btn">&gt;</p>
 		</article>
 		<h2 id="install">Ladda ner och installera</h2>
 		<article class="box">

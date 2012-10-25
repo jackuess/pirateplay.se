@@ -120,7 +120,7 @@ sr = RequestChain(title = 'SR', url = 'http://sr.se/', feed_url = 'http://sverig
 
 tv4play = RequestChain(title = 'TV4-play', url = 'http://tv4play.se/', feed_url = 'http://www.tv4play.se/rss/sport/ekwall_vs_lundh',
 				items = [TemplateRequest(
-							re = r'(http://)?(www\.)?tv4play\.se/.*(videoid|video_id|vid)=(?P<id>\d+).*',
+							re = r'^(http://)?(www\.)?tv4play\.se/.*(videoid|video_id|vid)=(?P<id>\d+).*',
 							url_template = 'http://premium.tv4play.se/api/web/asset/%(id)s/play'),
 						TemplateRequest(
 							re = r'(<playbackStatus>(?P<status>\w+).*?)?<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?(?P<base>rtmpe?://[^<]+).*?(?P<url>mp4:/[^<]+)(?=.*?(?P<sub>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
@@ -129,7 +129,7 @@ tv4play = RequestChain(title = 'TV4-play', url = 'http://tv4play.se/', feed_url 
 							is_last = True)])
 tv4play_hds = RequestChain(
 				items = [TemplateRequest(
-							re = r'(http://)?(www\.)?tv4play\.se/.*(videoid|video_id|vid)=(?P<id>\d+).*',
+							re = r'^(http://)?(www\.)?tv4play\.se/.*(videoid|video_id|vid)=(?P<id>\d+).*',
 							url_template = 'http://premium.tv4play.se/api/web/asset/%(id)s/play'),
 						TemplateRequest(
 							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<url>http://.*?\.mp4\.csmil/manifest\.f4m)</url>',
@@ -138,13 +138,16 @@ tv4play_hds = RequestChain(
 							is_last = True)])
 tv4play_http = RequestChain(
 				items = [TemplateRequest(
-							re = r'(http://)?(www\.)?tv4play\.se/.*(videoid|video_id|vid)=(?P<id>\d+).*',
+							re = r'^(http://)?(www\.)?tv4play\.se/.*(videoid|video_id|vid)=(?P<id>\d+).*',
 							url_template = 'http://premium.tv4play.se/api/web/asset/%(id)s/play'),
 						TemplateRequest(
-							re = r'<url>(?P<url>http://[^<]+).*?(?=.*?(?P<sub>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
+							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<url>http://[^<]+).*?(?=.*?(?P<sub>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
 							url_template = '%(url)s',
-							meta_template = 'subtitles=%(sub)s',
+							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s',
 							is_last = True)])
+tv4play_hls_force = tv4play_http
+tv4play_hls_force.items[0].re = tv4play_hls_force.items[0].re.replace('^(http://)?', '^hls\+http://')
+tv4play_hls_force.items[0].url_template += '?protocol=hls'
 fotbollskanalen = RequestChain(title = 'Fotbollskanalen', url = 'http://fotbollskanalen.se/', sample_url = 'http://www.fotbollskanalen.se/video/?videoid=2194841',
 				items = [ TemplateRequest(
 							re = r'(http://)?(www\.)?fotbollskanalen\.se/.*(videoid|video_id|vid)=(?P<id>\d+).*',
@@ -411,7 +414,7 @@ services = [svtplay, svtplay_hls, svtplay_hds, svtplay_http,
 			urplay,
 			sr,
 			tv3play, tv6play, tv8play, mtg_alt,
-			tv4play, tv4play_hds, tv4play_http, fotbollskanalen,
+			tv4play, tv4play_hds, tv4play_http, tv4play_hls_force, fotbollskanalen,
 			kanal5play,
 			kanal9play,
 			youtube,

@@ -6,6 +6,7 @@
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<meta name="description" content="Pirateplay gör det möjligt att spara webb-TV-program från SVT-play (och TV4-play, TV3-play etc.) i din dator." />
 			<meta name="keywords" content="rippa spara rtmp rtmpdump play svt tv4 tv3 kanal5 tv6 tv8 kanal9 aftonbladet ur vimeo" />
+			<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 			<link rel="alternate" type="application/rss+xml" title="Uppdateringar via Twitter" href="http://twitter.com/statuses/user_timeline.rss?screen_name=pirateplay_se" />
 			<link rel="stylesheet" href="${url('/static/style.css')}" type="text/css" />
 			<!--[if lt IE 9]>
@@ -22,8 +23,7 @@
 		</head>
 	</py:match>
 	<py:match path="body" once="true">
-		<body>
-			<div id="logo" class="box-black">pirate<span id="play">play</span>
+		<body><header><div id="logo" class="box-black">pirate<span id="play">play</span>
 				<audio id="anthem">
 					<source src="static/shaba_ranks_-_pirates_anthem.ogg" type="audio/ogg" />
 					<source src="static/shaba_ranks_-_pirates_anthem.mp3" type="audio/mpeg" />
@@ -34,8 +34,7 @@
 						anthem.paused ? anthem.play() : anthem.pause();
 					});
 				</script>
-			</div>
-			<nav id="menu">
+			</div><nav id="menu">
 				<ul>
 					<li py:def="list_item(adress, title)" py:choose="url('/' + adress) == url()">
 						<a py:when="True" class="selected" href="${url('/' + adress)}">${title}</a>
@@ -48,8 +47,7 @@
 					${list_item('library.html', 'Bibliotek')}
 					${list_item('qna.html', 'Frågor o svar')}
 				</ul>
-			</nav>
-			<section id="content">${select('*|text()')}</section>
+			</nav></header><section id="content">${select('*|text()')}</section>
 		</body>
 	</py:match>
 </html>
