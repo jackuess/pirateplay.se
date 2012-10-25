@@ -21,6 +21,11 @@
 			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 			<script type="text/javascript">
 				$('document').ready(function (e) {
+					var anthem = $('#anthem')[0];
+					$('#logo').click(function (e) {
+						anthem.paused ? anthem.play() : anthem.pause();
+					});
+
 					$('#toggle_menu').click(function (e) { $('nav#menu').toggleClass('shown'); });
 				});
 			</script>
@@ -33,12 +38,6 @@
 					<source src="static/shaba_ranks_-_pirates_anthem.ogg" type="audio/ogg" />
 					<source src="static/shaba_ranks_-_pirates_anthem.mp3" type="audio/mpeg" />
 				</audio>
-				<script type="text/javascript">
-					var anthem = $('#anthem')[0];
-					$('#logo').click(function (e) {
-						anthem.paused ? anthem.play() : anthem.pause();
-					});
-				</script>
 			</div><nav id="menu"><p id="toggle_menu"></p>
 				<ul>
 					<li py:def="list_item(adress, title)" py:choose="url('/' + adress) == url()">
