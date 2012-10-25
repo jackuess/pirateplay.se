@@ -19,6 +19,11 @@
 			</script>
 			<script type="text/javascript" src="${url('static/piwik_init.js')}"></script>
 			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+			<script type="text/javascript">
+				$('document').ready(function (e) {
+					$('#toggle_menu').click(function (e) { $('nav#menu').toggleClass('shown'); });
+				});
+			</script>
 			${select('*')}
 		</head>
 	</py:match>
@@ -34,7 +39,7 @@
 						anthem.paused ? anthem.play() : anthem.pause();
 					});
 				</script>
-			</div><nav id="menu">
+			</div><nav id="menu"><p id="toggle_menu"></p>
 				<ul>
 					<li py:def="list_item(adress, title)" py:choose="url('/' + adress) == url()">
 						<a py:when="True" class="selected" href="${url('/' + adress)}">${title}</a>

@@ -82,7 +82,8 @@ input[type='checkbox'] + label, input[type='radio'] + label {
 	display: inline;
 }
 
-nav#menu ul { background-color: #fff; border-radius: 0 0 10px 10px; margin: 0; padding: 5% }
+nav#menu { background-color: #fff; border-radius: 0 0 10px 10px; position: relative }
+nav#menu ul { margin: 0; padding: 5% }
 nav#menu li {
 	font-size: 1.2em;
 	font-weight: bold;
@@ -97,6 +98,16 @@ nav#menu li a:hover, nav#menu li a.selected {
 	color: #f55;
 	text-decoration: none;
 }
+nav#menu #toggle_menu { color: #666;
+	cursor: pointer;
+	display: none;
+	font-size: .8em;
+	margin: 0;
+	right: 6%;
+	position: absolute;
+	top: 7px }
+nav#menu #toggle_menu:after { content: 'Visa meny' }
+nav#menu.shown #toggle_menu:after { content: 'Dölj meny' }
 
 ul { list-style-type: square }
 ul.box { padding-left: 5% }
@@ -181,4 +192,10 @@ section#content { display: inline-block;
 @media all and (max-width: 800px) {
 	header, section#content { width: 100% }
 	.box { min-width: none; margin-left: 0; margin-right: 0 }
+	nav#menu #toggle_menu { display: block }
+	nav#menu { height: 30px }
+	nav#menu ul { display: none }
+	nav#menu li { padding: 2% }
+	nav#menu.shown { height: auto }
+	nav#menu.shown ul { display: block }
 }
