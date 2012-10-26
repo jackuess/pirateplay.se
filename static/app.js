@@ -1,9 +1,9 @@
 function rtmpDumpCmd(url, out) {
-	return 'rtmpdump  -o "' + out + '" -r ' +
-			(url.replace(/playpath=/, '-y ')
-				.replace(/swfVfy=1 swfUrl=/, '-W ')
-				.replace(/app=/, '-a ')
-				.replace(/live=1/, '-v '));
+	return 'rtmpdump  -o "' + out + '" -r "' +
+			(url.replace(/ playpath=/, '" -y "')
+				.replace(/ swfVfy=1 swfUrl=/, '" -W "')
+				.replace(/ app=/, '" -a "')
+				.replace(/ live=1/, '" -v "')) + '"';
 }
 
 function stripExt(s) {
@@ -68,11 +68,13 @@ function streamRepresentation(stream) {
 			else
 				r.append('<p class="cmd">' + cmd + '</p>');
 			if (subLink) {
-				subCmd = 'wget -O "' + stripExt(args.out) + '.srt" "' + subLink + '"'
-				if (args.show_inputs)
+				if (args.show_inputs) {
+					subCmd = 'wget -O "' + stripExt(args.out) + '.srt" "' + this.stream.meta.subtitles + '"'
 					r.append('<input type="text" class="cmd" value=\'' + subCmd + "' />");
-				else
+				} else {
+					subCmd = 'wget -O "' + stripExt(args.out) + '.srt" "' + subLink + '"'
 					r.append('<p class="cmd">' + subCmd + '</p>');
+				}
 			}
 		}
 		else if (args.mode == 'show') {
