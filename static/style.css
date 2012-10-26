@@ -63,9 +63,8 @@ input, .btn { border: 1px solid #ccc;
 	border-radius: 5px;
 	padding: 4px }
 
-input[type='text'], option {
-	width: 100%;
-}
+input[type='text']:focus { background-color: #ffb; outline: none }
+input[type='text'], option { width: 100% }
 
 input[type='submit'], .btn { background-color: #eee;
 	background: -moz-linear-gradient(top, #f0f0f0, #e5e5e5);
@@ -82,7 +81,10 @@ input[type='checkbox'] + label, input[type='radio'] + label {
 	display: inline;
 }
 
-nav#menu { background-color: #fff; border-radius: 0 0 10px 10px; position: relative }
+nav ul { padding-left: 3% }
+nav#menu { background-color: #fff;
+	border-radius: 0 0 10px 10px;
+	position: relative }
 nav#menu ul { margin: 0; padding: 5% }
 nav#menu li {
 	font-size: 1.2em;
@@ -90,7 +92,7 @@ nav#menu li {
 	list-style: none;
 	white-space: nowrap;
 	margin: 1% }
-nav#menu li a, nav li a:visited {
+nav#menu li a, nav#menu li a:visited {
 	color: black;
 }
 nav#menu li:nth-child(5) { margin-top: 1.0em; }

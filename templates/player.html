@@ -76,6 +76,7 @@
 
 			ul#index {
 				display: inline-block;
+				padding: 2%;
 				margin-top: 1%;
 			}
 			ul#index li {
@@ -84,6 +85,7 @@
 				font-weight: bold;
 				list-style: none;
 				padding: 2%;
+				white-space: pre;
 			}
 			ul#index li:hover { color: #f55; }
 
@@ -96,30 +98,35 @@
 		</style>
 	</head>
 	<body>
-		<h1>Pirateplayer</h1>
 		<section class="box">
+			<h1>Pirateplayer</h1>
 			<p><img id="player_logo" src="static/images/pirateplayer.png" />Pirateplayer är ett <a href="#license">fritt</a>, grafiskt program avsett att spela upp och ladda ner svensk webb-TV i <a href="#install">Windows, Mac OSX och Linux</a>.</p>
 			<p id="services" class="no-external-ico">Pirateplayer kan ladda ner ifrån: <py:for each="s in services"><a href="${s.url}">${s.title}</a>, </py:for></p>
 			<p>Alltså; samma tjänster som Pirateplay.se stöder. Finns undertexter försöker Pirateplayer i många fall även ladda ner dem.</p>
 			<p>Pirateplayer använder biblioteken <a href="http://qt.digia.com/">Qt</a>, <a href="http://rtmpdump.mplayerhq.hu/">librtmp</a>, <a href="http://libarchive.github.com/">libarchive</a>, <a href="http://github.com/w3c/tidy-html5">libtidy-html5</a>, programmet <a href="http://ffmpeg.org/">Ffmpeg</a> och <a href="api/manual.html">API:n från Pirateplay.se</a>.</p>
 			<p><a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://pirateplay.se/"></a></p>
 			<noscript><p><a href="http://flattr.com/thing/361015/Pirateplay"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" /></a></p></noscript>
-		</section>
-		<ul class="box">
+			<h2>Innehåll</h2>
+			<nav><ul>
 			<li><a href="#screens">Skärmdumpar</a></li>
 			<li><a href="#install">Ladda ner och installera</a></li>
 			<li><a href="#history">Historik</a></li>
 			<li><a href="#bugs">Kända buggar</a></li>
 			<li><a href="#credits">Credits</a></li>
 			<li><a href="#license">Licens</a></li>
-		</ul>
+		</ul></nav>
+		</section>
+		<!--<ul class="box">
+			<li><a href="#screens">Skärmdumpar</a></li>
+			<li><a href="#install">Ladda ner och installera</a></li>
+			<li><a href="#history">Historik</a></li>
+			<li><a href="#bugs">Kända buggar</a></li>
+			<li><a href="#credits">Credits</a></li>
+			<li><a href="#license">Licens</a></li>
+		</ul>-->
 		<h2 id="screens">Skärmdumpar</h2>
 		<article class="box">
-			<nav class="centered"><ul id="index" class="box">
-				<li>GNU/Linux/KDE</li>
-				<li>GNU/Linux/XFCE</li>
-				<li>Mac OS X</li>
-			</ul></nav>
+			<nav class="centered"><ul id="index" class="box"><li>GNU/Linux/KDE</li><li>GNU/Linux/XFCE</li><li>Mac OS X</li></ul></nav>
 			<p class="gallery_index_rel btn">&lt;</p>
 			<div id="gallery">
 				<ul id="images">

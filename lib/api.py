@@ -14,6 +14,7 @@ def service_handler(*args, **kwargs):
 
 class Api():
 	def _convert_service_re(self, service):
+		import re
 		s = deepcopy(service)
 		try:
 			s.items[0].re = re.sub(r'(\(\?P<\w+>)|(\(\?:)', '(', service.items[0].re)

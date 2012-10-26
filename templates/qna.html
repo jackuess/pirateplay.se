@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		<h1>Frågor och svar</h1>
-		<ul>
+		<ul class="box">
 			<li py:for="q in qna.keys()"><a href="#${quote(q.encode('utf-8'))}">${q}</a></li>
 		</ul>
 		<py:for each="q, a in qna.items()">
