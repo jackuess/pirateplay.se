@@ -59,17 +59,18 @@ header { border-radius: 10px 10px 6px 6px;
 	text-align: left;
 	vertical-align: top }
 
-input, .btn { border: 1px solid #ccc;
+input, button { border: 1px solid #ccc;
 	border-radius: 5px;
-	padding: 4px }
+	padding: 8px }
 
-input[type='text']:focus { background-color: #ffb; outline: none }
+input[type='text']:focus { outline: 1px solid #7696F6 }
 input[type='text'], option { width: 100% }
 
-input[type='submit'], .btn { background-color: #eee;
+input[type='submit'], button { background-color: #eee;
 	background: -moz-linear-gradient(top, #f0f0f0, #e5e5e5);
-	background: -webkit-linear-gradient(top, #f0f0f0, #e5e5e5) }
-input[type='submit']:active, .btn:active { background-color: #ccc;
+	background: -webkit-linear-gradient(top, #f0f0f0, #e5e5e5);
+	color: #777; font-weight: bold }
+input[type='submit']:active, button:active { background-color: #ccc;
 	background: -moz-linear-gradient(bottom, #f0f0f0, #e5e5e5);
 	background: -webkit-linear-gradient(bottom, #f0f0f0, #e5e5e5) }
 
@@ -154,10 +155,10 @@ section#content { display: inline-block;
 	background: -moz-linear-gradient(top, #faa, #f88);
 	background: -webkit-linear-gradient(top, #faa, #f88);
 	border: 1px solid #b66 }
-.box-yellow { background-color: #eea;
-	background: -moz-linear-gradient(top, #ffb, #e0e09f);
-	background: -webkit-linear-gradient(top, #ffb, #e0e09f);
-	border: 1px solid #bb6 }
+.box-yellow { background-color: #E6D278;
+	background: -webkit-linear-gradient(top, #F6E180, #E6D278);
+	border: 1px solid #bb6;
+	text-shadow: 0 1px 2px #fff }
 .box-container {
 	margin-top: 3%;
 	text-align: center;

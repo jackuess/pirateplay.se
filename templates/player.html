@@ -89,12 +89,7 @@
 			}
 			ul#index li:hover { color: #f55; }
 
-			.gallery_index_rel { cursor: pointer;display: inline-block;
-				font-weight: bold;
-				padding: 1%;
-				text-align: left }
-			/*.gallery_index_rel:first-of-type { float: left; }
-			.gallery_index_rel:last-of-type { float: right; }*/
+			.gallery_index_rel { cursor: pointer }
 		</style>
 	</head>
 	<body>
@@ -126,8 +121,8 @@
 		</ul>-->
 		<h2 id="screens">Skärmdumpar</h2>
 		<article class="box">
-			<nav class="centered"><ul id="index" class="box"><li>GNU/Linux/KDE</li><li>GNU/Linux/XFCE</li><li>Mac OS X</li></ul></nav>
-			<p class="gallery_index_rel btn">&lt;</p>
+			<nav class="centered"><ul id="index"><li>GNU/Linux/KDE</li><li>GNU/Linux/XFCE</li><li>Mac OS X</li></ul></nav>
+			<button class="gallery_index_rel">&lt;</button>
 			<div id="gallery">
 				<ul id="images">
 					<li><img src="static/images/screen_-_kde_v0_4_4.png" /></li>
@@ -135,7 +130,7 @@
 					<li><img src="static/images/screen_-_osx_v0_4_3.png" /></li>
 				</ul>
 			</div>
-			<p class="gallery_index_rel btn">&gt;</p>
+			<button class="gallery_index_rel">&gt;</button>
 		</article>
 		<h2 id="install">Ladda ner och installera</h2>
 		<article class="box">
