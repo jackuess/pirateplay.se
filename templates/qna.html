@@ -8,10 +8,9 @@
 	<body>
 		<h1>Frågor och svar</h1>
 		<ul class="box">
-			<li py:for="q in qna.keys()"><a href="#${quote(q.encode('utf-8'))}">${q}</a></li>
+			<li py:for="q in qna.keys()" style="padding: 1%"><a href="#${quote(q.encode('utf-8'))}">${q}</a></li>
 		</ul>
 		<py:for each="q, a in qna.items()">
-			<!--<h2 id="${q[:-1].replace(' ', '')}">${q}</h2>-->
 			<h2 id="${quote(q.encode('utf-8'))}">${q}</h2>
 			${a}
 		</py:for>
