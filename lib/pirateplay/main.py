@@ -71,7 +71,7 @@ if __name__ == '__main__':
 	options = parse_options()
 
 	if system('which %s &> /dev/null' % options['player']) != 0:
-		sys.exit('Player command not found: %s' % player)
+		sys.exit('Player command not found: %s' % options['player'])
 
 	streams = get_streams(sys.argv[-1])
 	i = 0
