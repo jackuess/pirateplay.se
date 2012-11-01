@@ -13,10 +13,12 @@ def remove_nullsubs(v):
 			v['sub'] = ''
 	return v
 
-def add_subs_kanal5(v):
+def encode_kanal5(v):
 	suburl = 'http://www.kanal5play.se/api/subtitles/' + v['id']
 	if urlopen(suburl).read() != '[]':
 		v['sub'] = suburl
+	if 'bitrate' in v:
+		v['bitrate'] = int(v['bitrate']) / 1000
 	return v
 
 try:
@@ -161,13 +163,33 @@ fotbollskanalen = RequestChain(title = 'Fotbollskanalen', url = 'http://fotbolls
 
 kanal5play = RequestChain(title = 'Kanal5-play', url = 'http://kanal5play.se/', feed_url = 'http://www.kanal5play.se/rss?type=PROGRAM',
 				items = [TemplateRequest(
-							re = r'(http://)?(www\.)?kanal5play\.se/.*video/(?P<id>\d+)',
+							re = r'^(http://)?(www\.)?kanal5play\.se/.*video/(?P<id>\d+)',
 							url_template = 'http://www.kanal5play.se/api/getVideo?format=FLASH&videoId=%(id)s'),
 						TemplateRequest(
 							re = r'"bitrate":(?P<bitrate>\d+).*?"source":"(?P<path>[^"]+)"(?=.*?"streamBaseUrl":"(?P<base>[^"]+)")',
 							url_template = '%(base)s playpath=%(path)s swfVfy=1 swfUrl=http://www.kanal5play.se/flash/StandardPlayer.swf',
-							meta_template = 'quality=%(bitrate)s; subtitles=%(sub)s; suffix-hint=flv',
-							encode_vars = add_subs_kanal5,
+							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; suffix-hint=flv',
+							encode_vars = encode_kanal5,
+							is_last = True)])
+kanal5play_hls_force = RequestChain(title = 'Kanal5-play', url = 'http://kanal5play.se/', feed_url = 'http://www.kanal5play.se/rss?type=PROGRAM',
+				items = [TemplateRequest(
+							re = r'^hls\+(http://)?(www\.)?kanal5play\.se/.*video/(?P<id>\d+)',
+							url_template = 'http://www.kanal5play.se/api/getVideo?format=IPHONE&videoId=%(id)s'),
+						TemplateRequest(
+							re = r'"source":"(?P<path>[^"]+)"',
+							url_template = '%(path)s',
+							meta_template = 'quality=dynamisk; subtitles=%(sub)s; suffix-hint=mp4',
+							encode_vars = encode_kanal5,
+							is_last = True)])
+kanal5play_rtsp_force = RequestChain(title = 'Kanal5-play', url = 'http://kanal5play.se/', feed_url = 'http://www.kanal5play.se/rss?type=PROGRAM',
+				items = [TemplateRequest(
+							re = r'^rtsp\+(http://)?(www\.)?kanal5play\.se/.*video/(?P<id>\d+)',
+							url_template = 'http://www.kanal5play.se/api/getVideo?format=ANDROID&videoId=%(id)s'),
+						TemplateRequest(
+							re = r'"bitrate":(?P<bitrate>\d+).*?"source":"(?P<path>[^"]+)"',
+							url_template = '%(path)s',
+							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; suffix-hint=mp4',
+							encode_vars = encode_kanal5,
 							is_last = True)])
 
 kanal9play = RequestChain(title = 'Kanal9-play', url = 'http://kanal9play.se/', feed_url = 'http://www.kanal9play.se/rss?type=PROGRAM',
@@ -415,7 +437,7 @@ services = [svtplay, svtplay_hls, svtplay_hds, svtplay_http,
 			sr,
 			tv3play, tv6play, tv8play, mtg_alt,
 			tv4play, tv4play_hds, tv4play_http, tv4play_hls_force, fotbollskanalen,
-			kanal5play,
+			kanal5play, kanal5play_hls_force, kanal5play_rtsp_force,
 			kanal9play,
 			youtube,
 			vimeo,
