@@ -28,6 +28,7 @@ body {
 }
 
 div#logo { border-radius: 10px 10px 0px 0px;
+	box-shadow: 0 1px 0 0 #888 inset;
 	font-size: 1.3em;
 	color: white;
 	font-family: 'Fugaz One';
@@ -126,8 +127,7 @@ section#content { display: inline-block;
 
 .box { background-color: #fffff9;
 	background: -moz-linear-gradient(top, #fff, #ffe);
-	background: -webkit-linear-gradient(top, #fff, #ffe);
-	/*box-shadow: 0 0 3px #777;*/
+	background: -webkit-linear-gradient(top, #fffffa, #ffe);
 	border: 1px solid #bbb;
 	border-radius: 4px;
 	margin: .5%;
@@ -138,7 +138,8 @@ section#content { display: inline-block;
 .box.centered { margin-left: auto;
 	margin-right: auto;
 	text-align: left }
-.box-green, .box-red, .box-yellow, .box-black, .box-blue { text-shadow: 0 1px 2px #ddd }
+.box-green, .box-red, .box-yellow, .box-blue { box-shadow: 0 1px 0 #fff inset, 0 1px 0 #bbb;/*border-bottom-width: 2px;border-right-width: 2px;*/
+	text-shadow: 0 1px 2px #ddd }
 .box-black { background-color: #333;
 	background: -moz-linear-gradient(bottom, #000, #666);
 	background: -webkit-linear-gradient(bottom, #000, #666);
@@ -152,15 +153,16 @@ section#content { display: inline-block;
 .box-green { background-color: #aca;
 	background: -moz-linear-gradient(top, #bdb, #9b9);
 	background: -webkit-linear-gradient(top, #bdb, #9b9);
-	border: 1px solid #898 }
+	border-color: #898 }
 .box-red { background-color: #f99;
 	background: -moz-linear-gradient(top, #faa, #f88);
 	background: -webkit-linear-gradient(top, #faa, #f88);
-	border: 1px solid #b66 }
+	/*box-shadow: 0 1px 0 #ddd inset, 0 1px 0 #bbb;*/
+	border-color: #b66 }
 .box-yellow { background-color: #E6D278;
 	background: -moz-linear-gradient(top, #F6E180, #E6D278);
 	background: -webkit-linear-gradient(top, #F6E180, #E6D278);
-	border: 1px solid #bb6;
+	border-color: #bb6;
 	text-shadow: 0 1px 2px #fff }
 .box-container {
 	margin-top: 3%;
