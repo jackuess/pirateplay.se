@@ -148,7 +148,7 @@ tv4play_http = RequestChain(
 							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s',
 							is_last = True)])
 tv4play_hls_force = tv4play_http
-tv4play_hls_force.items[0].re = tv4play_hls_force.items[0].re.replace('^(http://)?', '^hls\+http://')
+tv4play_hls_force.items[0].re = tv4play_hls_force.items[0].re.replace('^(http://)?', '^hls;http://')
 tv4play_hls_force.items[0].url_template += '?protocol=hls'
 fotbollskanalen = RequestChain(title = 'Fotbollskanalen', url = 'http://fotbollskanalen.se/', sample_url = 'http://www.fotbollskanalen.se/video/?videoid=2194841',
 				items = [ TemplateRequest(
