@@ -148,7 +148,7 @@ tv4play_http = RequestChain(
 							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s',
 							is_last = True)])
 tv4play_hls_force = tv4play_http
-tv4play_hls_force.items[0].re = tv4play_hls_force.items[0].re.replace('^(http://)?', '^hls;http://')
+tv4play_hls_force.items[0].re = tv4play_hls_force.items[0].re.replace('^(http://)?', '^hls\+?http://')
 tv4play_hls_force.items[0].url_template += '?protocol=hls'
 fotbollskanalen = RequestChain(title = 'Fotbollskanalen', url = 'http://fotbollskanalen.se/', sample_url = 'http://www.fotbollskanalen.se/video/?videoid=2194841',
 				items = [ TemplateRequest(
@@ -173,7 +173,7 @@ kanal5play = RequestChain(title = 'Kanal5-play', url = 'http://kanal5play.se/', 
 							is_last = True)])
 kanal5play_hls_force = RequestChain(title = 'Kanal5-play', url = 'http://kanal5play.se/', feed_url = 'http://www.kanal5play.se/rss?type=PROGRAM',
 				items = [TemplateRequest(
-							re = r'^hls\+(http://)?(www\.)?kanal5play\.se/.*video/(?P<id>\d+)',
+							re = r'^hls\+?(http://)?(www\.)?kanal5play\.se/.*video/(?P<id>\d+)',
 							url_template = 'http://www.kanal5play.se/api/getVideo?format=IPHONE&videoId=%(id)s'),
 						TemplateRequest(
 							re = r'"source":"(?P<path>[^"]+)"',
@@ -183,7 +183,7 @@ kanal5play_hls_force = RequestChain(title = 'Kanal5-play', url = 'http://kanal5p
 							is_last = True)])
 kanal5play_rtsp_force = RequestChain(title = 'Kanal5-play', url = 'http://kanal5play.se/', feed_url = 'http://www.kanal5play.se/rss?type=PROGRAM',
 				items = [TemplateRequest(
-							re = r'^rtsp\+(http://)?(www\.)?kanal5play\.se/.*video/(?P<id>\d+)',
+							re = r'^rtsp\+?(http://)?(www\.)?kanal5play\.se/.*video/(?P<id>\d+)',
 							url_template = 'http://www.kanal5play.se/api/getVideo?format=ANDROID&videoId=%(id)s'),
 						TemplateRequest(
 							re = r'"bitrate":(?P<bitrate>\d+).*?"source":"(?P<path>[^"]+)"',
