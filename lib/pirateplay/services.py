@@ -237,14 +237,14 @@ mtg_alt = RequestChain(
 #Dummies: TV6-play and TV8-play is caught by tv3play and mtg_alt
 tv6play = RequestChain(title = 'TV6-play', url = 'http://tv6play.se/', feed_url = 'http://www.tv6play.se/rss/mostviewed', items = [])
 tv8play = RequestChain(title = 'TV8-play', url = 'http://tv8play.se/', feed_url = 'http://www.tv8play.se/rss/recent', items = [])
-
+							
 youtube = RequestChain(title = 'Youtube', url = 'http://youtube.com/', feed_url = 'http://gdata.youtube.com/feeds/base/videos?alt=rss',
 				items = [TemplateRequest(
 							re = r'(http://)?(www\.)?youtube\.com/(?P<url>.+)',
 							url_template = 'http://youtube.com/%(url)s'),
 						TemplateRequest(
-							re = r'(url_encoded_fmt_stream_map=|%2C)url%3D(?P<url>.+?)%26quality%3D(?P<quality>.+?)%26',
-							decode_url = lambda url: unquote(unquote(url)),
+							re = r'url%3D(?P<url>.+?)%26quality%3D(?P<quality>[^%\\]+)',
+							decode_url = lambda url: unquote(unquote(url)).replace('sig=', 'signature='),
 							url_template = '%(url)s',
 							meta_template = 'quality=%(quality)s\n',
 							is_last = True)])
