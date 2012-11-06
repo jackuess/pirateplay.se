@@ -60,7 +60,7 @@
 			<article class="box" style="width: 46%">
 				<h2>Uppdateringar</h2>
 				<p class="tweet" py:for="t in tweets[:5]">${t['text']} <span class="timestamp">${t['time']} sedan</span>.</p>
-				<p class="centered"><a href="http://twitter.com/statuses/user_timeline.json?screen_name=pirateplay_se&amp;count=10">RSS</a>, <a href="http://twitter.com/pirateplay_se">Twitter</a>.</p>
+				<p class="centered"><a href="http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=pirateplay_se">RSS</a>, <a href="http://twitter.com/pirateplay_se">Twitter</a>.</p>
 			</article>
 		</section>
 		<section class="box centered">
