@@ -243,8 +243,8 @@ youtube = RequestChain(title = 'Youtube', url = 'http://youtube.com/', feed_url 
 							re = r'(http://)?(www\.)?youtube\.com/(?P<url>.+)',
 							url_template = 'http://youtube.com/%(url)s'),
 						TemplateRequest(
-							re = r'url%3D(?P<url>.+?)%26quality%3D(?P<quality>[^%\\]+)',
-							decode_url = lambda url: unquote(unquote(url)).replace('sig=', 'signature='),
+							re = r'url%3D(?P<url>[^"]+?)%26quality%3D(?P<quality>[^%\\]+)',
+							decode_url = lambda url: unquote(unquote(url)).replace('sig=', 'signature=').replace('"', ''),
 							url_template = '%(url)s',
 							meta_template = 'quality=%(quality)s\n',
 							is_last = True)])
