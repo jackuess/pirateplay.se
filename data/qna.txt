@@ -39,3 +39,8 @@ När jag försöker köra ett nedladdningskommando i Ubuntu/Debian får jag föl
 Jag lyckas inte ladda ner med Pirateplayer. Jag trycker på "Hämta" och Pirateplayer tycks hitta videon, men knappen "Ladda ner" är grånad och inaktiverad. Gör jag något fel?
 <!-- inner_delim -->
 <p>För att "Ladda ner"-knappen ska aktiveras måste du först ange ett filnamn att spara till. Gör detta antingen i textrutan med etiketten: "Ladda ner till", eller i dialogfönstret som presenteras om du trycker på "Bläddra"-knappen efter nämnda textruta.</p>
+<!-- delim -->
+Jag har laddat ner en ett program och dess undertext, men undertexten visas inte i min spelare. Vad kan jag göra?
+<!-- inner_delim -->
+<p>Pirateplayer gör ingenting med undertexterna, utan laddar bara ner dem som de är. Ibland är de i format som de populära videospelarna (Vlc, Mplayer etc.) inte klarar av att läsa. Lämpligt är då att försöka konvertera dem till <a href="http://en.wikipedia.org/wiki/.srt#SubRip_text_file_format">Subrip-formatet</a>.</p>
+<p>Här är ett par program som kan omvandla undertexter mellan en mängd olika format: <ul><li>Linux: <a href="http://home.gna.org/subtitleeditor/">Subtitle Editor</a></li><li>Windows: <a href="http://www.nikse.dk/subtitleedit">Subtitle Edit</a></li></ul>
