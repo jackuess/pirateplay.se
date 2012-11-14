@@ -45,7 +45,7 @@ class Api():
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='api/get_streams.xml', type='xml')
 	def get_streams_xml(self, url, rnd = None):
-		return {'streams': [s.to_dict() for s in pirateplay.get_streams(url)]}
+		return {'streams': sorted([s.to_dict() for s in pirateplay.get_streams(url)], key=lambda s: s['meta'].get('quality').rjust(16, '0'))}
 	
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='api/get_streams_old.xml', type='xml')
