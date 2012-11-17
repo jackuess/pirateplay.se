@@ -55,12 +55,21 @@ from cStringIO import StringIO
 class redirect_handler(HTTPRedirectHandler):
 	def http_error_302(self, req, fp, code, msg, headers):
 		return StringIO(str(headers))
+	
+def decode_svt_url(url):
+	from re import search
+	if url.startswith('http://svt.se'):
+		match = search(r'svt_article_id=(\d+)&amp;', urlopen(url).read())
+		return 'http://svtplay.se/video/%s?type=embed&output=json' % match.group(1)
+	else:
+		return url
 
-
+svt_init_req = TemplateRequest(
+							re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>.*)',
+							url_template = 'http://%(domain)s/%(path)s?type=embed&output=json',
+							decode_url = decode_svt_url)
 svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
-				items = [TemplateRequest(
-							re = r'^(http://)?(www\.)?svtplay\.se/(?P<path>.*)',
-							url_template = 'http://svtplay.se/%(path)s?type=embed&output=json'),
+				items = [svt_init_req,
 						TemplateRequest(
 							re = r'"url":"(?P<url>rtmp[^"]+)".*?"bitrate":(?P<bitrate>\d+)(?=.*?"subtitleReferences":\[{"url":"(?P<sub>[^"]*))',
 							url_template = '%(url)s swfVfy=1 swfUrl=http://www.svtplay.se/public/swf/video/svtplayer-2012.15.swf',
@@ -68,9 +77,7 @@ svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
 							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; suffix-hint=flv',
 							is_last = True)])
 svtplay_hls = RequestChain(
-				items = [TemplateRequest(
-							re = r'^(http://)?(www\.)?svtplay\.se/(?P<path>.*)',
-							url_template = 'http://svtplay.se/%(path)s?type=embed&output=json'),
+				items = [svt_init_req,
 						TemplateRequest(
 							re = r'"url":"(?P<url>http://[^"]+\.m3u8)".*?subtitleReferences":\[{"url":"(?P<sub>[^"]*)',
 							url_template = '%(url)s'),
@@ -81,9 +88,7 @@ svtplay_hls = RequestChain(
 							meta_template = 'quality=%(resolution)s;subtitles=%(sub)s; suffix-hint=mp4',
 							is_last = True)])
 svtplay_hds = RequestChain(
-				items = [TemplateRequest(
-							re = r'^(http://)?(www\.)?svtplay\.se/(?P<path>.*)',
-							url_template = 'http://svtplay.se/%(path)s?type=embed&output=json'),
+				items = [svt_init_req,
 						TemplateRequest(
 							re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
 							encode_vars = lambda v: { 'guid': ''.join(chr(65 + randint(0, 25)) for i in range(12)) },
@@ -91,9 +96,7 @@ svtplay_hds = RequestChain(
 							meta_template = 'quality=dynamisk; suffix-hint=flv; required-player-version=1',
 							is_last = True)])
 svtplay_http = RequestChain(
-				items = [TemplateRequest(
-							re = r'^(http://)?(www\.)?svtplay\.se/(?P<path>.*)',
-							url_template = 'http://svtplay.se/%(path)s?type=embed&output=json'),
+				items = [svt_init_req,
 						TemplateRequest(
 							re = r'"url":"(?P<url>http://[^"]+)".*?"bitrate":(?P<bitrate>\d+)(?=.*?"subtitleReferences":\[{"url":"(?P<sub>[^"]*))',
 							url_template = '%(url)s',
