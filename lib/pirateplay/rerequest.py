@@ -38,10 +38,13 @@ class RequestChain:
 				if len(item.get_requests()) > 0:
 					for req in item.get_requests():
 						debug_print('Opening URL: ' + req.get_full_url())
-						if item.handlerchain != None:
-							content = urllib2.build_opener(item.handlerchain).open(req).read()
-						else:
-							content = urllib2.urlopen(req).read()
+						try:
+							if item.handlerchain != None:
+								content = urllib2.build_opener(item.handlerchain).open(req).read()
+							else:
+								content = urllib2.urlopen(req).read()
+						except urllib2.HTTPError:
+							content = ''
 						vars.update(item.get_vars())
 				else:
 					return []

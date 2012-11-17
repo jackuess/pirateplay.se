@@ -1,5 +1,5 @@
 from urllib import unquote
-from urllib2 import HTTPRedirectHandler, urlopen
+from urllib2 import HTTPRedirectHandler, urlopen, HTTPError
 from random import randint
 
 from rerequest import RequestChain, TemplateRequest
@@ -59,7 +59,10 @@ class redirect_handler(HTTPRedirectHandler):
 def decode_svt_url(url):
 	from re import search
 	if url.startswith('http://svt.se'):
-		match = search(r'svt_article_id=(\d+)&amp;', urlopen(url).read())
+		try:
+			match = search(r'svt_article_id=(\d+)&amp;', urlopen(url).read())
+		except HTTPError:
+			return url
 		return 'http://svtplay.se/video/%s?type=embed&output=json' % match.group(1)
 	else:
 		return url
