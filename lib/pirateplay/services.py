@@ -61,9 +61,9 @@ def decode_svt_url(url):
 	if url.startswith('http://svt.se'):
 		try:
 			match = search(r'svt_article_id=(\d+)&amp;', urlopen(url).read())
-		except HTTPError:
+			return 'http://svtplay.se/video/%s?type=embed&output=json' % match.group(1)
+		except (HTTPError, AttributeError):
 			return url
-		return 'http://svtplay.se/video/%s?type=embed&output=json' % match.group(1)
 	else:
 		return url
 
