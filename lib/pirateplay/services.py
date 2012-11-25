@@ -61,15 +61,15 @@ def decode_svt_url(url):
 	if url.startswith('http://svt.se'):
 		try:
 			match = search(r'svt_article_id=(\d+)&amp;', urlopen(url).read())
-			return 'http://svtplay.se/video/%s?type=embed&output=json' % match.group(1)
+			return 'http://www.svtplay.se/video/%s?type=embed&output=json' % match.group(1)
 		except (HTTPError, AttributeError):
 			return url
 	else:
 		return url
 
 svt_init_req = TemplateRequest(
-							re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>.*)',
-							url_template = 'http://%(domain)s/%(path)s?type=embed&output=json',
+							re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>video/\d+)',
+							url_template = 'http://www.%(domain)s/%(path)s?output=json',
 							decode_url = decode_svt_url)
 svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
 				items = [svt_init_req,
