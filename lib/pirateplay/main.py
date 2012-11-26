@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import getopt, sys
+import getopt, sys, re
 from os import system
 
 from rerequest import *
@@ -23,6 +23,34 @@ def get_streams(url):
 			return streams
 	return []
 
+def quality2int(quality):
+	''' Parse string like 720x580 or '820 kbps', return numeric quality. '''
+	if re.match('[0-9]+x[0-9]+', quality):
+		rows, columns = quality.split('x')
+		return int(rows) * int(columns)
+	match = re.match('^[0-9]+', quality)
+	if match:
+		return int(match.group())
+	print "Don't understand quality: " + quality
+	sys.exit(3)
+
+def find_best_stream(cmds, max_quality, subs):
+	''' Return 'best' stream, possibly constrained to matching subs. '''
+	if subs:
+		cmds = list([ c for c in cmds if c['subs'] == subs])
+		if not cmds:
+			print "No streams with %s subtitles" % subs
+			sys.exit(2)
+	best_stream = cmds[0]
+	max_quality = quality2int(max_quality)
+	best_quality = quality2int(best_stream['quality'])
+	for cmd in cmds[1:]:
+		cmd_pixels =  quality2int(cmd['quality'])
+		if cmd_pixels > best_quality and cmd_pixels <= max_quality:
+			best_stream = cmd
+			best_quality = quality2int(cmd['quality'])
+	return best_stream
+
 def print_usage():
 	print """Usage: pirateplay [Flags]... [URL]...
 			Finds stream urls for swedish programming. Plays them in vlc by default. Downloads them if output file is specified.
@@ -37,6 +65,12 @@ def print_usage():
 			    Download to file.
 			  -y command, --player=command
 			    Set player command, ie. ffplay, vlc, mplayer (default is vlc).
+			  -a, --auto
+			    Select stream (quality, subs) automagically.
+			  -s, --subs
+			    Preferred subs when --auto is used, ignored by default.
+			  -r, --max-resolution
+			    Max resolution when --auto is used e. g. '720x580' defaults to max available.
 			  -d, --debug
 			    Print debug info during execution.""".replace('	', '')
 	sys.exit(0)
@@ -45,8 +79,11 @@ def parse_options():
 	r = { 'play': True,
 		'print_cmds': False,
 		'print_urls': False,
-		'player': 'vlc' }
-	opts, values = getopt.getopt(sys.argv[1:], 'pPy:do:h', ['print', 'print-urls', 'player', 'debug', 'output-file=', 'help'])
+		'player': 'vlc',
+		'auto': False,
+		'subs': None,
+		'max-quality': '10000x10000' }
+	opts, values = getopt.getopt(sys.argv[1:], 'pPy:do:as:r:h', ['print', 'print-urls', 'player', 'debug', 'output-file=','auto', 'subs', 'max-resolution', 'help'])
 	for o, v in opts:
 		if o == '--print' or o == '-p':
 			r['print_cmds'] = True
@@ -56,6 +93,12 @@ def parse_options():
 			r['player'] = v
 		elif o == '--debug' or o == '-d':
 			set_debug(True)
+		elif o == '--auto' or o == '-a':
+			r['auto'] = True
+		elif o == '--subs' or o == '-s':
+			r['subs'] = v
+		elif o == '--max-resolution' or o == '-r':
+			r['max-quality'] = v
 		elif o == '--output-file' or o == '-o':
 			r['play'] = False
 			if v == '':
@@ -72,13 +115,17 @@ if __name__ == '__main__':
 
 	if system('which %s &> /dev/null' % options['player']) != 0:
 		sys.exit('Player command not found: %s' % options['player'])
-
 	streams = get_streams(sys.argv[-1])
+
 	i = 0
 	cmds = []
 	for stream in streams:
-		print '%d. Quality: %s, subtitles: %s' % (i+1, stream.metadict().get('quality', 'unknown'), stream.metadict().get('subtitles', 'none'))
 		i += 1
+		quality =  stream.metadict().get('quality', '0x0')
+		pr_quality = quality if quality != '0x0' else  'unknown'
+		subs = stream.metadict().get('subtitles', None)
+		pr_subs = subs if subs else 'none'
+		print '%d. Quality: %s, subtitles: %s' % (i, pr_quality, pr_subs)
 
 		if options['print_urls']:
 			print stream.url
@@ -97,12 +144,21 @@ if __name__ == '__main__':
 			if options['print_cmds']:
 				print cmd
 			else:
-				cmds.append(cmd)
+				cmds.append({'cmd': cmd, 'quality': quality, 'subs': subs})
 
 	if i == 0:
 		print 'No streams found.'
+	elif i == 1:
+		print 'Running the single stream'
+		system(cmds[0]['cmd'])
 	elif not options['print_cmds'] and not options['print_urls']:
-		i_choice = int(raw_input('Choose stream: '))-1
-		system(cmds[i_choice])
+		if options['auto']:
+			best_stream = find_best_stream(cmds, options['max-quality'], options['subs'])
+			system(best_stream['cmd'])
+		else:
+			i_choice = int(raw_input('Choose stream: '))-1
+			system(cmds[i_choice]['cmd'])
+
 
 # vim: set noexpandtab ts=4 sw=4:
+
