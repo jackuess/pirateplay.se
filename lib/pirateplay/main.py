@@ -113,7 +113,7 @@ def parse_options():
 			if v == '':
 				r['out_file'] = '-'
 			else:
-				r['out_file'] = v
+				r['out_file'] = os.path.abspath(v)
 		elif o == '--help' or o == '-h':
 			print_usage()
 
@@ -125,6 +125,7 @@ def parse_options():
 
 if __name__ == '__main__':
 	options = parse_options()
+	os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 	if system('which %s &> /dev/null' % options['player']) != 0:
 		sys.exit('Player command not found: %s' % options['player'])
