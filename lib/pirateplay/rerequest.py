@@ -1,5 +1,6 @@
 import re
 import urllib2
+from BeautifulSoup import BeautifulSoup
 
 DEBUG = False
 
@@ -17,6 +18,16 @@ def del_nones(dict):
 			del dict[item[0]]
 	return dict
 
+def get_filename_hint(hint):
+	''' Create a usable(?) filename hint from raw <title> element. '''
+	if '|' in hint:
+		hint = hint.split('|')[0]
+	if 'http' in hint:
+		hint = re.sub('http.*', '', hint)
+	if len(hint) > 50:
+		hint = hint[0:47] + '___'
+	return hint.replace(' ', '_')
+
 class RequestChain:
 	def __init__(self, title = '', url = '', feed_url = '', sample_url = '', items = []):
 		self.title = title
@@ -24,8 +35,15 @@ class RequestChain:
 		self.feed_url = feed_url
 		self.sample_url = sample_url
 		self.items = items
+		self.filename_hint = None
 
 	def get_streams(self, url):
+		content = urllib2.urlopen(url).read()
+		if content:
+			soup = BeautifulSoup(content)
+			if soup.title:
+				self.filename_hint = get_filename_hint(soup.title.text)
+				debug_print('filename hint: ' + self.filename_hint)
 		debug_print('Testing with service = ' + self.title)
 		vars = { 'sub': '' }
 		content = url
@@ -60,6 +78,8 @@ class RequestChain:
 			d['feed_url'] = self.feed_url
 		if self.sample_url != '':
 			d['sample_url'] = self.sample_url
+		if self.filename_hint:
+			d['filename_hint'] = self.filename_hint
 		try:
 			d['test'] = self.items[0].re
 		except IndexError:

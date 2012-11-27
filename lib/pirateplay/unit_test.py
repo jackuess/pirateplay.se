@@ -44,7 +44,7 @@ for service in services.services:
 	print
 	print ansi['blue'] + service.title + ansi['reset']
 	print title + ' - ' + url
-	streams = get_streams(url)
+	streams, filename_hint = get_streams(url)
 	if len(streams) > 0:
 		stream_url = streams[0].url
 		if stream_url.startswith('rtmp'):

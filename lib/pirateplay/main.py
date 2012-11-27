@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import getopt, sys, re
+import getopt, sys, re, os.path
 from os import system
 
 from rerequest import *
@@ -20,8 +20,8 @@ def get_streams(url):
 	for service in services:
 		streams = service.get_streams(url)
 		if len(streams) > 0:
-			return streams
-	return []
+			return streams, service.filename_hint
+	return [], None
 
 def quality2int(quality):
 	''' Parse string like 720x580 or '820 kbps', return numeric quality. '''
@@ -61,10 +61,12 @@ def print_usage():
 			    Print commands; don't execute them.
 			  -P, --print-urls
 			    Print urls, not commands.
-			  -o file, --output-file=file
-			    Download to file.
+			  -o file, --output-file=path
+			    Download to file. If output-file is a directory, adds -f filename.
 			  -y command, --player=command
 			    Set player command, ie. ffplay, vlc, mplayer (default is vlc).
+			  -f, --filename-hint
+			    Print filename hint for download. Requires -o <directory>.
 			  -a, --auto
 			    Select stream (quality, subs) automagically.
 			  -s, --subs
@@ -82,8 +84,13 @@ def parse_options():
 		'player': 'vlc',
 		'auto': False,
 		'subs': None,
+		'filename-hint': False,
+		'out_file': '',
 		'max-quality': '10000x10000' }
-	opts, values = getopt.getopt(sys.argv[1:], 'pPy:do:as:r:h', ['print', 'print-urls', 'player', 'debug', 'output-file=','auto', 'subs', 'max-resolution', 'help'])
+	opts, values = getopt.getopt(sys.argv[1:], 'pPy:dfo:as:r:h',
+                                ['print', 'print-urls', 'player', 'debug',
+								 'filename-hint', 'output-file=','auto', 'subs',
+								 'max-resolution', 'help'])
 	for o, v in opts:
 		if o == '--print' or o == '-p':
 			r['print_cmds'] = True
@@ -93,6 +100,8 @@ def parse_options():
 			r['player'] = v
 		elif o == '--debug' or o == '-d':
 			set_debug(True)
+		elif o == '--filename-hint' or o == '-f':
+			r['filename-hint'] = True
 		elif o == '--auto' or o == '-a':
 			r['auto'] = True
 		elif o == '--subs' or o == '-s':
@@ -108,6 +117,10 @@ def parse_options():
 		elif o == '--help' or o == '-h':
 			print_usage()
 
+		if r['filename-hint']:
+			if not r['out_file'] or not os.path.isdir(r['out_file']):
+				print "--filename-hint requires --output-file directory"
+				sys.exit(1)
 	return r
 
 if __name__ == '__main__':
@@ -115,7 +128,10 @@ if __name__ == '__main__':
 
 	if system('which %s &> /dev/null' % options['player']) != 0:
 		sys.exit('Player command not found: %s' % options['player'])
-	streams = get_streams(sys.argv[-1])
+	streams, filename_hint = get_streams(sys.argv[-1])
+	if not streams:
+		print 'No streams found.'
+		sys.exit(2)
 
 	i = 0
 	cmds = []
@@ -125,6 +141,17 @@ if __name__ == '__main__':
 		pr_quality = quality if quality != '0x0' else  'unknown'
 		subs = stream.metadict().get('subtitles', None)
 		pr_subs = subs if subs else 'none'
+		suffix_hint =  stream.metadict().get('suffix-hint', None)
+		filename = options['out_file']
+		if options['out_file'] and os.path.isdir(options['out_file']):
+			filename = filename_hint
+			if suffix_hint:
+				filename += '.' + suffix_hint
+			filename = os.path.join(options['out_file'], filename)
+		if options['filename-hint']:
+			print "Filename hint: " + filename
+			sys.exit(0)
+
 		print '%d. Quality: %s, subtitles: %s' % (i, pr_quality, pr_subs)
 
 		if options['print_urls']:
@@ -133,22 +160,20 @@ if __name__ == '__main__':
 			if options['play']:
 				cmd = "%s '%s'" % (options['player'], stream.url)
 			elif stream.url.startswith('rtmp'):
-				cmd = rtmpdump_cmd(stream.url, options['out_file'])
+				cmd = rtmpdump_cmd(stream.url, filename)
 			elif '.m3u8' in stream.url:
-				cmd = 'ffmpeg -i "%s" -acodec copy -vcodec copy -bsf aac_adtstoasc "%s"' % (stream.url, options['out_file'])
+				cmd = 'ffmpeg -i "%s" -acodec copy -vcodec copy -bsf aac_adtstoasc "%s"' % (stream.url, filename)
 			elif 'manifest.f4m' in stream.url:
-				cmd = 'php AdobeHDS.php --delete --manifest "%s" --outfile "%s"' % (stream.url, options['out_file'])
+				cmd = 'php AdobeHDS.php --delete --manifest "%s" --outfile "%s"' % (stream.url, filename)
 			else:
-				cmd = 'wget -O "%s" "%s"' % (options['out_file'], stream.url)
+				cmd = 'wget -O "%s" "%s"' % (filename, stream.url)
 
 			if options['print_cmds']:
 				print cmd
 			else:
 				cmds.append({'cmd': cmd, 'quality': quality, 'subs': subs})
 
-	if i == 0:
-		print 'No streams found.'
-	elif i == 1:
+	if i == 1:
 		print 'Running the single stream'
 		system(cmds[0]['cmd'])
 	elif not options['print_cmds'] and not options['print_urls']:
