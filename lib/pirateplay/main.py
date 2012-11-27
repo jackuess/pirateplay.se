@@ -64,7 +64,7 @@ def parse_options():
 				r['out_file'] = v
 		elif o == '--help' or o == '-h':
 			print_usage()
-	
+
 	return r
 
 if __name__ == '__main__':
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 	for stream in streams:
 		print '%d. Quality: %s, subtitles: %s' % (i+1, stream.metadict().get('quality', 'unknown'), stream.metadict().get('subtitles', 'none'))
 		i += 1
-		
+
 		if options['print_urls']:
 			print stream.url
 		else:
@@ -93,14 +93,16 @@ if __name__ == '__main__':
 				cmd = 'php AdobeHDS.php --delete --manifest "%s" --outfile "%s"' % (stream.url, options['out_file'])
 			else:
 				cmd = 'wget -O "%s" "%s"' % (options['out_file'], stream.url)
-			
+
 			if options['print_cmds']:
 				print cmd
 			else:
 				cmds.append(cmd)
-	
+
 	if i == 0:
 		print 'No streams found.'
 	elif not options['print_cmds'] and not options['print_urls']:
 		i_choice = int(raw_input('Choose stream: '))-1
 		system(cmds[i_choice])
+
+# vim: set noexpandtab ts=4 sw=4:

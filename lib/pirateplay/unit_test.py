@@ -55,3 +55,6 @@ for service in services.services:
 			print ansi['red'] + 'Unknown protocol of url: ' + stream_url
 	else:
 		print ansi['red'] + 'Nothing found!' + ansi['reset']
+
+
+# vim: set noexpandtab ts=4 sw=4:
