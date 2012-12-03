@@ -258,12 +258,12 @@ youtube = RequestChain(title = 'Youtube', url = 'http://youtube.com/', feed_url 
 vimeo = RequestChain(title = 'Vimeo', url = 'http://vimeo.com/', feed_url = 'http://vimeo.com/channels/staffpicks/videos/rss',
 				items = [TemplateRequest(
 							re = r'(http://)?(www\.)?vimeo\.com/.*?(?P<id>\d+)$',
-							headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.36 (KHTML, like Gecko) Chrome/13.0.766.0 Safari/534.36'},
+							headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0'},
 							url_template = 'http://vimeo.com/%(id)s'),
 						TemplateRequest(
-							re = r'"signature":"(?P<sig>[^"]+)".*?timestamp":(?P<time>\d+).*?((h264)|(vp6))":\["(?P<quality>[^"]+)',
-							headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.36 (KHTML, like Gecko) Chrome/13.0.766.0 Safari/534.36'},
-							url_template = 'http://player.vimeo.com/play_redirect?clip_id=%(id)s&sig=%(sig)s&time=%(time)s&quality=%(quality)s&codecs=H264,VP8,VP6&type=moogaloop_local&embed_location=',
+							re = r'"timestamp":(?P<time>\d+).*?"signature":"(?P<sig>[^"]+)".*?((h264)|(vp6)|(vp8))":\["(?P<quality>[^"]+)',
+							headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0'},
+							url_template = 'http://player.vimeo.com/play_redirect?clip_id=%(id)s&sig=%(sig)s&time=%(time)s&quality=%(quality)s&codecs=VP6,VP8,H264&type=moogaloop_local&embed_location=',
 							handlerchain = redirect_handler()),
 						TemplateRequest(
 							re = r'Location: (?P<url>.*?)\s',
