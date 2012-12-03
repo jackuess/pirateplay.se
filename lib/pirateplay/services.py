@@ -5,7 +5,7 @@ from random import randint
 from rerequest import RequestChain, TemplateRequest
 
 def fix_playpath(url):
-	return url.replace('/mp4:', '/ playpath=mp4:')	
+	return url.replace('/mp4:', '/ playpath=mp4:')
 
 def remove_nullsubs(v):
 	if v.get('sub', '') != '':
@@ -23,14 +23,14 @@ def encode_kanal5(v):
 
 try:
 	from pyamf import remoting
-	
+
 	def brightcovedata(video_player, player_id, publisher_id, const):
 		env = remoting.Envelope(amfVersion=3)
 		env.bodies.append(
 			(
-				"/1", 
+				"/1",
 				remoting.Request(
-					target="com.brightcove.player.runtime.PlayerMediaFacade.findMediaById", 
+					target="com.brightcove.player.runtime.PlayerMediaFacade.findMediaById",
 					body=[const, player_id, video_player, publisher_id],
 					envelope=env
 				)
@@ -55,7 +55,7 @@ from cStringIO import StringIO
 class redirect_handler(HTTPRedirectHandler):
 	def http_error_302(self, req, fp, code, msg, headers):
 		return StringIO(str(headers))
-	
+
 def decode_svt_url(url):
 	from re import search
 	if url.startswith('http://svt.se'):
@@ -243,7 +243,7 @@ mtg_alt = RequestChain(
 #Dummies: TV6-play and TV8-play is caught by tv3play and mtg_alt
 tv6play = RequestChain(title = 'TV6-play', url = 'http://tv6play.se/', feed_url = 'http://www.tv6play.se/rss/mostviewed', items = [])
 tv8play = RequestChain(title = 'TV8-play', url = 'http://tv8play.se/', feed_url = 'http://www.tv8play.se/rss/recent', items = [])
-							
+
 youtube = RequestChain(title = 'Youtube', url = 'http://youtube.com/', feed_url = 'http://gdata.youtube.com/feeds/base/videos?alt=rss',
 				items = [TemplateRequest(
 							re = r'(http://)?(www\.)?youtube\.com/(?P<url>.+)',
@@ -424,7 +424,7 @@ disney_jr = RequestChain(title = 'Disney Junior', url = 'http://www.disney.se/di
 							url_template = '%(base)s playpath=mp4:/%(play_path)s swfVfy=1 swfUrl=http://www.disney.se/cms_res/disney-junior/flash/video_hub_player/disney_player.swf',
 							meta_template = 'suffix-hint=flv',
 							is_last = True)])
-							
+
 vgtv = RequestChain(title = 'VGTV', url = 'http://vgtv.no/',
 				items = [ TemplateRequest(
 							re = r'(http://)?(www\.)?vgtv\.no/.*id=(?P<id>\d+)',
@@ -459,3 +459,6 @@ services = [svtplay, svtplay_hls, svtplay_hds, svtplay_http,
 			das_erste,
 			disney_jr,
 			vgtv]
+
+
+# vim: set noexpandtab ts=4 sw=4:

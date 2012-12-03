@@ -1,5 +1,6 @@
 import re
 import urllib2
+from BeautifulSoup import BeautifulSoup
 
 DEBUG = False
 
@@ -17,6 +18,16 @@ def del_nones(dict):
 			del dict[item[0]]
 	return dict
 
+def get_filename_hint(hint):
+	''' Create a usable(?) filename hint from raw <title> element. '''
+	if '|' in hint:
+		hint = hint.split('|')[0]
+	if 'http' in hint:
+		hint = re.sub('http.*', '', hint)
+	if len(hint) > 50:
+		hint = hint[0:47] + '___'
+	return hint.replace(' ', '_')
+
 class RequestChain:
 	def __init__(self, title = '', url = '', feed_url = '', sample_url = '', items = []):
 		self.title = title
@@ -24,14 +35,21 @@ class RequestChain:
 		self.feed_url = feed_url
 		self.sample_url = sample_url
 		self.items = items
-	
+		self.filename_hint = None
+
 	def get_streams(self, url):
+		content = urllib2.urlopen(url).read()
+		if content:
+			soup = BeautifulSoup(content)
+			if soup.title:
+				self.filename_hint = get_filename_hint(soup.title.text)
+				debug_print('filename hint: ' + self.filename_hint)
 		debug_print('Testing with service = ' + self.title)
 		vars = { 'sub': '' }
 		content = url
 		for item in self.items:
 			item.set_content(content, vars)
-			
+
 			if item.is_last:
 				return item.get_streams()
 			else:
@@ -49,7 +67,7 @@ class RequestChain:
 				else:
 					return []
 		return []
-	
+
 	def to_dict(self):
 		d = {}
 		if self.title != '':
@@ -60,11 +78,13 @@ class RequestChain:
 			d['feed_url'] = self.feed_url
 		if self.sample_url != '':
 			d['sample_url'] = self.sample_url
+		if self.filename_hint:
+			d['filename_hint'] = self.filename_hint
 		try:
 			d['test'] = self.items[0].re
 		except IndexError:
 			pass
-		
+
 		return d
 
 
@@ -85,57 +105,57 @@ class TemplateRequest:
 		self.handlerchain = handlerchain
 		self.data_template = data_template
 		self.is_last = is_last
-		
+
 		self.requests = []
 		self.streams = []
-	
+
 	def set_content(self, content, old_vars):
 		self.requests = []
 		self.streams = []
 		self.content = self.decode_content(content)
 		self.curr_vars = old_vars
-		
+
 		for match in re.finditer(self.re, self.content, re.DOTALL):
 			self.curr_vars.update(del_nones(match.groupdict()))
 			self.add_request()
-					
+
 	def get_vars(self):
 		return self.curr_vars
-	
+
 	def process(self):
 		self.curr_vars.update(self.encode_vars(self.curr_vars))
-		
+
 		self.url = self.url_template % self.curr_vars
 		self.meta = self.meta_template % self.curr_vars
 		self.data = self.data_template % self.curr_vars
-		
+
 		self.url = self.decode_url(self.url)
 		self.meta = self.decode_meta(self.meta)
-	
+
 	def get_streams(self):
 		#Remove duplicates in self.streams before returning
 		return dict([(s.url + s.meta, s) for s in self.streams]).values()
-	
+
 	def get_requests(self):
 		return self.requests
-	
+
 	def add_request(self):
 		self.process()
-		
+
 		if self.is_last:
 			self.streams.append(Stream(self.url, self.meta))
 			return
-		
+
 		req = urllib2.Request(self.url)
 
 		if self.data != '':
 			debug_print('Adding post data to request: ' + self.data)
 			req.add_data(self.data)
-			
+
 		for header, value in self.headers.items():
 			debug_print('Adding header to request: %s = %s' % (header, value))
 			req.add_header(header, value)
-		
+
 		self.requests.append(req)
 
 def delete_empty_values(d):
@@ -148,12 +168,16 @@ class Stream:
 	def __init__(self, url, meta):
 		self.url = url
 		self.meta = meta
-	
+
 	def metadict(self):
 		try:
 			return delete_empty_values(dict([(x[0].strip(), x[1].strip()) for x in [i.strip().split('=') for i in self.meta.split(';')]]))
 		except IndexError:
 			return {}
-	
+
 	def to_dict(self):
 		return { 'meta': self.metadict(), 'url': self.url }
+
+
+# vim: set noexpandtab ts=4 sw=4:
+
