@@ -40,22 +40,20 @@ class Api():
 	@cherrypy.expose
 	@cherrypy.tools.json_out(handler = service_handler)
 	def get_streams_js(self, url, rnd = None):
-		streams, filename_hint = pirateplay.get_streams(url)
+		streams = pirateplay.get_streams(url)
 		return streams
 
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='api/get_streams.xml', type='xml')
 	def get_streams_xml(self, url, rnd = None):
-<<<<<<< HEAD
-		streams, filename_hint = pirateplay.get_streams(url)
+		streams = pirateplay.get_streams(url)
 		return {'streams': sorted([s.to_dict() for s in streams], key=lambda s: s['meta'].get('quality', '').rjust(16, '0'))}
 
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='api/get_streams_old.xml', type='xml')
 	def get_streams_old_xml(self, url, librtmp = '0', output_file = '-', parent_function = ''):
-		streams, filename_hint = pirateplay.get_streams(url)
+		streams = pirateplay.get_streams(url)
 
-=======
 		return {'streams': sorted([s.to_dict() for s in pirateplay.get_streams(url)], key=lambda s: s['meta'].get('quality', '').rjust(16, '0'))}
 	
 	@cherrypy.expose
@@ -63,7 +61,6 @@ class Api():
 	def get_streams_old_xml(self, url, librtmp = '0', output_file = '-', parent_function = ''):
 		streams = pirateplay.get_streams(url)
 		
->>>>>>> parent of 029e26b... Merge pull request #3 from leamas/master
 		if streams[0].url.startswith('rtmp') and librtmp == '0':
 			return { 'streams': [{'url': pirateplay.rtmpdump_cmd(s.url, output_file), 'meta': s.metadict()} for s in streams] }
 		elif '.m3u8' in streams[0].url:
