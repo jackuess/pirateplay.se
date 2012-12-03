@@ -5,6 +5,3 @@ def add_to_sitemap(priority = '0'):
 		sitemap['.'.join(func.__name__.replace('index', '/').rsplit('_', 1))] = priority
 		return func
 	return decorator
-
-
-# vim: set noexpandtab ts=4 sw=4:

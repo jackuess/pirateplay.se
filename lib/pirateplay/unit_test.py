@@ -44,7 +44,7 @@ for service in services.services:
 	print
 	print ansi['blue'] + service.title + ansi['reset']
 	print title + ' - ' + url
-	streams, filename_hint = get_streams(url)
+	streams = get_streams(url)
 	if len(streams) > 0:
 		stream_url = streams[0].url
 		if stream_url.startswith('rtmp'):
@@ -55,6 +55,3 @@ for service in services.services:
 			print ansi['red'] + 'Unknown protocol of url: ' + stream_url
 	else:
 		print ansi['red'] + 'Nothing found!' + ansi['reset']
-
-
-# vim: set noexpandtab ts=4 sw=4:

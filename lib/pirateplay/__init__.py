@@ -10,6 +10,3 @@ class JSONEncoder(JSONEncoder):
 		return JSONEncoder.default(self, o)
 
 js_encoder = JSONEncoder()
-
-
-# vim: set noexpandtab ts=4 sw=4:
