@@ -90,14 +90,24 @@ svtplay_hls = RequestChain(
 							encode_vars = remove_nullsubs,
 							meta_template = 'quality=%(resolution)s;subtitles=%(sub)s; suffix-hint=mp4',
 							is_last = True)])
+#svtplay_hds = RequestChain(
+				#items = [svt_init_req,
+						#TemplateRequest(
+							#re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
+							#encode_vars = lambda v: { 'guid': ''.join(chr(65 + randint(0, 25)) for i in range(12)) },
+							#url_template = '%(url)s?hdcore=2.8.0&g=%(guid)s',
+							#meta_template = 'quality=dynamisk; suffix-hint=flv; required-player-version=1',
+							#is_last = True)])
+							
 svtplay_hds = RequestChain(
 				items = [svt_init_req,
 						TemplateRequest(
 							re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
-							encode_vars = lambda v: { 'guid': ''.join(chr(65 + randint(0, 25)) for i in range(12)) },
-							url_template = '%(url)s?hdcore=2.8.0&g=%(guid)s',
-							meta_template = 'quality=dynamisk; suffix-hint=flv; required-player-version=1',
+							url_template = '%(url)s',
+							decode_url = lambda url: url.replace('manifest.f4m', 'master.m3u8').replace('akamaihd.net/z/', 'akamaihd.net/i/'),
+							meta_template = 'quality=dynamisk; suffix-hint=mp4; required-player-version=1',
 							is_last = True)])
+
 svtplay_http = RequestChain(
 				items = [svt_init_req,
 						TemplateRequest(
