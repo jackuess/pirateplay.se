@@ -15,12 +15,17 @@ def rtmpdump_cmd(rtmp_url, out = '-'):
 	cmd = 'rtmpdump -r %s -o "%s"'% (cmd, out)
 	return cmd
 
+def sorted_streams(streams):
+	return sorted(streams,
+					key=lambda s: s.metadict().get('quality', '').rjust(16, '0'),
+					reverse=True)
+
 def get_streams(url):
 	debug_print('Getting streams for: ' + url)
 	for service in services:
 		streams = service.get_streams(url)
 		if len(streams) > 0:
-			return streams
+			return sorted_streams(streams)
 	return []
 
 def print_usage():
