@@ -90,22 +90,22 @@ svtplay_hls = RequestChain(
 							encode_vars = remove_nullsubs,
 							meta_template = 'quality=%(resolution)s;subtitles=%(sub)s; suffix-hint=mp4',
 							is_last = True)])
-#svtplay_hds = RequestChain(
-				#items = [svt_init_req,
-						#TemplateRequest(
-							#re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
-							#encode_vars = lambda v: { 'guid': ''.join(chr(65 + randint(0, 25)) for i in range(12)) },
-							#url_template = '%(url)s?hdcore=2.8.0&g=%(guid)s',
-							#meta_template = 'quality=dynamisk; suffix-hint=flv; required-player-version=1',
-							#is_last = True)])
-							
-svtplay_hds = RequestChain(
+
+svtplay_hds_fake = RequestChain(
 				items = [svt_init_req,
 						TemplateRequest(
 							re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
 							url_template = '%(url)s',
-							decode_url = lambda url: url.replace('manifest.f4m', 'master.m3u8').replace('akamaihd.net/z/', 'akamaihd.net/i/'),
-							meta_template = 'quality=dynamisk; suffix-hint=mp4',
+							decode_url = lambda url: url.replace('manifest.f4m', 'master.m3u8').replace('akamaihd.net/z/', 'akamaihd.net/i/')),
+						svtplay_hls.items[2]])
+
+svtplay_hds = RequestChain(
+				items = [svt_init_req,
+						TemplateRequest(
+							re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
+							encode_vars = lambda v: { 'guid': ''.join(chr(65 + randint(0, 25)) for i in range(12)) },
+							url_template = '%(url)s?hdcore=2.8.0&g=%(guid)s',
+							meta_template = 'quality=dynamisk; suffix-hint=flv; required-player-version=1',
 							is_last = True)])
 
 svtplay_http = RequestChain(
@@ -448,7 +448,7 @@ vgtv = RequestChain(title = 'VGTV', url = 'http://vgtv.no/',
 
 
 
-services = [svtplay, svtplay_hls, svtplay_hds, svtplay_http,
+services = [svtplay, svtplay_hls, svtplay_hds_fake, svtplay_hds, svtplay_http,
 			urplay,
 			sr,
 			tv3play, tv6play, tv8play, mtg_alt,
