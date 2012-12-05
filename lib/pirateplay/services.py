@@ -68,7 +68,7 @@ def decode_svt_url(url):
 		return url
 
 svt_init_req = TemplateRequest(
-							re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>((klipp)|(video))/\d+)',
+							re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>[^?]+)',
 							url_template = 'http://www.%(domain)s/%(path)s?output=json',
 							decode_url = decode_svt_url)
 svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
