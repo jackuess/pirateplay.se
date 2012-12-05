@@ -105,7 +105,7 @@ svtplay_hds = RequestChain(
 							re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
 							url_template = '%(url)s',
 							decode_url = lambda url: url.replace('manifest.f4m', 'master.m3u8').replace('akamaihd.net/z/', 'akamaihd.net/i/'),
-							meta_template = 'suffix-hint=mp4; required-player-version=1',
+							meta_template = 'quality=dynamisk; suffix-hint=mp4',
 							is_last = True)])
 
 svtplay_http = RequestChain(
