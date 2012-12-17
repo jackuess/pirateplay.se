@@ -122,7 +122,7 @@ urplay = RequestChain(title = 'UR-play', url = 'http://urplay.se/', feed_url = '
 							url_template = 'http://urplay.se/%(url)s'),
 						TemplateRequest(
 							re = r'file=/(?P<url>[^&]+(?P<ext>mp[34]))(?:.*?captions.file=(?P<sub>[^&]+))?',
-							url_template = 'rtmp://130.242.59.75/ondemand playpath=%(ext)s:/%(url)s app=ondemand ',
+							url_template = 'rtmp://streaming.ur.se/ playpath=%(ext)s:/%(url)s app=ondemand',
 							meta_template = 'subtitles=%(sub)s; suffix-hint=flv',
 							is_last = True)])
 
