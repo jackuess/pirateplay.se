@@ -57,15 +57,16 @@ class redirect_handler(HTTPRedirectHandler):
 		return StringIO(str(headers))
 	
 def decode_svt_url(url):
-	from re import search
-	if url.startswith('http://svt.se') or url.startswith('http://www.svt.se'):
-		try:
-			match = search(r'data-json-href="([^"]+)"', urlopen(url).read())
-			return 'http://svt.se%s' % match.group(1).replace('&amp;', '&')
-		except (HTTPError, AttributeError):
-			return url
-	else:
-		return url
+	return url
+	#from re import search
+	#if url.startswith('http://svt.se') or url.startswith('http://www.svt.se'):
+		#try:
+			#match = search(r'data-json-href="([^"]+)"', urlopen(url).read())
+			#return 'http://svt.se%s' % match.group(1).replace('&amp;', '&')
+		#except (HTTPError, AttributeError):
+			#return url
+	#else:
+		#return url
 
 svt_init_req = TemplateRequest(
 							re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>[^?]+)',
@@ -76,7 +77,7 @@ svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
 						TemplateRequest(
 							re = r'"url":"(?P<url>rtmp[^"]+)".*?"bitrate":(?P<bitrate>\d+)(?=.*?"subtitleReferences":\[{"url":"(?P<sub>[^"]*))',
 							url_template = '%(url)s swfVfy=1 swfUrl=http://www.svtplay.se/public/swf/video/svtplayer-2012.15.swf',
-							encode_vars = remove_nullsubs,
+							#encode_vars = remove_nullsubs,
 							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; suffix-hint=flv',
 							is_last = True)])
 svtplay_hls = RequestChain(
@@ -87,7 +88,7 @@ svtplay_hls = RequestChain(
 						TemplateRequest(
 							re = r'RESOLUTION=(?P<resolution>\d+x\d+).*?(?P<url>http://[^\n]+)',
 							url_template = '%(url)s',
-							encode_vars = remove_nullsubs,
+							#encode_vars = remove_nullsubs,
 							meta_template = 'quality=%(resolution)s;subtitles=%(sub)s; suffix-hint=mp4',
 							is_last = True)])
 
