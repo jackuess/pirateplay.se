@@ -57,21 +57,20 @@ class redirect_handler(HTTPRedirectHandler):
 		return StringIO(str(headers))
 	
 def decode_svt_url(url):
-	return url
-	#from re import search
-	#if url.startswith('http://svt.se') or url.startswith('http://www.svt.se'):
-		#try:
-			#match = search(r'data-json-href="([^"]+)"', urlopen(url).read())
-			#return 'http://svt.se%s' % match.group(1).replace('&amp;', '&')
-		#except (HTTPError, AttributeError):
-			#return url
-	#else:
-		#return url
+	#return url
+	from re import search
+	if url.startswith('http://svt.se') or url.startswith('http://www.svt.se'):
+		try:
+			match = search(r'data-json-href="([^"]+)"', urlopen(url).read())
+			return 'http://svt.se%s' % match.group(1).replace('&amp;', '&')
+		except (HTTPError, AttributeError):
+			return url
+	else:
+		return url
 
 svt_init_req = TemplateRequest(
 							re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>[^?]+)',
-							url_template = 'http://www.%(domain)s/%(path)s?output=json',
-							decode_url = decode_svt_url)
+							url_template = 'http://www.%(domain)s/%(path)s?output=json')
 svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
 				items = [svt_init_req,
 						TemplateRequest(
