@@ -64,13 +64,15 @@ def decode_svt_url(url):
 			match = search(r'data-json-href="([^"]+)"', urlopen(url).read())
 			return 'http://svt.se%s' % match.group(1).replace('&amp;', '&')
 		except (HTTPError, AttributeError):
+			print "Hej"
 			return url
 	else:
 		return url
 
 svt_init_req = TemplateRequest(
 							re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>[^?]+)',
-							url_template = 'http://www.%(domain)s/%(path)s?output=json')
+							url_template = 'http://www.%(domain)s/%(path)s?output=json',
+							decode_url = decode_svt_url)
 svtplay = RequestChain(title = 'SVT-play', url = 'http://svtplay.se/',
 				items = [svt_init_req,
 						TemplateRequest(
