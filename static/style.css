@@ -125,6 +125,9 @@ section#content { display: inline-block;
 	text-align: left;
 	width: 60% }
 
+table { border: none;
+	width: 100% }
+
 .box { background-color: #fffff9;
 	background: -moz-linear-gradient(top, #fff, #ffe);
 	background: -webkit-linear-gradient(top, #fffffa, #ffe);

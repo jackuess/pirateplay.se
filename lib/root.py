@@ -5,6 +5,7 @@ from genshi.core import Markup
 
 import pirateplay, sitemap
 from api import Api
+from pirateplayer_downloader import PirateplayerDownloader
 
 def relative_time(s):
 	if s>31536000:
@@ -114,10 +115,12 @@ class Root():
 	def player_html(self):
 		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
 	
-	@cherrypy.tools.genshi_template(filename='notfound.html')
-	def default(self, *args, **kwargs):
-		cherrypy.response.status = 404
-		return {}
+	#@cherrypy.expose
+	#@cherrypy.tools.genshi_template(filename='notfound.html')
+	#def default(self, *args, **kwargs):
+		#cherrypy.response.status = 404
+		#return {}
 	
 	api = Api()
+	pirateplayer_downloads = PirateplayerDownloader()
 	generate_application_xml = api.get_streams_old_xml

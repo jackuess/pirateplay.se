@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv">
+	<xi:include href="layout.html" />
+	<head>
+		<title>Bibliotek</title>
+		<style type="text/css">
+			.download_column { text-align: right }
+		</style>
+	</head>
+	<body>
+		<h1>Pirateplayer filarkiv</h1>
+		<table>
+			<tr><th>Filnamn</th><th class="download_column">Ggr nedladdad</th></tr>
+			<py:for each="d in downloads">
+				<tr><td><a href="${d[0]}">${d[0]}</a></td><td class="download_column">${d[1]}</td></tr>
+			</py:for>
+		</table>
+		<p>Totalt antal nedladdningar: ${total_count}</p>
+	</body>
+</html>
