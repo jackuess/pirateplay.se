@@ -127,6 +127,10 @@ section#content { display: inline-block;
 
 table { border: none;
 	width: 100% }
+td { padding: .5% }
+th { border-bottom: 2px solid #666;
+	font-weight: bold }
+tr:nth-child(even) { background-color: #E3E2DB }
 
 .box { background-color: #fffff9;
 	background: -moz-linear-gradient(top, #fff, #ffe);
