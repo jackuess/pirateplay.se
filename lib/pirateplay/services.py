@@ -14,9 +14,9 @@ def remove_nullsubs(v):
 	return v
 
 def encode_kanal5(v):
-	suburl = 'http://www.kanal5play.se/api/subtitles/' + v['id']
-	if urlopen(suburl).read() != '[]':
-		v['sub'] = suburl
+	#suburl = 'http://www.kanal5play.se/api/subtitles/' + v['id']
+	#if urlopen(suburl).read() != '[]':
+		#v['sub'] = suburl
 	if 'bitrate' in v:
 		v['bitrate'] = int(v['bitrate']) / 1000
 	return v
