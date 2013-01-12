@@ -128,6 +128,16 @@ urplay = RequestChain(title = 'UR-play', url = 'http://urplay.se/', feed_url = '
 							meta_template = 'subtitles=%(sub)s; suffix-hint=flv',
 							is_last = True)])
 
+ur_se = RequestChain(
+				items = [TemplateRequest(
+							re = r'(http://)?(www\.)?ur\.se/(?P<url>.+)',
+							url_template = 'http://ur.se/%(url)s'),
+						TemplateRequest(
+							re = r'file:\s+\'/(?P<url>[^\']+\.(?P<ext>mp[34]))\'.*?subtitle:\s+\'(?P<sub>[^\']+)\'',
+							url_template = 'rtmp://130.242.59.75/ondemand playpath=%(ext)s:/%(url)s app=ondemand',
+							meta_template = 'subtitles=%(sub)s; suffix-hint=flv',
+							is_last = True)])
+
 sr = RequestChain(title = 'SR', url = 'http://sr.se/', feed_url = 'http://sverigesradio.se/api/rss/broadcast/516',
 				items = [ TemplateRequest(
 							re = r'(http://)?(www\.)?sverigesradio\.se/(?P<url>.+)',
@@ -451,7 +461,7 @@ vgtv = RequestChain(title = 'VGTV', url = 'http://vgtv.no/',
 
 
 services = [svtplay, svtplay_hls, svtplay_hds_fake, svtplay_hds, svtplay_http,
-			urplay,
+			urplay, ur_se,
 			sr,
 			tv3play, tv6play, tv8play, mtg_alt,
 			tv4play, tv4play_hds, tv4play_http, tv4play_hls_force, fotbollskanalen,
