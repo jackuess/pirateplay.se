@@ -96,7 +96,7 @@ svtplay_hls = RequestChain(
 svtplay_hds_fake = RequestChain(
 				items = [svt_init_req,
 						TemplateRequest(
-							re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
+							re = r'"url":"(?P<url>http://[^"]+\.f4m)".*?subtitleReferences":\[{"url":"(?P<sub>[^"]*)',
 							url_template = '%(url)s',
 							decode_url = lambda url: url.replace('manifest.f4m', 'master.m3u8').replace('akamaihd.net/z/', 'akamaihd.net/i/')),
 						svtplay_hls.items[2]])
