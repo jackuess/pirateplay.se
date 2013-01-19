@@ -44,3 +44,7 @@ Jag har laddat ner en ett program och dess undertext, men undertexten visas inte
 <!-- inner_delim -->
 <p>Pirateplayer gör ingenting med undertexterna, utan laddar bara ner dem som de är. Ibland är de i format som de populära videospelarna (Vlc, Mplayer etc.) inte klarar av att läsa. Lämpligt är då att försöka konvertera dem till <a href="http://en.wikipedia.org/wiki/.srt#SubRip_text_file_format">Subrip-formatet</a>.</p>
 <p>Här är ett par program som kan omvandla undertexter mellan en mängd olika format: <ul><li>Linux: <a href="http://home.gna.org/subtitleeditor/">Subtitle Editor</a></li><li>Windows: <a href="http://www.nikse.dk/subtitleedit">Subtitle Edit</a></li></ul>
+<!-- delim -->
+När jag försöker ladda ner ett program med Pirateplayer får jag meddelandet: "Pirateplayer kan inte ladda ner denna typ av strömmar. Med Appen på Piratplay.se går den kanske att ladda ner". Vad beror det på?
+<!-- inner_delim -->
+<p>Pirateplayer kan inte ladda ner sk. HDS-strömmar. För att ladda ner dessa strömmar följ min <a href="hds_guide.html">guide</a>.</p>
