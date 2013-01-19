@@ -57,14 +57,12 @@ class redirect_handler(HTTPRedirectHandler):
 		return StringIO(str(headers))
 	
 def decode_svt_url(url):
-	#return url
 	from re import search
 	if url.startswith('http://svt.se') or url.startswith('http://www.svt.se'):
 		try:
-			match = search(r'data-json-href="([^"]+)"', urlopen(url).read())
-			return 'http://svt.se%s' % match.group(1).replace('&amp;', '&')
+			match = search(r'articleId=(\d+)', urlopen(url).read())
+			return 'http://svtplay.se/video/%s?output=json' % match.group(1)
 		except (HTTPError, AttributeError):
-			print "Hej"
 			return url
 	else:
 		return url
@@ -104,7 +102,7 @@ svtplay_hds_fake = RequestChain(
 svtplay_hds = RequestChain(
 				items = [svt_init_req,
 						TemplateRequest(
-							re = r'"url":"(?P<url>http://[^"]+\.f4m)"',
+							re = r'"url":"(?P<url>http://[^"]+\.f4m)".*?subtitleReferences":\[{"url":"(?P<sub>[^"]*)',
 							encode_vars = lambda v: { 'guid': ''.join(chr(65 + randint(0, 25)) for i in range(12)) },
 							url_template = '%(url)s?hdcore=2.8.0&g=%(guid)s',
 							meta_template = 'quality=dynamisk; suffix-hint=flv; required-player-version=1',
