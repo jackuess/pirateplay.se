@@ -1,23 +1,39 @@
-import cherrypy, os
+import cherrypy, os, sqlite3
 import sitemap
+
+#
+# CREATE TABLE pirateplayer_downloads
+# (id INTEGER PRIMARY KEY, filename TEXT, downloadcount INTEGER)
+#
+# CREATE UNIQUE INDEX name_idx
+# ON pirateplayer_downloads(filename)
+#
 
 logfile = 'data/pirateplayer_downloads.log'
 archive_dir = 'static/pirateplayer_archive'
 
 class PirateplayerDownloader():
-	def downloads_dict(self):
-		downloadlog_file = open(logfile, 'r')
-		downloadlog = dict([entry.split() for entry in downloadlog_file])
-		downloadlog_file.close()
-		return downloadlog
+	def db_conn(self):
+		conn = sqlite3.connect('data/db.lite')
+		cursor = conn.cursor()
+		return conn, cursor
 		
 	@cherrypy.expose
 	@sitemap.add_to_sitemap('0.5')
 	@cherrypy.tools.genshi_template(filename='pirateplayer_downloads.html')
 	def index(self):
-		downloads = sorted(self.downloads_dict().items())
+		conn, c = self.db_conn()
 		
-		total_count = sum(int(d[1]) for d in downloads)
+		c.execute('''SELECT filename, downloadcount
+				FROM pirateplayer_downloads
+				ORDER BY filename ASC''')
+		downloads = c.fetchall()
+		
+		c.execute('''SELECT SUM(downloadcount)
+				FROM pirateplayer_downloads''')
+		total_count = c.fetchone()
+		
+		conn.close()
 		
 		return { 'downloads': downloads,
 				'total_count': total_count }
@@ -28,24 +44,26 @@ class PirateplayerDownloader():
 		path = os.path.join(archive_dir, filename)
 		
 		if os.path.exists(path):
-			downloadlog = self.downloads_dict()
-			downloadlog[filename] = str(int(downloadlog.get(filename, '0')) + 1)
+			conn, c = self.db_conn()
+			c.execute('''INSERT OR REPLACE
+					INTO pirateplayer_downloads(filename, downloadcount)
+					VALUES ('%(filename)s', coalesce((select downloadcount from pirateplayer_downloads where filename = '%(filename)s'), 0)+1)''' % { 'filename': filename })
+			conn.commit()
+			conn.close()
 			
-			#downloadlog_file = open(logfile, 'w')
-			
-			#for fn, count in sorted(downloadlog.items()):
-			#	downloadlog_file.write(fn + ' ' + count + '\n')
-			
-			#downloadlog_file.close()
 			raise cherrypy.InternalRedirect(os.path.join('../', path))
 		else:
 			raise cherrypy.NotFound()
 	
 	def redirect_to_latest(self, ext):
-		filenames = sorted(self.downloads_dict().keys())
-		for name in filenames:
-			if name.endswith(ext):
-				latest = name
+		conn, c = self.db_conn()
+		
+		c.execute("""SELECT MAX(filename)
+				FROM pirateplayer_downloads
+				WHERE filename like '%%%s'""" % ext)
+		latest = c.fetchone()
+		
+		conn.close()
 		
 		try:
 			raise cherrypy.HTTPRedirect(latest)
