@@ -31,12 +31,12 @@ class PirateplayerDownloader():
 			downloadlog = self.downloads_dict()
 			downloadlog[filename] = str(int(downloadlog.get(filename, '0')) + 1)
 			
-			downloadlog_file = open(logfile, 'w')
+			#downloadlog_file = open(logfile, 'w')
 			
-			for fn, count in sorted(downloadlog.items()):
-				downloadlog_file.write(fn + ' ' + count + '\n')
+			#for fn, count in sorted(downloadlog.items()):
+			#	downloadlog_file.write(fn + ' ' + count + '\n')
 			
-			downloadlog_file.close()
+			#downloadlog_file.close()
 			raise cherrypy.InternalRedirect(os.path.join('../', path))
 		else:
 			raise cherrypy.NotFound()
