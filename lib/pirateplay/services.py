@@ -160,9 +160,9 @@ tv4play_hds = RequestChain(
 							re = r'^(http://)?(www\.)?tv4play\.se/.*(videoid|video_id|vid)=(?P<id>\d+).*',
 							url_template = 'http://premium.tv4play.se/api/web/asset/%(id)s/play'),
 						TemplateRequest(
-							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<url>http://.*?\.mp4\.csmil/manifest\.f4m)</url>',
+							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<url>http://.*?\.mp4\.csmil/manifest\.f4m)</url>(?=.*?(?P<sub>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
 							url_template = '%(url)s?hdcore=2.7.6',
-							meta_template = 'quality=%(bitrate)s kbps; required-player-version=1',
+							meta_template = 'quality=%(bitrate)s kbps; subtitles=%(sub)s; required-player-version=1',
 							is_last = True)])
 tv4play_http = RequestChain(
 				items = [TemplateRequest(
