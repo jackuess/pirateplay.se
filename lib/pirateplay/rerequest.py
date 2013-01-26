@@ -40,9 +40,11 @@ class RequestChain:
 						debug_print('Opening URL: ' + req.get_full_url())
 						try:
 							if item.handlerchain != None:
-								content = urllib2.build_opener(item.handlerchain).open(req).read()
+								f = urllib2.build_opener(item.handlerchain).open(req)
 							else:
-								content = urllib2.urlopen(req).read()
+								f = urllib2.urlopen(req)
+							content = f.read()
+							f.close()
 						except urllib2.HTTPError:
 							content = ''
 						vars.update(item.get_vars())
