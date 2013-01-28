@@ -33,7 +33,9 @@ class RequestChain:
 			item.set_content(content, vars)
 			
 			if item.is_last:
-				return item.get_streams()
+				streams = item.get_streams()
+				item.release_content()
+				return streams
 			else:
 				reqs = item.get_requests()
 				if len(reqs) > 0:
@@ -50,7 +52,9 @@ class RequestChain:
 							content = ''
 						vars.update(item.get_vars())
 				else:
+					item.release_content()
 					return []
+			item.release_content()
 		return []
 	
 	def to_dict(self):
@@ -101,6 +105,12 @@ class TemplateRequest:
 		for match in re.finditer(self.re, self.content, re.DOTALL):
 			self.curr_vars.update(del_nones(match.groupdict()))
 			self.add_request()
+			
+	def release_content(self):
+		self.requests = None
+		self.streams = None
+		self.content = None
+		self.curr_vars = None
 					
 	def get_vars(self):
 		return self.curr_vars
