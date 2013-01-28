@@ -35,8 +35,9 @@ class RequestChain:
 			if item.is_last:
 				return item.get_streams()
 			else:
-				if len(item.get_requests()) > 0:
-					for req in item.get_requests():
+				reqs = item.get_requests()
+				if len(reqs) > 0:
+					for req in reqs:
 						debug_print('Opening URL: ' + req.get_full_url())
 						try:
 							if item.handlerchain != None:
