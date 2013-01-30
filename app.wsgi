@@ -4,12 +4,11 @@ import cherrypy, os, os.path, sys
 
 #We can't do all imports before we know that cwd is properly set
 def do_imports():
-	global genshi_tool, Root#, dowser
+	global genshi_tool, Root
 	import lib.genshi_tool as genshi_tool
 	genshi_template = genshi_tool.GenshiLoader()
 	cherrypy.tools.genshi_template = cherrypy.Tool('before_handler', genshi_template)
 	from lib.root import Root
-	import dowser as dowser
 
 def wsgi_application(environ, start_response):
 	base_dir = environ.get('pirateplay_base_dir', '')
@@ -17,8 +16,6 @@ def wsgi_application(environ, start_response):
 	
 	if not base_dir in sys.path:
 		sys.path.insert(0, base_dir)
-	#import dowser
-	#cherrypy.tree.mount(dowser.Root(), '/dowser')
 	
 	do_imports()
 	
