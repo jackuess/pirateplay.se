@@ -16,7 +16,7 @@ def del_nones(dict):
 		if item[1] == None and item[0] == 'sub':
 			dict[item[0]] = ''
 		elif item[1] == None:
-			del dict[item[0]]
+			pass#del dict[item[0]]
 	return dict
 
 class RequestChain:
