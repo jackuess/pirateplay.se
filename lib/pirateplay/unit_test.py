@@ -2,7 +2,7 @@ from lxml import etree
 from os import system
 from random import randint
 from traceback import format_exc
-from urllib2 import urlopen
+from urllib2 import urlopen, HTTPError
 from sys import argv
 
 import services
@@ -28,18 +28,18 @@ if len(argv) > 1:
 	services.services = [service for service in services.services if service.title.lower() == argv[-1].lower()]
 
 for service in services.services:
-	if service.feed_url != '':
+	try:
 		f = urlopen(service.feed_url)
 		tree = etree.parse(f)
 		f.close()
 		rnd = randint(1, int(tree.xpath('count(/rss/channel/item)')))
 		url = tree.xpath('/rss/channel/item[%s]/link/text()' % rnd)[0]
 		title = tree.xpath('/rss/channel/item[%s]/title/text()' % rnd)[0]
-	elif service.sample_url != '':
+	except (ValueError, HTTPError):
+		if service.sample_url == '':
+			continue
 		url = service.sample_url
 		title = 'Unknown'
-	else:
-		continue
 
 	print
 	print ansi['blue'] + service.title + ansi['reset']

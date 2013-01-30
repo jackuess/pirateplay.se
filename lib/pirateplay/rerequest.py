@@ -11,14 +11,6 @@ def debug_print(s):
 	if DEBUG:
 		print ' DEBUG ' + s
 
-def del_nones(dict):
-	for item in dict.items():
-		if item[1] == None and item[0] == 'sub':
-			dict[item[0]] = ''
-		elif item[1] == None:
-			del dict[item[0]]
-	return dict
-
 class RequestChain:
 	def __init__(self, title = '', url = '', feed_url = '', sample_url = '', items = []):
 		self.title = title
@@ -27,39 +19,28 @@ class RequestChain:
 		self.sample_url = sample_url
 		self.items = items
 	
+	def remove_duplicates(self, streams):
+		return dict([(s.url + s.meta, s) for s in streams]).values()
+	
 	def get_streams(self, url):
 		debug_print('Testing with service = ' + self.title)
-		vars = { 'sub': '' }
+		cumulated_vars = { 'sub': '' }
 		content = url
 		for item in self.items:
-			item.set_content(content, vars)
+			new_vars = item.create_vars(content)
+			
+			if len(new_vars) < 1:
+				break
 			
 			if item.is_last:
-				streams = item.get_streams()
-				item.release_content()
-				return streams
+				return self.remove_duplicates([Stream( url = item.decode_url( item.url_template % dict(cumulated_vars, **v) ),
+														meta = item.decode_meta( item.meta_template % dict(cumulated_vars, **v) ) )
+												for v in new_vars])
 			else:
-				reqs = item.get_requests()
-				if len(reqs) > 0:
-					for req in reqs:
-						debug_print('Opening URL: ' + req.get_full_url())
-						try:
-							if item.handlerchain != None:
-								f = urllib2.build_opener(item.handlerchain).open(req)
-							else:
-								f = urllib2.urlopen(req)
-							content = f.read()
-							f.close()
-						except urllib2.HTTPError:
-							content = ''
-						try:
-							vars.update(item.get_vars())
-						except TypeError:
-							pass
-				else:
-					item.release_content()
-					return []
-			item.release_content()
+				for v in new_vars:
+					cumulated_vars.update(v)
+				content = item.create_content(cumulated_vars)
+		
 		return []
 	
 	def to_dict(self):
@@ -79,7 +60,6 @@ class RequestChain:
 		
 		return d
 
-
 class TemplateRequest:
 	def __init__(self, re,
 				url_template = '', meta_template = '', data_template = '',
@@ -97,79 +77,62 @@ class TemplateRequest:
 		self.handlerchain = handlerchain
 		self.data_template = data_template
 		self.is_last = is_last
-		
-		self.requests = []
-		self.streams = []
-	
-	def set_content(self, content, old_vars):
-		self.requests = []
-		self.streams = []
-		self.content = self.decode_content(content)
-		self.curr_vars = old_vars
-		
-		for match in re.finditer(self.re, self.content, re.DOTALL):
-			self.curr_vars.update(del_nones(match.groupdict()))
-			self.add_request()
-			
-	def release_content(self):
-		self.requests = None
-		self.streams = None
-		self.content = None
-		self.curr_vars = None
-					
-	def get_vars(self):
-		return self.curr_vars
-	
-	def process(self):
-		self.curr_vars.update(self.encode_vars(self.curr_vars))
-		
-		self.url = self.url_template % self.curr_vars
-		self.meta = self.meta_template % self.curr_vars
-		self.data = self.data_template % self.curr_vars
-		
-		self.url = self.decode_url(self.url)
-		self.meta = self.decode_meta(self.meta)
-	
-	def get_streams(self):
-		#Remove duplicates in self.streams before returning
-		return dict([(s.url + s.meta, s) for s in self.streams]).values()
-	
-	def get_requests(self):
-		return self.requests
-	
-	def add_request(self):
-		self.process()
-		
-		if self.is_last:
-			self.streams.append(Stream(self.url, self.meta))
-			return
-		
-		req = urllib2.Request(self.url)
 
-		if self.data != '':
-			debug_print('Adding post data to request: ' + self.data)
-			req.add_data(self.data)
+	def del_nones(self, dict):
+		for item in dict.items():
+			if item[1] == None:
+				del dict[item[0]]
+		return dict
+	
+	def create_vars(self, content):
+		content = self.decode_content(content)
+		return [self.encode_vars(self.del_nones(match.groupdict()))
+			for match in re.finditer(self.re, content, re.DOTALL)]
+		
+	def create_content(self, cumulated_vars):
+		url = self.url_template % cumulated_vars
+		url = self.decode_url(url)
+		
+		data = self.data_template % cumulated_vars
 			
+		req = urllib2.Request(url)
+
+		if data != '':
+			debug_print('Adding post data to request: ' + data)
+			req.add_data(data)
+				
 		for header, value in self.headers.items():
 			debug_print('Adding header to request: %s = %s' % (header, value))
 			req.add_header(header, value)
+			
+		debug_print('Opening URL: ' + req.get_full_url())
+		try:
+			try:
+				f = urllib2.build_opener(self.handlerchain).open(req)
+			except TypeError:
+				f = urllib2.urlopen(req)
+			
+			content = f.read()
+			f.close()
+		except (urllib2.HTTPError, urllib2.URLError):
+			content = ''
 		
-		self.requests.append(req)
-
-def delete_empty_values(d):
-	for key in d.keys():
-		if d[key] == '':
-			del d[key]
-	return d
+		return content
 
 class Stream:
 	def __init__(self, url, meta):
 		self.url = url
 		self.meta = meta
 	
+	def delete_empty_values(self, d):
+		for key in d.keys():
+			if d[key] == '':
+				del d[key]
+		return d
+	
 	def metadict(self):
 		try:
-			return delete_empty_values(dict([(x[0].strip(), x[1].strip()) for x in [i.strip().split('=') for i in self.meta.split(';')]]))
+			return self.delete_empty_values(dict([(x[0].strip(), x[1].strip()) for x in [i.strip().split('=') for i in self.meta.split(';')]]))
 		except IndexError:
 			return {}
 	
