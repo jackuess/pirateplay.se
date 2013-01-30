@@ -13,7 +13,9 @@ def debug_print(s):
 
 def del_nones(dict):
 	for item in dict.items():
-		if item[1] == None:
+		if item[1] == None and item[0] == 'sub':
+			dict[item[0]] = ''
+		elif item[1] == None:
 			del dict[item[0]]
 	return dict
 
@@ -50,10 +52,7 @@ class RequestChain:
 							f.close()
 						except urllib2.HTTPError:
 							content = ''
-						try:
-							vars.update(item.get_vars())
-						except TypeError:
-							pass
+						vars.update(item.get_vars())
 				else:
 					item.release_content()
 					return []
