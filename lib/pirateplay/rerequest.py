@@ -50,7 +50,10 @@ class RequestChain:
 							f.close()
 						except urllib2.HTTPError:
 							content = ''
-						vars.update(item.get_vars())
+						try:
+							vars.update(item.get_vars())
+						except TypeError:
+							pass
 				else:
 					item.release_content()
 					return []
