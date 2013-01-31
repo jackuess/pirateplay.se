@@ -62,12 +62,15 @@ class Root():
 		
 		now = datetime.datetime.now()
 		api = twitter.Api()
-		tweets = api.GetUserTimeline('pirateplay_se', count=200)
-			
-		twitter = [{ 'text':  Markup(format_tweet(t.text)),
-					'time': relative_time((now - datetime.datetime.strptime(t.created_at, '%a %b %d %H:%M:%S +0000 %Y')).total_seconds()) }
-					for t in tweets
-					if not t.text.startswith('@')]
+		try:
+			tweets = api.GetUserTimeline('pirateplay_se', count=200)
+				
+			twitter = [{ 'text':  Markup(format_tweet(t.text)),
+						'time': relative_time((now - datetime.datetime.strptime(t.created_at, '%a %b %d %H:%M:%S +0000 %Y')).total_seconds()) }
+						for t in tweets
+						if not t.text.startswith('@')]
+		except AttributeError:
+			twitter = []
 		
 		services_se = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
 		services_other = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and not '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
@@ -114,6 +117,12 @@ class Root():
 	@cherrypy.tools.genshi_template(filename='player.html')
 	def player_html(self):
 		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
+	
+	@cherrypy.expose
+	@sitemap.add_to_sitemap('0.2')
+	@cherrypy.tools.genshi_template(filename='osxbrev_2013-01-14.html')
+	def osxbrev_2013_01_14_html(self):
+		return {}
 	
 	#@cherrypy.expose
 	#@cherrypy.tools.genshi_template(filename='notfound.html')
