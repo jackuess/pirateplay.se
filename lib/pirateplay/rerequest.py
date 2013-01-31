@@ -81,7 +81,7 @@ class TemplateRequest:
 	
 	def create_vars(self, content):
 		content = self.decode_content(content)
-		return [self.encode_vars(self.del_nones(match.groupdict()))
+		return [dict(match.groupdict(), **self.encode_vars(self.del_nones(match.groupdict())))
 			for match in re.finditer(self.re, content, re.DOTALL)]
 		
 	def create_content(self, cumulated_vars):

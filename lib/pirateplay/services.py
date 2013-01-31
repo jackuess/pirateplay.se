@@ -121,9 +121,11 @@ urplay = RequestChain(title = 'UR-play', url = 'http://urplay.se/', feed_url = '
 							re = r'(http://)?(www\.)?urplay\.se/(?P<url>.+)',
 							url_template = 'http://urplay.se/%(url)s'),
 						TemplateRequest(
-							re = r'file=/(?P<url>[^&]+(?P<ext>mp[34]))(?:.*?captions.file=(?P<sub>[^&]+))?',
+							re = r'file_flash:\s+"(?P<url>[^"]+\.(?P<ext>mp[34]))".*?subtitles:\s+"(?P<sub>[^"]+)"',
 							url_template = 'rtmp://130.242.59.75/ondemand playpath=%(ext)s:/%(url)s app=ondemand',
 							meta_template = 'subtitles=%(sub)s; suffix-hint=flv',
+							decode_url = lambda url: url.replace('\\', ''),
+							encode_vars = lambda v: { 'sub': v.get('sub').replace('\\', '') },
 							is_last = True)])
 
 ur_se = RequestChain(
