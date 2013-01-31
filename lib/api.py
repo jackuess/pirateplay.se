@@ -52,14 +52,17 @@ class Api():
 	def get_streams_old_xml(self, url, librtmp = '0', output_file = '-', parent_function = ''):
 		streams = pirateplay.get_streams(url)
 		
-		if streams[0].url.startswith('rtmp') and librtmp == '0':
-			return { 'streams': [{'url': pirateplay.rtmpdump_cmd(s.url, output_file), 'meta': s.metadict()} for s in streams] }
-		elif '.m3u8' in streams[0].url:
-			return { 'streams': [{ 'meta': { 'quality': u'Inkompatibel ström. Uppgradera Pirateplayer.' }, 'url': 'http://localhost/' }] }
-		elif 'manifest.f4m' in streams[0].url:
-			return { 'streams': [{ 'meta': { 'quality': u'Inkompatibel ström. Testa appen på Pirateplay.se.' }, 'url': 'http://localhost/' }] }
-		else:
-			return { 'streams': [s.to_dict() for s in streams] }
+		try:
+			if streams[0].url.startswith('rtmp') and librtmp == '0':
+				return { 'streams': [{'url': pirateplay.rtmpdump_cmd(s.url, output_file), 'meta': s.metadict()} for s in streams] }
+			elif '.m3u8' in streams[0].url:
+				return { 'streams': [{ 'meta': { 'quality': u'Inkompatibel ström. Uppgradera Pirateplayer.' }, 'url': 'http://localhost/' }] }
+			elif 'manifest.f4m' in streams[0].url:
+				return { 'streams': [{ 'meta': { 'quality': u'Inkompatibel ström. Testa appen på Pirateplay.se.' }, 'url': 'http://localhost/' }] }
+			else:
+				return { 'streams': [s.to_dict() for s in streams] }
+		except IndexError:
+			return { 'streams': [] }
 	
 	@cherrypy.expose
 	@cherrypy.tools.json_out(handler = service_handler)
