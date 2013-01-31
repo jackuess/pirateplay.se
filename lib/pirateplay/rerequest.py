@@ -19,9 +19,6 @@ class RequestChain:
 		self.sample_url = sample_url
 		self.items = items
 	
-	def remove_duplicates(self, streams):
-		return dict([(s.url + s.meta, s) for s in streams]).values()
-	
 	def get_streams(self, url):
 		debug_print('Testing with service = ' + self.title)
 		cumulated_vars = { 'sub': '' }
@@ -33,13 +30,11 @@ class RequestChain:
 				break
 			
 			if item.is_last:
-				return self.remove_duplicates([Stream( url = item.decode_url( item.url_template % dict(cumulated_vars, **v) ),
-														meta = item.decode_meta( item.meta_template % dict(cumulated_vars, **v) ) )
-												for v in new_vars])
-			else:
-				for v in new_vars:
-					cumulated_vars.update(v)
-				content = item.create_content(cumulated_vars)
+				return item.create_streams(new_vars, cumulated_vars)
+			
+			for v in new_vars:
+				cumulated_vars.update(v)
+			content = item.create_content(cumulated_vars)
 		
 		return []
 	
@@ -118,6 +113,14 @@ class TemplateRequest:
 			content = ''
 		
 		return content
+	
+	def remove_duplicates(self, streams):
+		return dict([(s.url + s.meta, s) for s in streams]).values()
+	
+	def create_streams(self, new_vars, cumulated_vars):
+		return self.remove_duplicates([Stream( url = self.decode_url( self.url_template % dict(cumulated_vars, **v) ),
+												meta = self.decode_meta( self.meta_template % dict(cumulated_vars, **v) ) )
+										for v in new_vars])
 
 class Stream:
 	def __init__(self, url, meta):
