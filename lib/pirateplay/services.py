@@ -39,10 +39,11 @@ try:
 		return str(remoting.encode(env).read())
 
 	def decode_bc(content):
-		r = ''
-		for rendition in remoting.decode(content).bodies[0][1].body['renditions']:
-			r += '"%sx%s:%s";' % (rendition['frameWidth'], rendition['frameHeight'], rendition['defaultURL'])
-		return r
+		if content == '':
+			return ''
+		
+		return ''.join(['"%sx%s:%s";' % (rendition['frameWidth'], rendition['frameHeight'], rendition['defaultURL'])
+						for rendition in remoting.decode(content).bodies[0][1].body['renditions']])
 
 except ImportError:
 	print 'PyAMF not found! Brightcove support dissabled!'

@@ -2,6 +2,8 @@
 
 import cherrypy, os, os.path, sys
 
+sys.stdout = sys.stderr
+
 #We can't do all imports before we know that cwd is properly set
 def do_imports():
 	global genshi_tool, Root
