@@ -87,12 +87,10 @@ class TemplateRequest:
 	def create_content(self, cumulated_vars):
 		url = self.url_template % cumulated_vars
 		url = self.decode_url(url)
-		url = url.encode('utf-8')
 		req = urllib2.Request(url)
 		
 		data = self.data_template % cumulated_vars
 		
-
 		if data != '':
 			debug_print('Adding post data to request: ' + data)
 			req.add_data(data)

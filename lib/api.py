@@ -45,6 +45,7 @@ class Api():
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='api/get_streams.xml', type='xml')
 	def get_streams_xml(self, url, rnd = None):
+		url = url.encode('utf-8')
 		return {'streams': [s.to_dict() for s in pirateplay.get_streams(url)]}
 	
 	@cherrypy.expose
