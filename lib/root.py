@@ -43,7 +43,44 @@ def format_tweet(s):
 	s = re.sub(r'(https?://\S+)', '<a href="\\1">\\1</a>', s, flags=re.IGNORECASE)
 	return re.sub(r'(@([^\s]+))', '<a href="http://twitter.com/\\2">\\1</a>', s, flags=re.IGNORECASE)
 
+def send_mail(sender, recipient, subject, message, message_type):
+	import smtplib
+	from email.mime.text import MIMEText
+	from email.utils import formatdate
+	
+	msg = MIMEText(message, message_type)
+	msg['Date'] = formatdate()
+	msg['Subject'] = subject
+	msg['From'] = sender
+	msg['To'] = recipient
+	
+	s = smtplib.SMTP('mail.wrutschkow.org')
+	s.sendmail(sender, [recipient], msg.as_string())
+	s.quit()
+
+def handle_error():
+	msg = '<h2>URL</h2><p><a href="%(url)s">%(url)s</a></p><h2>Traceback</h2><pre><code>%(traceback)s</code></pre>' % { 'url': cherrypy.url(qs=cherrypy.request.query_string),
+																															'traceback': cherrypy._cperror.format_exc() }
+	send_mail('error@pirateplay.se', 'jacques@pirateplay.se', 'Feil!', msg, 'html')
+	
+	cherrypy.response.status = 500
+	cherrypy.response.body = ["<html><body>Sorry, an error occured</body></html>"]
+
+def handle_error_404(status, message, traceback, version):
+	from urllib import quote
+	from genshi.template import TemplateLoader, Context
+	
+	template_loader = TemplateLoader(cherrypy.config.get('tools.genshi_template.dir'))
+	template = template_loader.load('notfound.html')
+	context = Context(url=cherrypy.url, quote=quote)
+	stream = template.generate(context)
+	
+	return stream.render('xhtml')
+
 class Root():
+	_cp_config = { 'request.error_response': handle_error,
+					'error_page.404': handle_error_404 }
+	
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='sitemap.xml', type='xml')
 	def sitemap_xml(self):
@@ -118,17 +155,11 @@ class Root():
 	def player_html(self):
 		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
 	
-	@cherrypy.expose
-	@sitemap.add_to_sitemap('0.2')
-	@cherrypy.tools.genshi_template(filename='osxbrev_2013-01-14.html')
-	def osxbrev_2013_01_14_html(self):
-		return {}
-	
 	#@cherrypy.expose
-	#@cherrypy.tools.genshi_template(filename='notfound.html')
-	#def default(self, *args, **kwargs):
-		#cherrypy.response.status = 404
-		#return {}
+	#@sitemap.add_to_sitemap('0.2')
+	#@cherrypy.tools.genshi_template(filename='osxbrev_2013-01-14.html')
+	#def osxbrev_2013_01_14_html(self):
+	#	return {}
 	
 	api = Api()
 	pirateplayer_downloads = PirateplayerDownloader()

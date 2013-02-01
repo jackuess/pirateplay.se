@@ -8,8 +8,7 @@ sys.stdout = sys.stderr
 def do_imports():
 	global genshi_tool, Root
 	import lib.genshi_tool as genshi_tool
-	genshi_template = genshi_tool.GenshiLoader()
-	cherrypy.tools.genshi_template = cherrypy.Tool('before_handler', genshi_template)
+	cherrypy.tools.genshi_template = cherrypy.Tool('before_handler', genshi_tool.GenshiLoader())
 	from lib.root import Root
 
 def wsgi_application(environ, start_response):
