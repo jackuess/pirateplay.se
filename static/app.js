@@ -61,7 +61,7 @@ function streamRepresentation(stream) {
 				cmd = 'php AdobeHDS.php --delete --manifest "' + streamLink + '" --outfile "' + args.out + '"';
 			}
 			else
-				cmd = 'wget -O "' + args.out + '" "' + streamLink + '"';
+				cmd = "wget -O '" + args.out + "' '" + streamLink + "'";
 			
 			if (args.show_inputs)
 				r.append('<input type="text" class="cmd" value=\'' + cmd + "' />");
@@ -69,10 +69,10 @@ function streamRepresentation(stream) {
 				r.append('<p class="cmd">' + cmd + '</p>');
 			if (subLink) {
 				if (args.show_inputs) {
-					subCmd = 'wget -O "' + stripExt(args.out) + '.srt" "' + this.stream.meta.subtitles + '"'
+					subCmd = "wget -O '" + stripExt(args.out) + ".srt' '" + this.stream.meta.subtitles + "'"
 					r.append('<input type="text" class="cmd" value=\'' + subCmd + "' />");
 				} else {
-					subCmd = 'wget -O "' + stripExt(args.out) + '.srt" "' + subLink + '"'
+					subCmd = "wget -O '" + stripExt(args.out) + ".srt' '" + subLink + "'"
 					r.append('<p class="cmd">' + subCmd + '</p>');
 				}
 			}
