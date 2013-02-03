@@ -6,3 +6,4 @@ googleda0*.html
 config.ini
 static/pirateplayer_archive/
 data/pirateplayer_downloads.log
+data/db.lite
