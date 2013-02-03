@@ -1,4 +1,5 @@
-from main import get_streams, services, rtmpdump_cmd
+#from main import get_streams, services, rtmpdump_cmd
+from get_stream import get_streams, services, rtmpdump_cmd
 
 from json import JSONEncoder
 class JSONEncoder(JSONEncoder):

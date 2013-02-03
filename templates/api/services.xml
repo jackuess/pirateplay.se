@@ -4,6 +4,6 @@
 		<url py:if="'url' in s">${s['url']}</url>
 		<feed_url py:if="'feed_url' in s">${s['feed_url']}</feed_url>
 		<sample_url py:if="'sample_url' in s">${s['sample_url']}</sample_url>
-		<test py:if="'test' in s">${s['test']}</test>
+		<test py:if="'items' in s">${s['items'][0].re}</test>
 	</service>
 </services>

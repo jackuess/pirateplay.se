@@ -1,8 +1,8 @@
 <streams xmlns:py="http://genshi.edgewall.org/"> 
 	<py:for each="s in streams">
-		<stream quality="${s['meta'].get('quality')}"
-				subtitles="${s['meta'].get('subtitles')}"
-				suffix-hint="${s['meta'].get('suffix-hint')}"
-				required-player-version="${s['meta'].get('required-player-version', '0')}">${s['url']}</stream>
+		<stream quality="${s.get('quality')}"
+				subtitles="${s.get('subtitles')}"
+				suffix-hint="${s.get('suffix-hint')}"
+				required-player-version="${s.get('required-player-version', '0')}">${s['final_url']}</stream>
 	</py:for>
 </streams>

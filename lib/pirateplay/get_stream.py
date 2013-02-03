@@ -3,8 +3,8 @@
 import getopt, sys
 from os import system
 
-from rerequest import *
-from services import services
+from rerequest2 import get_vars, debug_print, set_debug
+from services2 import services
 
 def rtmpdump_cmd(rtmp_url, out = '-'):
 	cmd = (rtmp_url.replace('swfVfy=1 swfUrl=', '-W ')
@@ -17,19 +17,25 @@ def rtmpdump_cmd(rtmp_url, out = '-'):
 
 def sorted_streams(streams):
 	return sorted(streams,
-					key=lambda s: s.metadict().get('quality', '').rjust(16, '0'),
+					key=lambda s: s.get('quality', '').rjust(16, '0'),
 					reverse=True)
+	
+def remove_duplicates(streams):
+	return dict([(s['final_url'], s) for s in streams]).values()
 
 def get_streams(url):
+	cache = {}
 	debug_print('Getting streams for: ' + url)
 	for service in services:
-		streams = service.get_streams(url)
+		streams = get_vars(service, url, cache)
 		if len(streams) > 0:
-			return sorted_streams(streams)
+			streams = remove_duplicates(streams)
+			streams = sorted_streams(streams)
+			return streams
 	return []
 
 def print_usage():
-	print """Usage: pirateplay [Flags]... [URL]...
+	print("""Usage: pirateplay [Flags]... [URL]...
 			Finds stream urls for swedish programming. Plays them in vlc by default. Downloads them if output file is specified.
 
 			  -h, --help
@@ -43,7 +49,7 @@ def print_usage():
 			  -y command, --player=command
 			    Set player command, ie. ffplay, vlc, mplayer (default is vlc).
 			  -d, --debug
-			    Print debug info during execution.""".replace('	', '')
+			    Print debug info during execution.""".replace('	', ''))
 	sys.exit(0)
 
 def parse_options():
@@ -79,33 +85,34 @@ if __name__ == '__main__':
 		sys.exit('Player command not found: %s' % options['player'])
 
 	streams = get_streams(sys.argv[-1])
+	
 	i = 0
 	cmds = []
 	for stream in streams:
-		print '%d. Quality: %s, subtitles: %s' % (i+1, stream.metadict().get('quality', 'unknown'), stream.metadict().get('subtitles', 'none'))
+		print('%d. Quality: %s, subtitles: %s' % (i+1, stream.get('quality', 'unknown'), stream.get('subtitles', 'none')))
 		i += 1
 		
 		if options['print_urls']:
-			print stream.url
+			print(stream['final_url'])
 		else:
 			if options['play']:
-				cmd = "%s '%s'" % (options['player'], stream.url)
-			elif stream.url.startswith('rtmp'):
-				cmd = rtmpdump_cmd(stream.url, options['out_file'])
-			elif '.m3u8' in stream.url:
-				cmd = 'ffmpeg -i "%s" -acodec copy -vcodec copy -bsf aac_adtstoasc "%s"' % (stream.url, options['out_file'])
-			elif 'manifest.f4m' in stream.url:
-				cmd = 'php AdobeHDS.php --delete --manifest "%s" --outfile "%s"' % (stream.url, options['out_file'])
+				cmd = "%s '%s'" % (options['player'], stream['final_url'])
+			elif ['final_url'].startswith('rtmp'):
+				cmd = rtmpdump_cmd(['final_url'], options['out_file'])
+			elif '.m3u8' in ['final_url']:
+				cmd = 'ffmpeg -i "%s" -acodec copy -vcodec copy -bsf aac_adtstoasc "%s"' % (stream['final_url'], options['out_file'])
+			elif 'manifest.f4m' in ['final_url']:
+				cmd = 'php AdobeHDS.php --delete --manifest "%s" --outfile "%s"' % (stream['final_url'], options['out_file'])
 			else:
-				cmd = 'wget -O "%s" "%s"' % (options['out_file'], stream.url)
+				cmd = 'wget -O "%s" "%s"' % (options['out_file'], ['final_url'])
 			
 			if options['print_cmds']:
-				print cmd
+				print(cmd)
 			else:
 				cmds.append(cmd)
 	
 	if i == 0:
-		print 'No streams found.'
+		print('No streams found.')
 	elif not options['print_cmds'] and not options['print_urls']:
 		i_choice = int(raw_input('Choose stream: '))-1
 		system(cmds[i_choice])
