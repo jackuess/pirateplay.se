@@ -109,8 +109,8 @@ class Root():
 		except (AttributeError, twitter.TwitterError):
 			twitter = []
 		
-		services_se = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
-		services_other = sorted([s.to_dict() for s in pirateplay.services if len(s.items) > 0 and not '\.se/' in s.items[0].re and s.title != ''], key=lambda s: s['title'])
+		services_se = sorted([s for s in pirateplay.services if len(s.get('items', [])) > 0 and '\.se/' in s['items'][0].re and s.get('title', '') != ''], key=lambda s: s['title'])
+		services_other = sorted([s for s in pirateplay.services if len(s.get('items', [])) > 0 and not '\.se/' in s['items'][0].re and s.get('title', '') != ''], key=lambda s: s['title'])
 		
 		return dict(services_se = services_se, services_other = services_other, tweets = twitter)
 	
