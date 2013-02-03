@@ -1,5 +1,5 @@
 [global]
-server.environment = 'production'
+server.environment = 'embedded'
 server.socket_host = '0.0.0.0'
 request.show_tracebacks = False
 server.socket_port = 80
@@ -7,16 +7,16 @@ tools.genshi_template.dir = os.path.join(config.base_dir, 'templates')
 tools.genshi_template.auto_reload = False
 
 [/]
-tools.encode.on = True,
+tools.encode.on = True
 tools.encode.encoding = 'utf-8'
 
 [/static]
-tools.staticdir.on = True,
+tools.staticdir.on = True
 tools.staticdir.root = config.base_dir
 tools.staticdir.dir = 'static'
 tools.staticdir.content_types = { 'ini': 'application/x-download' }
 
 [/playbrowser]
-tools.staticdir.on = True,
+tools.staticdir.on = True
 tools.staticdir.root = config.base_dir
 tools.staticdir.dir = 'static/playbrowser'
