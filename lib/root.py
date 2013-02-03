@@ -153,7 +153,7 @@ class Root():
 	@sitemap.add_to_sitemap('0.8')
 	@cherrypy.tools.genshi_template(filename='player.html')
 	def player_html(self):
-		return dict(services = sorted([s.to_dict() for s in pirateplay.services if s.title != ''], key=lambda s: s['title']))
+		return dict(services = sorted([s for s in pirateplay.services if s.get('title', '') != ''], key=lambda s: s['title']))
 	
 	#@cherrypy.expose
 	#@sitemap.add_to_sitemap('0.2')
