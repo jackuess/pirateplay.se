@@ -18,7 +18,6 @@ class Api():
 		s = deepcopy(service)
 		if 'items' in s:
 			try:
-				#s.items[0].re = re.sub(r'(\(\?P<\w+>)|(\(\?:)', '(', service.items[0].re)
 				s['test'] = re.sub(r'(\(\?P<\w+>)|(\(\?:)', '(', service['items'][0].re)
 			except IndexError:
 				pass
@@ -40,7 +39,7 @@ class Api():
 		return {}
 	
 	@cherrypy.expose
-	@cherrypy.tools.json_out()#handler = service_handler)
+	@cherrypy.tools.json_out()
 	def get_streams_js(self, url, rnd = None):
 		return [{ 'url': s['final_url'],
 				'meta': { 'quality': s.get('quality'),
