@@ -61,7 +61,7 @@ def send_mail(sender, recipient, subject, message, message_type):
 def handle_error():
 	msg = '<h2>URL</h2><p><a href="%(url)s">%(url)s</a></p><h2>Traceback</h2><pre><code>%(traceback)s</code></pre>' % { 'url': cherrypy.url(qs=cherrypy.request.query_string),
 																															'traceback': cherrypy._cperror.format_exc() }
-	send_mail('error@pirateplay.se', 'jacques@pirateplay.se', 'Feil!', msg, 'html')
+	send_mail('error@pirateplay.se', cherrypy.request.app.config['Pirateplay']['admin_email'], 'Feil!', msg, 'html')
 	
 	cherrypy.response.status = 500
 	cherrypy.response.body = ["<html><body>Sorry, an error occured</body></html>"]

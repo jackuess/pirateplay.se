@@ -5,6 +5,7 @@ request.show_tracebacks = False
 server.socket_port = 80
 tools.genshi_template.dir = os.path.join(config.base_dir, 'templates')
 tools.genshi_template.auto_reload = False
+log.screen = False
 
 [/]
 tools.encode.on = True
@@ -20,3 +21,6 @@ tools.staticdir.content_types = { 'ini': 'application/x-download' }
 tools.staticdir.on = True
 tools.staticdir.root = config.base_dir
 tools.staticdir.dir = 'static/playbrowser'
+
+[Pirateplay]
+admin_email = 'admin@example.com'
