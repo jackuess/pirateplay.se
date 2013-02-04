@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 from random import randint
 from re import search
 from urllib2 import HTTPError, urlopen

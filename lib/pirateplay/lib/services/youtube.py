@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 import subprocess
 
 services = [{ 'title': 'Youtube', 'url': 'http://youtube.com/', 'feed_url': 'http://gdata.youtube.com/feeds/base/videos?alt=rss',

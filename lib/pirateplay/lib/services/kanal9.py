@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 try:
 	from pyamf import remoting

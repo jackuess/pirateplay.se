@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 services = [{ 'title': 'Expressen-TV', 'url': 'http://expressen.se/tv/',
 				'items': [TemplateRequest( re = r'(?P<req_url>(http://)?(www\.)?expressen\.se/(.+))' ),

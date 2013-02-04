@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 services = [{ 'title': 'UR-play', 'url': 'http://urplay.se/', 'feed_url': 'http://urplay.se/rss',
 		'items': [TemplateRequest(

@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 get_video = 'http://www.kanal5play.se/api/getVideo?format=%(format)s&videoId=%(id)s'
 

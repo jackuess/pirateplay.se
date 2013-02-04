@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 video_re = r'playerWidth:\s(?P<width>\d+).*?playerHeight:\s(?P<height>\d+).*?videoUrl:\s"%s'
 

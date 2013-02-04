@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 services = [{ 'title': 'Disney Junior', 'url': 'http://www.disney.se/disney-junior/innehall/video.jsp',
 			'items': [TemplateRequest( re = r'(?P<req_url>(http://)?(www\.)?disney\.se/disney-junior/.+)' ),

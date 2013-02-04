@@ -5,9 +5,9 @@ from traceback import format_exc
 from urllib2 import urlopen, HTTPError
 from sys import argv
 
-from services2 import services
+from lib.services import services
 from get_stream import get_streams, rtmpdump_cmd
-from rerequest2 import set_debug
+from lib.rerequest import set_debug
 
 def test_cmd(cmd):
 	status = system(cmd) >> 8 #High byte is exit status (low byte is pid who killed)

@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 services = [{ 'title': 'Discovery', 'url': 'http://dsc.discovery.com/',
 				'items': [TemplateRequest( re = r'(?P<req_url>(http://)?dsc\.discovery\.com/.+)' ),

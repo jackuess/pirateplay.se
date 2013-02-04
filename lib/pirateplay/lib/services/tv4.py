@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 def init_req(domain = 'tv4play', protocol = 'http://', query = ''):
 	return TemplateRequest(

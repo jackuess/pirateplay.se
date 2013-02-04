@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 services = [{ 'title': 'SR', 'url': 'http://sr.se/', 'feed_url': 'http://sverigesradio.se/api/rss/broadcast/516',
 				'items': [ TemplateRequest(

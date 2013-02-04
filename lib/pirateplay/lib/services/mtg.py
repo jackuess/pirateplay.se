@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 mtg_encode = [lambda v: { 'req_url': 'http://viastream.viasat.tv/PlayProduct/%s' % v['id'] },
 			lambda v: { 'final_url': '%s swfVfy=1 swfUrl=http://flvplayer.viastream.viasat.tv/play/swf/player120328.swf' % v['final_url'].replace('/mp4:', '/ playpath=mp4:'),

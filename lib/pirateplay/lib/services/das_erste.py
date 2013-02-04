@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 services = [{ 'title': 'Das Erste Mediathek', 'url': 'http://mediathek.daserste.de/',
 				'items': [TemplateRequest( re = r'(?P<req_url>(http://)?mediathek\.daserste\.de/.*)' ),

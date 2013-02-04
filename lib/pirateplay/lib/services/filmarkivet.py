@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 
 services = [{ 'title': 'Filmarkivet', 'url': 'http://filmarkivet.se/', 'sample_url': 'http://filmarkivet.se/sv/Film/?movieid=220',
 			'items': [TemplateRequest(

@@ -1,4 +1,4 @@
-from lib.pirateplay.rerequest2 import TemplateRequest
+from ..rerequest import TemplateRequest
 from common import redirect_handler
 
 services = [{ 'title': 'DR-TV', 'url': 'http://dr.dk/tv',

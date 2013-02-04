@@ -3,8 +3,8 @@
 import getopt, sys
 from os import system
 
-from rerequest2 import get_vars, debug_print, set_debug
-from services2 import services
+from lib.rerequest import get_vars, debug_print, set_debug
+from lib.services import services
 
 def rtmpdump_cmd(rtmp_url, out = '-'):
 	cmd = (rtmp_url.replace('swfVfy=1 swfUrl=', '-W ')
