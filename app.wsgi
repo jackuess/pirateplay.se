@@ -31,9 +31,6 @@ def wsgi_application(environ, start_response):
 	return cherrypy.tree(environ, start_response)
 
 application = wsgi_application
-#from dozer import Dozer
-#application = Dozer(wsgi_application)
-
 
 if __name__ == "__main__":
 	do_imports()
@@ -42,7 +39,8 @@ if __name__ == "__main__":
 	
 	confdict = { 'global': { 'server.socket_port': 8081,
 				'request.show_tracebacks': True,
-				'tools.genshi_template.auto_reload': True } }
+				'tools.genshi_template.auto_reload': True,
+				'log.screen': True } }
 	cherrypy.config.update(confdict)
 	
 	app = cherrypy.tree.mount(Root(), '', 'config.ini')
