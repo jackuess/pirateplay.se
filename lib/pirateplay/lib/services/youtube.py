@@ -12,5 +12,4 @@ services = [{ 'title': 'Youtube', 'url': 'http://youtube.com/', 'feed_url': 'htt
 						re = r'(http://)?(www\.)?youtube\.com/(?P<url>.+)' ),
 					TemplateRequest(
 						re = r'(?P<final_url>.+?)\n\d+ - (?P<quality>\d+x\d+)\n',
-						decode_content = youtube_dl,
-						 )] }]#encode_vars = lambda v: { } )] }]
+						decode_content = youtube_dl )] }]
