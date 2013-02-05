@@ -6,13 +6,15 @@ from os import system
 from lib.rerequest import get_vars, debug_print, set_debug
 from lib.services import services
 
-def rtmpdump_cmd(rtmp_url, out = '-'):
+def rtmpdump_cmd(rtmp_url, out = '-', realtime=False):
 	cmd = (rtmp_url.replace('swfVfy=1 swfUrl=', '-W ')
 					.replace('live=1', '-v')
 					.replace('live=0', '')
 					.replace('app=', '-a ')
 					.replace('playpath=', '-y '))
 	cmd = 'rtmpdump -r %s -o "%s"'% (cmd, out)
+	if realtime:
+		cmd += ' -R'
 	return cmd
 
 def sorted_streams(streams):
@@ -100,7 +102,7 @@ if __name__ == '__main__':
 			if options['play']:
 				cmd = "%s '%s'" % (options['player'], stream['final_url'])
 			elif stream['final_url'].startswith('rtmp'):
-				cmd = rtmpdump_cmd(stream['final_url'], options['out_file'])
+				cmd = rtmpdump_cmd(stream['final_url'], options['out_file'], stream.get('rtmpdump-realtime', False))
 			elif '.m3u8' in stream['final_url']:
 				cmd = 'ffmpeg -i "%s" -acodec copy -vcodec copy -bsf aac_adtstoasc "%s"' % (stream['final_url'], options['out_file'])
 			elif 'manifest.f4m' in stream['final_url']:

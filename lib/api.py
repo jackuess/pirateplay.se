@@ -44,8 +44,9 @@ class Api():
 		return [{ 'url': s['final_url'],
 				'meta': { 'quality': s.get('quality'),
 						'subtitles': s.get('subtitles'),
-						'suffix-hint': s.get('suffix-hint'),
-						'required-player-version': s.get('required-player-version') } } for s in pirateplay.get_streams(url)]
+						'suffixHint': s.get('suffix-hint'),
+						'rtmpDumpRealtime': s.get('rtmpdump-realtime', False),
+						'requiredPlayerVersion': s.get('required-player-version', '0') } } for s in pirateplay.get_streams(url)]
 
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='api/get_streams.xml', type='xml')

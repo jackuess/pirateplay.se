@@ -1,9 +1,10 @@
-function rtmpDumpCmd(url, out) {
+function rtmpDumpCmd(url, out, realtime) {
 	return 'rtmpdump  -o "' + out + '" -r "' +
 			(url.replace(/ playpath=/, '" -y "')
 				.replace(/ swfVfy=1 swfUrl=/, '" -W "')
 				.replace(/ app=/, '" -a "')
-				.replace(/ live=1/, '" -v "')) + '"';
+				.replace(/ live=1/, '" -v "')) + '"' +
+				(realtime ? ' -R' : '');
 }
 
 function stripExt(s) {
@@ -51,7 +52,7 @@ function streamRepresentation(stream) {
 		
 		if (args.mode == 'download') {
 			if (this.stream.url.match(/^rtmpe?:\/\//) != null)
-				cmd = rtmpDumpCmd(this.stream.url, args.out);
+				cmd = rtmpDumpCmd(this.stream.url, args.out, this.stream.meta.rtmpDumpRealtime);
 			else if (this.stream.url.match(/\.m3u8/) != null) {
 				$('#howto_hls').show()
 				cmd = 'ffmpeg -i "' + streamLink + '" -acodec copy -vcodec copy -absf aac_adtstoasc "' + args.out + '"';
