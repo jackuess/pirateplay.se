@@ -21,7 +21,9 @@ def sorted_streams(streams):
 					reverse=True)
 	
 def remove_duplicates(streams):
-	return dict([(s['final_url'], s) for s in streams]).values()
+	return dict([(s.get('quality', s['final_url'])+s['final_url'], s) for s in streams]).values()
+	#return streams
+	#return dict([(s['final_url'], s) for s in streams]).values()
 
 def get_streams(url):
 	cache = {}
@@ -97,11 +99,11 @@ if __name__ == '__main__':
 		else:
 			if options['play']:
 				cmd = "%s '%s'" % (options['player'], stream['final_url'])
-			elif ['final_url'].startswith('rtmp'):
-				cmd = rtmpdump_cmd(['final_url'], options['out_file'])
-			elif '.m3u8' in ['final_url']:
+			elif stream['final_url'].startswith('rtmp'):
+				cmd = rtmpdump_cmd(stream['final_url'], options['out_file'])
+			elif '.m3u8' in stream['final_url']:
 				cmd = 'ffmpeg -i "%s" -acodec copy -vcodec copy -bsf aac_adtstoasc "%s"' % (stream['final_url'], options['out_file'])
-			elif 'manifest.f4m' in ['final_url']:
+			elif 'manifest.f4m' in stream['final_url']:
 				cmd = 'php AdobeHDS.php --delete --manifest "%s" --outfile "%s"' % (stream['final_url'], options['out_file'])
 			else:
 				cmd = 'wget -O "%s" "%s"' % (options['out_file'], ['final_url'])

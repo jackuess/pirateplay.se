@@ -16,9 +16,6 @@ def del_empty_values(d):
 			del d[key]
 	return d
 
-def remove_duplicates(streams):
-	return dict([(s.get('quality', s['final_url']), s) for s in streams]).values()
-
 def req_key(req):
 	key = req.get_full_url()
 	key += str(req.header_items())
@@ -41,7 +38,7 @@ def get_vars(requestchain, content, cache = {}):
 		new_vars = itertools.chain([first], new_vars)
 		
 		if 'final_url' in first:
-			return remove_duplicates([del_empty_values(dict(cumulated_vars, **v)) for v in new_vars])
+			return [del_empty_values(dict(cumulated_vars, **v)) for v in new_vars]
 		
 		for v in new_vars:
 			cumulated_vars.update(v)
