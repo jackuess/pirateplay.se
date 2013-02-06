@@ -57,7 +57,7 @@ def get_vars(requestchain, content, cache = {}):
 
 class TemplateRequest:
 	def __init__(self, re,
-				encode_vars = lambda x: x, decode_content = lambda x: x,
+				encode_vars = lambda x: x, decode_content = lambda c, v: c,
 				handlerchain = None):
 		self.re = re
 		self.encode_vars = encode_vars
@@ -65,7 +65,7 @@ class TemplateRequest:
 		self.handlerchain = handlerchain
 	
 	def create_vars(self, content, cumulated_vars):
-		content = self.decode_content(content)
+		content = self.decode_content(content, cumulated_vars)
 		
 		#Make sure req_data and req_headers are empty
 		if 'req_data' in cumulated_vars:

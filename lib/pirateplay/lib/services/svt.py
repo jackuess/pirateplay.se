@@ -1,10 +1,13 @@
-from ..rerequest import TemplateRequest
+from ..rerequest import TemplateRequest, debug_print
 from random import randint
 from re import search
 from urllib2 import HTTPError, urlopen
 
 def fix_url(v):
-	if v['domain'] == 'svt.se':
+	if v['domain'] == 'svt.se' and 'videoArticle' in v['query']:
+		match = search(r'videoArticle=(\d+)', v['query'])
+		return { 'req_url': 'http://svtplay.se/video/%s?output=json' % match.group(1) }
+	elif v['domain'] == 'svt.se':
 		try:
 			f = urlopen('http://www.%(domain)s/%(path)s' % v)
 			match = search(r'articleId=(\d+)', f.read())
@@ -15,8 +18,19 @@ def fix_url(v):
 	
 	return { 'req_url': 'http://www.%(domain)s/%(path)s?output=json' % v }
 
+def download_clip(c, v):
+	if v['domain'] == 'svt.se' and c == '':
+		url = v['req_url'].replace('/video/', '/klipp/')
+		debug_print('Opening URL: ' + url)
+		f = urlopen(url)
+		c = f.read()
+		f.close()
+		return c
+	else:
+		return c
+
 init_req = TemplateRequest(
-				re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>[^?]+)',
+				re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>[^?]+)(\?(?P<query>.+))?',
 				encode_vars = fix_url)
 
 stream_re = r'"url":"(?P<url>%s[^"]+\.%s[^"]*)".*?(?=.*?"subtitleReferences":\[{"url":"(?P<subtitles>[^"]*))'
@@ -36,6 +50,7 @@ rtmp = { 'title': 'SVT-play', 'url': 'http://svtplay.se/',
 hls = { 'items': [init_req,
 				TemplateRequest(
 					re = stream_re % ('http://', 'm3u8'),
+					decode_content = download_clip,
 					encode_vars = lambda v: { 'req_url': '%(url)s' % v }),
 				TemplateRequest(
 					re = r'BANDWIDTH=(?P<bitrate>\d+).*?RESOLUTION=(?P<resolution>\d+x\d+).*?(?P<url>http://[^\n]+)',

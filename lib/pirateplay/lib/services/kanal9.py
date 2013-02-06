@@ -17,7 +17,7 @@ try:
 		)
 		return str(remoting.encode(env).read())
 
-	def decode_bc(content):
+	def decode_bc(content, v):
 		if content == '':
 			return ''
 		
@@ -28,7 +28,7 @@ except ImportError:
 	print 'PyAMF not found! Brightcove support dissabled!'
 	def brightcovedata(video_player, player_id, publisher_id, const):
 		pass
-	def decode_bc(content):
+	def decode_bc(content, v):
 		pass
 
 

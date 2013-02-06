@@ -1,7 +1,7 @@
 from ..rerequest import TemplateRequest
 import subprocess
 
-def youtube_dl(c):
+def youtube_dl(c, v):
 	try:
 		return subprocess.check_output(['youtube-dl', '-g', '--all-formats', '--get-format', c])
 	except subprocess.CalledProcessError:
