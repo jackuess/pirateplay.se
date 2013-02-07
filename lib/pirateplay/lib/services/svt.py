@@ -4,7 +4,7 @@ from re import search
 from urllib2 import HTTPError, urlopen
 
 def fix_url(v):
-	if v['domain'] == 'svt.se'  and 'videoArticle' in v.get('query', ''):
+	if v['domain'] == 'svt.se' and v['query'] != None and 'videoArticle' in v['query']:
 		match = search(r'videoArticle=(\d+)', v['query'])
 		return { 'req_url': 'http://svtplay.se/video/%s?output=json' % match.group(1) }
 	elif v['domain'] == 'svt.se':
