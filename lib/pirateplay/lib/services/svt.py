@@ -4,7 +4,7 @@ from re import search
 from urllib2 import HTTPError, urlopen
 
 def fix_url(v):
-	if v['domain'] == 'svt.se' and 'videoArticle' in v['query']:
+	if v['domain'] == 'svt.se'  and 'videoArticle' in v.get('query', ''):
 		match = search(r'videoArticle=(\d+)', v['query'])
 		return { 'req_url': 'http://svtplay.se/video/%s?output=json' % match.group(1) }
 	elif v['domain'] == 'svt.se':
@@ -22,12 +22,15 @@ def download_clip(c, v):
 	if v['domain'] == 'svt.se' and c == '':
 		url = v['req_url'].replace('/video/', '/klipp/')
 		debug_print('Opening URL: ' + url)
-		f = urlopen(url)
-		c = f.read()
-		f.close()
-		return c
-	else:
-		return c
+		try:
+			f = urlopen(url)
+			c = f.read()
+			f.close()
+			return c
+		except HTTPError:
+			pass
+	
+	return c
 
 init_req = TemplateRequest(
 				re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>[^?]+)(\?(?P<query>.+))?',
