@@ -24,3 +24,4 @@ tools.staticdir.dir = 'static/playbrowser'
 
 [Pirateplay]
 admin_email = 'admin@example.com'
+admin_password = 'your digest here' #SHA-256 hex digest

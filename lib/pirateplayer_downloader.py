@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import cherrypy, os, sqlite3
 import sitemap
 
@@ -8,6 +10,9 @@ import sitemap
 # CREATE UNIQUE INDEX name_idx
 # ON pirateplayer_downloads(filename)
 #
+
+
+archive_base = 'http://wrutschkow.org/pirateplayer_archive/'
 
 class Db():
 	def __init__(self):
@@ -24,6 +29,17 @@ class Db():
 		self.cursor.execute('''CREATE UNIQUE INDEX name_idx
 								ON pirateplayer_downloads(filename)''')
 		self.conn.commit()
+	
+	def add_download(self, filename):
+		from urllib2 import urlopen, HTTPError
+		try:
+			urlopen(archive_base + filename)
+			self.cursor.execute('''INSERT INTO pirateplayer_downloads(filename, downloadcount)
+									VALUES('%s', 0)''' % filename)
+			self.conn.commit()
+			return True
+		except HTTPError:
+			return False
 	
 	def get_downloads(self):
 		try:
@@ -70,7 +86,6 @@ class PirateplayerDownloader():
 	
 	@cherrypy.expose
 	def default(self, *args, **kwargs):
-		archive_base = 'http://wrutschkow.org/pirateplayer_archive/'
 		filename = args[0]
 		db = Db()
 		
@@ -98,3 +113,24 @@ class PirateplayerDownloader():
 	@cherrypy.expose
 	def latest_win32(self):
 		self.redirect_to_latest(ext='.exe')
+	
+	@cherrypy.expose
+	@cherrypy.tools.genshi_template(filename='add_pirateplayer_download_form.html')
+	def add_download_html(self):
+		return {}
+	
+	@cherrypy.expose
+	@cherrypy.tools.genshi_template(filename='add_pirateplayer_download.html')
+	def add_download_result_html(self, filename, password):
+		from hashlib import sha256
+		db = Db()
+	
+		if sha256(password).hexdigest() != cherrypy.request.app.config['Pirateplay']['admin_password']:
+			return { 'messages': [{ 'message': u'Fel lösenord!',
+									'success': False }] }
+		elif db.add_download(filename):
+			return { 'messages': [{ 'message': u'Lade till nedladdning: %s!' % filename,
+									'success': True }] }
+		else:
+			return { 'messages': [{ 'message': u'Kunder inte lägga till nedladdning: %s, filen existerar inte!' % filename,
+									'success': False }] }
