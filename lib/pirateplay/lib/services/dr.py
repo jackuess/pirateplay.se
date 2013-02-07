@@ -2,7 +2,7 @@ from ..rerequest import TemplateRequest
 from common import redirect_handler
 
 services = [{ 'title': 'DR-TV', 'url': 'http://dr.dk/tv',
-				'items': [TemplateRequest( re = r'(?P<req_url>(http://)?(www\.)?dr\.dk/(TV/se/.+))' ),
+				'items': [TemplateRequest( re = r'(?P<req_url>(http://)?(www\.)?dr\.dk/.+)' ),
 						TemplateRequest(
 							re = r'videoData:\s+{.+?resource:\s+"(?P<req_url>[^"]+)"',
 							handlerchain = redirect_handler()),
