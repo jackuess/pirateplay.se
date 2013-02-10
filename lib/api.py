@@ -41,6 +41,7 @@ class Api():
 	@cherrypy.expose
 	@cherrypy.tools.json_out()
 	def get_streams_js(self, url, rnd = None):
+		url = url.encode('utf-8')
 		return [{ 'url': s['final_url'],
 				'meta': { 'quality': s.get('quality'),
 						'subtitles': s.get('subtitles'),

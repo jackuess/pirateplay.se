@@ -79,7 +79,10 @@ class TemplateRequest:
 			yield d
 	
 	def create_req(self, cumulated_vars):
-		req = urllib2.Request(cumulated_vars['req_url'])
+		url = cumulated_vars['req_url']
+		if not url.startswith('http'):
+			url = 'http://' + url
+		req = urllib2.Request(url)
 		
 		if 'req_data' in cumulated_vars:
 			debug_print('Adding post data to request: ' + cumulated_vars['req_data'])
