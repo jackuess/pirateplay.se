@@ -155,6 +155,18 @@ class Root():
 	def player_html(self):
 		return dict(services = sorted([s for s in pirateplay.services if s.get('title', '') != ''], key=lambda s: s['title']))
 	
+	@cherrypy.expose
+	@sitemap.add_to_sitemap('0.5')
+	@cherrypy.tools.genshi_template(filename='compile_pirateplayer_ubuntu.html')
+	def kompilera_pirateplayer_i_ubuntu_html(self):
+		return {}
+	
+	@cherrypy.expose
+	@sitemap.add_to_sitemap('0.5')
+	@cherrypy.tools.genshi_template(filename='install_pirateplayer_ubuntu.html')
+	def installera_pirateplayer_i_ubuntu_html(self):
+		return {}
+	
 	#@cherrypy.expose
 	#@sitemap.add_to_sitemap('0.2')
 	#@cherrypy.tools.genshi_template(filename='osxbrev_2013-01-14.html')

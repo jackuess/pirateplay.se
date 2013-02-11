@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv"
+	py:with="title='Installera Pirateplayer i Ubuntu/Debian'">
+	<xi:include href="layout.html" />
+	<head><title>${title}</title></head>
+	<body>
+		<py:match path="a[matches(@href, 'library.html$')]" once="true"><a class="selected" py:attrs="select('@*')">${select('text()')}</a></py:match>
+		<h1>${title}</h1>
+		<h2>Skaffa rätt debianpaket</h2>
+		<p>Nedan följer en lista över färdigbyggda debianpaket för Pirateplayer 0.4.6 och libtidy-gitversion. Ladda ner de som hör till din version av Ubuntu/Debian. Finns inte din version kan du testa med den version som ligger närmast. Fungerar det ändå inte kan du <a href="kompilera_pirateplayer_i_ubuntu.html">kompilera Pirateplayer</a> själv.</p>
+		<ul>
+			<li>Ubuntu 12.10 32-bitars: <ul><li><a href="pirateplayer_downloads/ubuntu_12.10/pirateplayer_0.4.6-1_i386.deb">pirateplayer_0.4.6-1_i386.deb</a></li><li><a href="pirateplayer_downloads/ubuntu_12.10/libtidy_20130210-git-1_i386.deb">libtidy_20130210-git-1_i386.deb</a></li></ul></li>
+		</ul>
+
+		<h2>Installera beroenden</h2>
+		<ol class="code-block">
+			<li><code>sudo add-apt-repository ppa:jon-severinsson/ffmpeg</code></li>
+			<li><code>sudo apt-get update</code></li>
+			<li><code>sudo apt-get upgrade -y</code></li>
+			<li><code>sudo apt-get install libqtcore4 libqtgui4 \
+libqt4-xml libqt4-network libqt4-declarative libqt4-script \
+libqt4-xmlpatterns libqt4-svg libqtwebkit4 rtmpdump librtmp0 \
+ffmpeg xsltproc -y</code></li>
+		</ol>
+
+		<h2>Installera Libtidy och Pirateplayer</h2>
+		<p>Ersätt [version] och [arkitektur] i kommandona nedan så de stämmer överens med de filnamnen för de debianpaket du laddade ner tidigare.</p>
+		<ol class="code-block">
+			<li><code>sudo apt-get remove libtidy*</code></li>
+			<li><code>sudo dpkg -i libtidy_[version]-git-1_[arkitektur].deb</code></li>
+			<li><code>sudo dpkg -i pirateplayer_0.4.6-1_[arkitektur].deb</code></li>
+		</ol>
+		
+		<h2>En sista touch</h2>
+		<p>För att Pirateplayers tillägg ska kunna använda sig av systemets egna kontroller (knappar, textrutor o.s.v.) måste Qt Desktop Components vara installerat. Detta är dock inget krav för att tilläggen ska fungera. Nedanstående anvisningar för att installera Qt Desktop Components fungerar i Ubuntu 12.04 - får du det inte att fungera i ditt system kan du hoppa över detta steg - i Ubuntu 12.10 fungerar det t.ex. inte. Pirateplayer kommer fungera ändå.</p>
+		<ol class="code-block">
+			<li><code>sudo add-apt-repository ppa:forumnokia/fn-ppa</code></li>
+			<li><code>sudo apt-get update</code></li>
+			<li><code>sudo apt-get install qt-components-desktop -y</code></li>
+		</ol>
+	</body>
+</html>

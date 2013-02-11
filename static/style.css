@@ -18,7 +18,9 @@ a[href^="http://pirateplay.se"], a[href^="http://www.pirateplay.se"], .no-extern
 
 blockquote { font-style: italic }
 blockquote, code, .code-block { background-color: #f5f5f5 }
-blockquote, .code-block { border-left: 7px solid #e5e5e5; display: block; margin-left: 0; padding: 1% }
+blockquote, .code-block { border-left: 7px solid #ccc; border-radius: 4px; display: block; margin-left: 0; padding: 1% }
+ol.code-block { border-left-width: 2.5em; font-family: monospace }
+ol.code-block li code { white-space: pre }
 
 body {
 	background-color: #f0efe7;

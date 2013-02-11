@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv"
+	py:with="title='Kompilera Pirateplayer 0.4.6 i Ubuntu'">
+	<xi:include href="layout.html" />
+	<head><title>${title}</title></head>
+	<body>
+		<py:match path="a[matches(@href, 'library.html$')]" once="true"><a class="selected" py:attrs="select('@*')">${select('text()')}</a></py:match>
+		<h1>${title}</h1>
+		<h2>Kompilera, paketera och installera Pirateplayer</h2>
+		<p>Signaturen Milleman har skrivit denna utmärkta guide för kompilering av Pirateplayer i Ubuntu 12.04. Förfarandet bör vara snarlikt i andra debianbaserade system (jag har själv testat med framgång i Linux Mint 14, Jacques anm.). Vidare bör guiden även vara till nytta för den som vill kompilera Pirateplayer i andra unixsystem.</p>
+		<h3>Lägg till och uppdatera</h3>
+		<ol class="code-block">
+			<li><code>sudo add-apt-repository ppa:jon-severinsson/ffmpeg</code></li>
+			<li><code>sudo apt-get update</code></li>
+			<li><code>sudo apt-get upgrade -y</code></li>
+		</ol>
+
+		<pre class="code-block"><code>sudo apt-get install g++ libqtcore4 libqtgui4 \
+libqt4-xml libqt4-network libqt4-declarative libqt4-script \
+libqt4-xmlpatterns libqt4-svg libqtwebkit4 qt4-qmake libqt4-dev phonon \
+libphonon4 libphonon-dev phonon-backend-gstreamer rtmpdump librtmp0 \
+librtmp-dev libarchive-dev libtool ffmpeg xsltproc automake checkinstall -y</code></pre>
+
+
+		<h3>Installera libtidy-html5</h3>
+		<ol class="code-block">
+			<li><code>sudo apt-get remove libtidy*</code></li>
+			<li><code>wget https://github.com/w3c/tidy-html5/archive/master.zip -O tidy-html5-master.zip</code></li>
+			<li><code>unzip tidy-html5-master.zip</code></li>
+			<li><code>cd tidy-html5-master</code></li>
+			<li><code>sh build/gnuauto/setup.sh &amp;&amp; ./configure --prefix=/usr &amp;&amp; make</code></li>
+			<li><code>sudo checkinstall --maintainer=dinepost@domain.com --pkgname=libtidy --pkgversion=`date +%Y%m%d`-git -y</code></li>
+		</ol>
+
+		<p>Libtidy är nu paketerat och installerat.</p>
+		<h4>Städa upp och spara paketet</h4>
+		<ol class="code-block">
+			<li><code>cd ..</code></li>
+			<li><code>mv tidy-html5-master/*.deb .</code></li>
+			<li><code>sudo rm -r tidy-html5-master</code></li>
+			<li><code>rm tidy-html5-master.zip</code></li>
+		</ol>
+
+		<h3>Installera Pirateplayer</h3>
+		
+		<ol class="code-block">
+			<li><code>wget https://github.com/jackuess/pirateplayer/archive/v0.4.6.zip -O pirateplayer-0.4.6.zip</code></li>
+			<li><code>unzip pirateplayer-0.4.6.zip</code></li>
+			<li><code>cd pirateplayer-0.4.6</code></li>
+			<li><code>qmake PREFIX=/usr</code></li>
+			<li><code>make</code></li>
+			<li><code>sudo checkinstall --maintainer=dinepost@domain.com --pkgname=pirateplayer --pkgversion=0.4.6 --pkggroup=multimedia --requires=libqtcore4,libqt4-declarative,libqt4-script,libqt4-sql,libqt4-xmlpatterns,libqtgui4,libqt4-xml,libqt4-network,librtmp0,ffmpeg,libtidy -y</code></li>
+		</ol>
+
+		<h4>Städa upp och spara paketet</h4>
+		<ol class="code-block">
+			<li><code>cd ..</code></li>
+			<li><code>mv pirateplayer-0.4.6/*.deb .</code></li>
+			<li><code>sudo rm -r pirateplayer-0.4.6</code></li>
+			<li><code>rm pirateplayer-0.4.6.zip</code></li>
+		</ol>
+
+		<p>Pirateplayer är nu installerat!</p>
+		<p>Du bör nu ha två debianpaket i din hemkatalog: "libtidy_<em>version</em>-git-1_<em>arkitektur</em>.deb" och "pirateplayer_0.4.6-1_<em>arkitektur</em>.deb". Se till att mejla dem till jacques snabela pirateplay.se så kan jag lägga upp dem här på Pirateplay.se och andra kan dra nytta av dem!</p>
+
+		<p>Skrivet av <em>Milleman</em> 2013-02-08</p>
+		<p>Redigerad av <em>Jacques de Laval</em> 2013-02-10</p>
+	</body>
+</html>
