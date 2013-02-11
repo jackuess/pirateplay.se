@@ -11,9 +11,6 @@ import sitemap
 # ON pirateplayer_downloads(filename)
 #
 
-
-archive_base = 'http://wrutschkow.org/pirateplayer_archive/'
-
 class Db():
 	def __init__(self):
 		self.conn = sqlite3.connect('data/db.lite')
@@ -25,34 +22,28 @@ class Db():
 	
 	def create_table(self):
 		self.cursor.execute('''CREATE TABLE pirateplayer_downloads
-								(id INTEGER PRIMARY KEY, filename TEXT, downloadcount INTEGER)''')
+								(id INTEGER PRIMARY KEY, filename TEXT, downloadcount INTEGER);''')
 		self.cursor.execute('''CREATE UNIQUE INDEX name_idx
-								ON pirateplayer_downloads(filename)''')
+								ON pirateplayer_downloads(filename);''')
 		self.conn.commit()
 	
 	def add_download(self, filename):
-		from urllib2 import urlopen, HTTPError
-		try:
-			urlopen(archive_base + filename)
-			self.cursor.execute('''INSERT INTO pirateplayer_downloads(filename, downloadcount)
-									VALUES('%s', 0)''' % filename)
-			self.conn.commit()
-			return True
-		except HTTPError:
-			return False
+		self.cursor.execute('''INSERT INTO pirateplayer_downloads(filename, downloadcount)
+							VALUES('%s', 0);''' % filename)
+		self.conn.commit()
 	
 	def get_downloads(self):
 		try:
 			self.cursor.execute('''SELECT filename, downloadcount
 						FROM pirateplayer_downloads
-						ORDER BY filename ASC''')
+						ORDER BY filename ASC;''')
 			downloads = self.cursor.fetchall()
 		except sqlite3.OperationalError:
 			self.create_table()
 			downloads = []
 		
 		self.cursor.execute('''SELECT SUM(downloadcount)
-				FROM pirateplayer_downloads''')
+				FROM pirateplayer_downloads;''')
 		total_count = self.cursor.fetchone()
 		
 		return downloads, total_count
@@ -67,13 +58,17 @@ class Db():
 		try:
 			self.cursor.execute("""SELECT MAX(filename)
 						FROM pirateplayer_downloads
-						WHERE filename like '%%%s'""" % ext)
+						WHERE filename like '%%%s';""" % ext)
 			return self.cursor.fetchone()
 		except sqlite3.OperationalError:
 			self.create_table()
 			return (None,)
 
 class PirateplayerDownloader():
+	def abs_archive_path(self, fn):
+		from urlparse import urljoin
+		return urljoin(cherrypy.request.app.config['Pirateplay']['pirateplayer_archive_base'], fn)
+	
 	@cherrypy.expose
 	@sitemap.add_to_sitemap('0.5')
 	@cherrypy.tools.genshi_template(filename='pirateplayer_downloads.html')
@@ -86,12 +81,12 @@ class PirateplayerDownloader():
 	
 	@cherrypy.expose
 	def default(self, *args, **kwargs):
-		filename = args[0]
+		filename = '/'.join(args)
 		db = Db()
 		
 		db.increase_download_count(filename)
 		
-		raise cherrypy.HTTPRedirect(archive_base + filename)
+		raise cherrypy.HTTPRedirect(self.abs_archive_path(filename))
 	
 	def redirect_to_latest(self, ext):
 		db = Db()
@@ -123,14 +118,18 @@ class PirateplayerDownloader():
 	@cherrypy.tools.genshi_template(filename='add_pirateplayer_download.html')
 	def add_download_result_html(self, filename, password):
 		from hashlib import sha256
+		from urllib2 import urlopen, HTTPError
 		db = Db()
 	
 		if sha256(password).hexdigest() != cherrypy.request.app.config['Pirateplay']['admin_password']:
 			return { 'messages': [{ 'message': u'Fel lösenord!',
 									'success': False }] }
-		elif db.add_download(filename):
-			return { 'messages': [{ 'message': u'Lade till nedladdning: %s!' % filename,
-									'success': True }] }
 		else:
-			return { 'messages': [{ 'message': u'Kunder inte lägga till nedladdning: %s, filen existerar inte!' % filename,
-									'success': False }] }
+			try:
+				urlopen(self.abs_archive_path(filename))
+				db.add_download(filename)
+				return { 'messages': [{ 'message': u'Lade till nedladdning: %s!' % filename,
+										'success': True }] }
+			except HTTPError:
+				return { 'messages': [{ 'message': u'Kunder inte lägga till nedladdning: %s, filen existerar inte!' % filename,
+										'success': False }] }
