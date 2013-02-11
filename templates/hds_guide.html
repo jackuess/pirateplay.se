@@ -5,7 +5,7 @@
 	py:with="title='Ladda ner Adobe HDS-strömmar med Pirateplay.se och AdobeHDS.php'">
 	<xi:include href="layout.html" />
 	<head><title>${title}</title></head>
-	<body with="this_url='http://pirateplay.se:8081/library.html'">
+	<body>
 		<py:match path="a[matches(@href, 'library.html$')]" once="true"><a class="selected" py:attrs="select('@*')">${select('text()')}</a></py:match>
 		<h1>${title}</h1>
 		<p>Med <a href="http://php.net">PHP</a>-skriptet <a href="http://stream-recorder.com/forum/adobe-hds-downloader-t12074.html">AdobeHDS.php</a>, skrivet av signaturen <a href="http://github.com/K-S-V">KSV</a>, och Pirateplay.se kan du ner en del av de program från <a href="http://svtplay.se/">Svt-play</a> och <a href="http://tv4play.se/">Tv4-play</a> som inte går att ladda ner med <a href="player.html">Pirateplayer</a>.</p>
