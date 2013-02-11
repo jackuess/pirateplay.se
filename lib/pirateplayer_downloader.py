@@ -98,10 +98,6 @@ class PirateplayerDownloader():
 			raise cherrypy.HTTPRedirect(latest)
 	
 	@cherrypy.expose
-	def latest_deb(self):
-		self.redirect_to_latest(ext='.deb')
-	
-	@cherrypy.expose
 	def latest_osx(self):
 		self.redirect_to_latest(ext='.dmg')
 	
