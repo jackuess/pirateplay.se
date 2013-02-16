@@ -16,7 +16,8 @@ rtmp = { 'title': 'TV4-play', 'url': 'http://tv4play.se/', 'feed_url': 'http://w
 hls = { 'items': [init_req(query='?protocol=hls'),
 						TemplateRequest(
 							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<final_url>http://[^<]+).*?(?=.*?(?P<subtiltes>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
-							encode_vars = lambda v: { 'quality': '%(bitrate)s kbps' % v } )] }
+							encode_vars = lambda v: { 'quality': '%(bitrate)s kbps' % v,
+													'suffix-hint': 'mp4' } )] }
 
 hds = { 'items': [init_req(),
 				TemplateRequest(
