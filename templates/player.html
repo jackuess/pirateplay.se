@@ -134,24 +134,11 @@
 			<p>Installera från med hjälp av <a href="http://aur.archlinux.org/packages.php?ID=62902">denna PKGBUILD</a> via <a href="https://wiki.archlinux.org/index.php/AUR">AUR</a>.</p>
 			<h3>Ubuntu/Debian Linux</h3>
 			<p><a href="installera_pirateplayer_i_ubuntu.html">Installationsinstruktioner för Ubuntu</a>.</p>
-			<!--<p>Testad under <a href="http://blog.linuxmint.com/?p=2088">Linux Mint 13 Xfce</a>.</p>
-			<p>Öppna terminalen och kör följande kommandon:</p>
-			<ul>
-				<li><code>wget "http://pirateplay.se/static/tidy-html5_20120402-1git-1_i386.deb"</code></li>
-				<li><code>wget -O pirateplayer-latest.deb "${url('pirateplayer_downloads/latest.deb')}"</code></li>
-				<li><code>sudo aptitude remove tidy</code></li>
-				<li><code>sudo dpkg -i tidy-html5_20120402-1git-1_i386.deb</code></li>
-				<li><code>sudo add-apt-repository ppa:forumnokia/fn-ppa</code></li>
-				<li><code>sudo add-apt-repository ppa:jon-severinsson/ffmpeg</code></li>
-				<li><code>sudo aptitude update</code></li>
-				<li><code>sudo aptitude upgrade</code></li>
-				<li><code>sudo aptitude install qt-components-desktop libqtcore4 libqt4-declarative libqt4-script libqt4-sql libqt4-xmlpatterns libqtgui4 libqt4-xml libqt4-network librtmp0 ffmpeg libarchive</code></li>
-				<li><code>sudo dpkg -i pirateplayer-latest.deb</code></li>
-			</ul>
-			<p>Pirateplayer är nu installerat!</p>-->
 			<h3>Mac OS X</h3>
-			<p><em>Har inte möjlighet för tillfället att bygga för Mac. Till dess någon Mac-ägare bistår med kompilering är senaste tillgängliga versionen för OS X tyvärr gamla 0.4.3.</em></p>
-			<p>Installera <!--<a href="http://github.com/downloads/jackuess/pirateplayer/pirateplayer-v0_4_3.dmg">--><a href="pirateplayer_downloads/latest.osx">Apple diskavbild (dmg)</a>.</p>
+			<!--<p><em>Har inte möjlighet för tillfället att bygga för Mac. Till dess någon Mac-ägare bistår med kompilering är senaste tillgängliga versionen för OS X tyvärr gamla 0.4.3.</em></p>-->
+			<p>Installera <a href="pirateplayer_downloads/latest.osx">Apple diskavbild (dmg)</a>.</p>
+			<p>Denna utgåva har testats i Mac OS X 10.7.x och 10.8.x på 64-bitars macar. Det är inte säkert att den fungerar i äldre mac-miljöer.</p>
+			<p>Stort tack till <em>Teddy</em> för kompilering och paketering av OS X-versionen!</p>
 			<h3>Källkod</h3>
 			<p>Finns inte ditt operativsystem/distribution ovan kan du alltid kompilera och installera från <a href="http://github.com/jackuess/pirateplayer/">källkoden</a>.</p>
 			<p>Hör gärna av dig om du har möjlighet att bygga/testa paket för din favoritdistribution (jacques snabela pirateplay.se).</p>
@@ -241,9 +228,10 @@
 		</article>
 		<article id="credits" class="box">
 			<h2>Credits</h2>
-			<p>Stort tack till Bernard för OS X builden och ikonen!</p>
-			<p>Stort tack till A J för testning av Ubuntu/Debian-paketet!</p>
-			<p>Stort tack till Milleman för texten om hur man kompilerar Pirateplayer i Ubuntu 12.04!</p>
+			<p>Stort tack till <em>Bernard</em> för OS X builden och ikonen!</p>
+			<p>Stort tack till <em>A J</em> för testning av Ubuntu/Debian-paketet!</p>
+			<p>Stort tack till <em>Milleman</em> för texten om hur man kompilerar Pirateplayer i Ubuntu 12.04!</p>
+			<p>Stort tack till <em>Teddy</em> för kompilering och paketering av OS X-versionen (0.4.6)!</p>
 		</article>
 		<article id="license" class="box">
 			<h2>Licens</h2>
