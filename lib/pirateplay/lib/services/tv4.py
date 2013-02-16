@@ -12,6 +12,12 @@ rtmp = { 'title': 'TV4-play', 'url': 'http://tv4play.se/', 'feed_url': 'http://w
 					encode_vars = lambda v: { 'final_url': '%(base)s playpath=%(url)s swfVfy=1 swfUrl=http://www.tv4play.se/flash/tv4playflashlets.swf' % v,
 											'quality': '%(bitrate)s kbps' % v,
 											'suffix-hint': 'flv' } )] }
+
+hls = { 'items': [init_req(query='?protocol=hls'),
+						TemplateRequest(
+							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<final_url>http://[^<]+).*?(?=.*?(?P<subtiltes>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
+							encode_vars = lambda v: { 'quality': '%(bitrate)s kbps' % v } )] }
+
 hds = { 'items': [init_req(),
 				TemplateRequest(
 					re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<final_url>http://.*?\.mp4\.csmil/manifest\.f4m)</url>(?=.*?(?P<subtitles>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
@@ -24,15 +30,16 @@ http = { 'items': [init_req(),
 					re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<final_url>http://[^<]+).*?(?=.*?(?P<subtiltes>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
 					encode_vars = lambda v: { 'quality': '%(bitrate)s kbps' % v } )] }
 
-hls_force = { 'items': [init_req('tv4play', 'hls\+?http://', '?protocol=hls'),
-						http['items'][1]] }
+#hls_force = { 'items': [init_req('tv4play', 'hls\+?http://', '?protocol=hls'),
+						#http['items'][1]] }
 
 fotbollskanalen = { 'title': 'Fotbollskanalen', 'url': 'http://fotbollskanalen.se/', 'sample_url': 'http://www.fotbollskanalen.se/video/?videoid=2194841',
 				'items': [init_req('fotbollskanalen'),
 						rtmp['items'][1]] }
 
 services = [rtmp,
+			hls,
 			hds,
 			http,
-			hls_force,
+			#hls_force,
 			fotbollskanalen]
