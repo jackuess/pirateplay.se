@@ -13,7 +13,7 @@ rtmp = { 'title': 'TV4-play', 'url': 'http://tv4play.se/', 'feed_url': 'http://w
 											'quality': '%(bitrate)s kbps' % v,
 											'suffix-hint': 'flv' } )] }
 
-hls = { 'items': [init_req(protocol='(hls\+)?http://', query='?protocol=hls'),
+hls = { 'items': [init_req(protocol='(hls\+?)?http://', query='?protocol=hls'),
 						TemplateRequest(
 							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<req_url>http://[^<]+\.m3u8)(?=.*?(?P<subtitles>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
 							encode_vars = lambda v: { 'quality': '%(bitrate)s kbps' % v,
