@@ -1,20 +1,22 @@
-# -*- coding: utf-8 -*-
+## -*- coding: utf-8 -*-
 
 import cherrypy, os, sqlite3
 import sitemap
+from urlparse import urljoin
 
-#
-# CREATE TABLE pirateplayer_downloads
-# (id INTEGER PRIMARY KEY, filename TEXT, downloadcount INTEGER)
-#
-# CREATE UNIQUE INDEX name_idx
-# ON pirateplayer_downloads(filename)
-#
+##
+## CREATE TABLE pirateplayer_downloads
+## (id INTEGER PRIMARY KEY, filename TEXT, downloadcount INTEGER)
+##
+## CREATE UNIQUE INDEX name_idx
+## ON pirateplayer_downloads(filename)
+##
 
 class Db():
 	def __init__(self):
 		self.conn = sqlite3.connect('data/db.lite')
 		self.cursor = self.conn.cursor()
+		#pass
 	
 	def __del__(self):
 		self.cursor.close()
@@ -38,7 +40,7 @@ class Db():
 						FROM pirateplayer_downloads
 						ORDER BY filename ASC;''')
 			downloads = self.cursor.fetchall()
-		except sqlite3.OperationalError:
+		except sqlite3.OperationalError as e:
 			self.create_table()
 			downloads = []
 		
@@ -65,9 +67,8 @@ class Db():
 			return (None,)
 
 class PirateplayerDownloader():
-	def abs_archive_path(self, fn):
-		from urlparse import urljoin
-		return urljoin(cherrypy.request.app.config['Pirateplay']['pirateplayer_archive_base'], fn)
+	def archive_path(self, fn):
+		return urljoin('../../static/pirateplayer_archive/', fn)
 	
 	@cherrypy.expose
 	@sitemap.add_to_sitemap('0.5')
@@ -86,7 +87,7 @@ class PirateplayerDownloader():
 		
 		db.increase_download_count(filename)
 		
-		raise cherrypy.HTTPRedirect(self.abs_archive_path(filename))
+		raise cherrypy.HTTPRedirect(self.archive_path(filename))
 	
 	def redirect_to_latest(self, ext):
 		db = Db()
@@ -122,7 +123,7 @@ class PirateplayerDownloader():
 									'success': False }] }
 		else:
 			try:
-				urlopen(self.abs_archive_path(filename))
+				urlopen(cherrypy.url(self.archive_path(filename)))
 				db.add_download(filename)
 				return { 'messages': [{ 'message': u'Lade till nedladdning: %s!' % filename,
 										'success': True }] }

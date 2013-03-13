@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv">
+	<xi:include href="../layout.html" />
+	<xi:include href="layout.html" />
+	<head>
+		<title>Pirateplayer</title>
+		<style type="text/css">
+			.column { display: inline-block; margin-right: 2%; width: 30%; vertical-align: top }
+
+			img#player_logo { float: right }
+
+			#screen img {
+				background: url('../static/images/ppscreens/v0_5_0-kde.png') no-repeat -50px -80px;
+				border: none;
+				display:block;
+				margin-left: auto; margin-right: auto;
+				max-width: 965px; width: 100%; height: 100px
+			}
+		</style>
+	</head>
+	<body>
+		<p>Applikationen <em>Pirateplayer</em> gör det möjligt att spara svensk webb-TV, från SVT-play, UR-play, TV4-play och många andra webb-TV-tjänster. Pirateplayer kan även spela upp TV-program oberoende av <a href="http://sv.wikipedia.org/wiki/Propriet%C3%A4r">proprietär</a> mjukvara. Pirateplayer är en <a href="http://sv.wikipedia.org/wiki/Fri_programvara">fri programvara</a>. Den som vill kan sponsra via <a href="http://flattr.com/thing/361015/Pirateplay">Flattr</a> eller <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=NGUAG59AYVTNY">Paypal</a>.</p>
+		<hr />
+		<div class="column">
+			<h2>Plattformar</h2>
+			<p>Pirateplayer kan köras på alla etablerade skrivbordsplattformar: <strong>Linux</strong>, <strong>Windows</strong> och <strong>OS X</strong>. Dessutom kan Pirateplayer köras under <strong>Android</strong>.</p>
+		</div>
+		<div class="column">
+			<h2>Fri mjukvara</h2>
+			<p>Källkoden till Pirateplayer publiceras <a href="http://github.com/jackuess/pirateplayer">i sin helhet</a> under <a href="http://www.gnu.org/licenses/gpl.txt">GPL</a>. Detta garanterar att Pirateplayer alltid kommer vara fritt tillgänglig och att vem som vill kan bidra med förbättringar.</p>
+		</div>
+		<div class="column no-external-ico">
+			<h2>Kanaler</h2>
+			<a py:def="service_item(item)" href="${item.url}">${item.title}</a>
+			<p>Pirateplayer kan ladda ner från: <py:for each="s in services[:-1]">${service_item(s)}, </py:for>${service_item(services[-1])}.</p>
+		</div>
+		<div id="screen"><a href="../static/images/screen_-_kde_v0_5_0.png"><img /></a></div>
+		<h2>Kontakt</h2>
+		<p class="float-container"><img id="player_logo" src="../static/images/pirateplayer.png" />Jag som skriver detta och utvecklar Pirateplayer - på ledig tid - har begränsad möjlighet att ge support. I mån av tid kan jag besvara frågor adresserade till jacques snabel-a pirateplay.se. Jag går även att nå via <a href="http://twitter.com/pirateplay_se">Twitter</a>. En del vanliga frågor är besvarade publikt under rubriken <a href="../qna.html">Frågor och svar</a>. Uppge alltid <a href="../how_to_ask_questions.html">relevant information</a> vid problem/fel. Det gör ingenting om ditt brev är skrivet på svenska. Svenska är mitt modersmål, mitt namn till trots.</p> 
+	</body>
+</html>

@@ -40,16 +40,17 @@
 				</audio>
 			</div><nav id="menu"><p id="toggle_menu"></p>
 				<ul>
-					<li py:def="list_item(adress, title)" py:choose="url('/' + adress) == url()">
+					<li py:def="list_item(adress, title, selected)" py:choose="selected">
 						<a py:when="True" class="selected" href="${url('/' + adress)}">${title}</a>
 						<a py:when="False" href="${url('/' + adress)}">${title}</a>
 					</li>
-					${list_item('./', 'Förstasida')}
-					${list_item('app.html', 'App')}
-					${list_item('player.html', 'Pirateplayer')}
-					${list_item('api/manual.html', 'API')}
-					${list_item('library.html', 'Bibliotek')}
-					${list_item('qna.html', 'Frågor o svar')}
+					${list_item('./', 'Förstasida', url() == url('/./'))}
+					${list_item('app.html', 'Webbapp', url() == url('/app.html'))}
+					<!--${list_item('pirateplayer/', 'Pirateplayer', url().startswith(url('/pirateplayer')))}-->
+					${list_item('player.html', 'Pirateplayer', url() == url('/player.html'))}
+					${list_item('api/manual.html', 'API', url() == url('/api/manual.html'))}
+					${list_item('library.html', 'Bibliotek', url() == url('/library.html'))}
+					${list_item('qna.html', 'Frågor o svar', url() == url('/qna.html'))}
 				</ul>
 			</nav></header><section id="content">${select('*|text()')}</section>
 		</body>

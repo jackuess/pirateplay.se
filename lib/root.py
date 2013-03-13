@@ -5,7 +5,7 @@ from genshi.core import Markup
 
 import pirateplay, sitemap
 from api import Api
-from pirateplayer_downloader import PirateplayerDownloader
+from pirateplayer import Pirateplayer
 
 def relative_time(s):
 	if s>31536000:
@@ -154,6 +154,7 @@ class Root():
 	@cherrypy.tools.genshi_template(filename='player.html')
 	def player_html(self):
 		return dict(services = sorted([s for s in pirateplay.services if s.get('title', '') != ''], key=lambda s: s['title']))
+		#raise cherrypy.HTTPRedirect('pirateplayer/')
 	
 	@cherrypy.expose
 	@sitemap.add_to_sitemap('0.5')
@@ -167,6 +168,12 @@ class Root():
 	def installera_pirateplayer_i_ubuntu_html(self):
 		return {}
 	
+	@cherrypy.expose
+	@sitemap.add_to_sitemap('0.5')
+	@cherrypy.tools.genshi_template(filename='how_to_ask_questions.html')
+	def how_to_ask_questions_html(self):
+		return {}
+	
 	#@cherrypy.expose
 	#@sitemap.add_to_sitemap('0.2')
 	#@cherrypy.tools.genshi_template(filename='osxbrev_2013-01-14.html')
@@ -174,5 +181,5 @@ class Root():
 	#	return {}
 	
 	api = Api()
-	pirateplayer_downloads = PirateplayerDownloader()
+	pirateplayer = Pirateplayer()
 	generate_application_xml = api.get_streams_old_xml

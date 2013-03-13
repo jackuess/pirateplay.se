@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/" py:strip="">
+	<py:match xmlns:py="http://genshi.edgewall.org/" path="head" once="true">
+		<head>
+			<style type="text/css">
+			nav#player_nav { background: #fff; margin-top: 1.5%; padding: 0 }
+			nav#player_nav ul { padding: 0 }
+			nav#player_nav li { border-right: 1px solid #ddd; display: inline; list-style: none; margin: 0; padding-left: 2%; padding-right: 2% }
+			nav#player_nav li:last-of-type { border: none }
+			nav#player_nav a[href='${url('/pirateplayer/get.html')}'] { font-size: 1.3em }
+			</style>
+			${select('*')}
+		</head>
+	</py:match>
+	<py:match path="body/section" once="true">
+		<section id="content">
+			<nav id="player_nav" class="box"><ul class="centered">
+				<li py:def="list_item(adress, title)" py:choose="url()== url('/' + adress)">
+					<a py:when="True" class="selected" href="${url('/' + adress)}">${title}</a>
+					<a py:when="False" href="${url('/' + adress)}">${title}</a>
+				</li>
+				${list_item('pirateplayer/', 'Om')}
+				${list_item('pirateplayer/get.html', 'Installera')}
+				${list_item('pirateplayer/screens.html', 'Skärmdumpar')}
+				${list_item('pirateplayer/changelog.html', 'Historik')}
+				${list_item('pirateplayer/credits.html', 'Tack till')}
+			</ul></nav>
+			${select('*|text()')}
+		</section>
+	</py:match>
+</html>
