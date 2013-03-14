@@ -5,13 +5,23 @@ class GenshiHandler():
 		self.template = template
 		self.next_handler = next_handler
 		self.type = type
-	
+		
 	def __call__(self):
+		def replace_at(s):
+			import sys
+			from genshi.core import Markup
+			for kind, data, pos in s:
+				if kind == "TEXT" and not isinstance(data, Markup):
+					yield kind, data.replace('@', '[snabel-a]'), pos
+				else:
+					yield kind, data, pos
+		
 		from urllib import quote
 		from genshi.template import Context
 		context = Context(url=cherrypy.url, quote=quote)
 		context.push(self.next_handler())
 		stream = self.template.generate(context)
+		stream = stream | replace_at
 		cherrypy.response.headers['Content-Type'] = { 'xhtml': 'text/html', 'xml': 'application/xml' }[self.type]
 		return stream.render(self.type)
 
