@@ -9,7 +9,8 @@ def youtube_dl(c, v):
 
 services = [{ 'title': 'Youtube', 'url': 'http://youtube.com/', 'feed_url': 'http://gdata.youtube.com/feeds/base/videos?alt=rss',
 			'items': [TemplateRequest(
-						re = r'(http://)?(www\.)?youtube\.com/(?P<url>.+)' ),
+						re = r'(http://)?(www\.)?((youtube)|(vimeo))\.com/(?P<url>.+)' ),
 					TemplateRequest(
-						re = r'(?P<final_url>.+?)\n\d+ - (?P<quality>\d+x\d+)\n',
-						decode_content = youtube_dl )] }]
+						re = r'(?P<final_url>http.+?)\n(\d+ - (?P<quality>\d+x\d+)\n)?',
+						decode_content = youtube_dl )] },
+			{ 'title': 'Vimeo', 'url': 'http://vimeo.com/', 'feed_url': 'http://vimeo.com/channels/staffpicks/videos/rss' }]
