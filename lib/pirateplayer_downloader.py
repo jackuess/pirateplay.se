@@ -68,7 +68,7 @@ class Db():
 
 class PirateplayerDownloader():
 	def archive_path(self, fn):
-		return cherrypy.url(urljoin('/../../static/pirateplayer_archive/', fn))
+		return cherrypy.url(urljoin('/static/pirateplayer_archive/', fn))
 	
 	@cherrypy.expose
 	@sitemap.add_to_sitemap('0.5')
@@ -123,7 +123,7 @@ class PirateplayerDownloader():
 									'success': False }] }
 		else:
 			try:
-				urlopen(cherrypy.url(self.archive_path(filename)))
+				urlopen(self.archive_path(filename))
 				db.add_download(filename)
 				return { 'messages': [{ 'message': u'Lade till nedladdning: %s!' % filename,
 										'success': True }] }
