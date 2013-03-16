@@ -25,8 +25,8 @@ class Pirateplayer():
 		username = 'jackuess'
 		repository = 'pirateplayer'
 		tag = github_latest_version(username, repository)
-		tag = 'master'
-		md = unicode(urlopen('https://raw.github.com/%s/%s/%s/CHANGELOG.md' % (username, repository, tag)).read(), 'utf-8') return { 'changelog_markup': Markup(markdown.markdown(md)) }
+		md = unicode(urlopen('https://raw.github.com/%s/%s/%s/CHANGELOG.md' % (username, repository, tag)).read(), 'utf-8')
+		return { 'changelog_markup': Markup(markdown.markdown(md)) }
 	
 	@cherrypy.expose
 	@cherrypy.tools.genshi_template(filename='pirateplayer/get.html')
@@ -53,6 +53,7 @@ class Pirateplayer():
 		def create_description(img):
 			img = img.replace('.png', '')
 			img = img.replace('_', '.')
+			img = img.replace('x', '')
 			return img.replace('-', ' ')
 		
 		screen_dir = 'static/images/ppscreens/'
@@ -60,7 +61,7 @@ class Pirateplayer():
 						'link': cherrypy.url('../' + screen_dir + img),
 						'description': create_description(img) }
 					for img in listdir('static/images/ppscreens/')
-					if not img.endswith('.thumb.png')], reverse=True)
+					if img.endswith('.png') and not img.endswith('.thumb.png')], reverse=True)
 		
 		return { 'screens': screens }
 	
