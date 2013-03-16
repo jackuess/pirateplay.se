@@ -37,7 +37,7 @@ if __name__ == "__main__":
 	
 	cherrypy.config.update('config.ini')
 	
-	confdict = { 'global': { 'server.socket_port': 8081,
+	confdict = { 'global': { 'server.socket_port': 8082,
 				'request.show_tracebacks': True,
 				'tools.genshi_template.auto_reload': True,
 				'log.screen': True } }

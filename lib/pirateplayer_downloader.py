@@ -68,7 +68,7 @@ class Db():
 
 class PirateplayerDownloader():
 	def archive_path(self, fn):
-		return urljoin('../../static/pirateplayer_archive/', fn)
+		return cherrypy.url(urljoin('/../../static/pirateplayer_archive/', fn))
 	
 	@cherrypy.expose
 	@sitemap.add_to_sitemap('0.5')
