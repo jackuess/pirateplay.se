@@ -2,7 +2,7 @@
 <html xmlns:py="http://genshi.edgewall.org/"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	lang="sv"
-	py:with="title='Kompilera Pirateplayer 0.4.6 i Ubuntu'">
+	py:with="title='Kompilera Pirateplayer 0.5.0 i Ubuntu'">
 	<xi:include href="layout.html" />
 	<head><title>${title}</title></head>
 	<body>
@@ -44,30 +44,51 @@ librtmp-dev libarchive-dev libtool ffmpeg xsltproc automake checkinstall -y</cod
 			<li><code>rm tidy-html5-master.zip</code></li>
 		</ol>
 
+
+		<h3>Installera Qt Desktop Components</h3>
+		<ol class="code-block">
+			<li><code>wget -O qtdesktopcomponents.tar.gz "https://qt.gitorious.org/qtplayground/qtdesktopcomponents/archive-tarball/qt4"</code></li>
+			<li><code>tar -zxvf qtdesktopcomponents.tar.gz</code></li>
+			<li><code>cd qtplayground-qtdesktopcomponents</code></li>
+			<li><code>qmake &amp;&amp; make</code></li>
+			<li><code>sudo checkinstall --maintainer=dinepost@domain.com --pkgname=qt-components-desktop --pkgversion=`date +%Y%m%d`-git -y</code></li>
+		</ol>
+
+		<p>Qt Desktop Components är nu paketerat och installerat.</p>
+		<h4>Städa upp och spara paketet</h4>
+		<ol class="code-block">
+			<li><code>sudo chown $$USER:$$USER *.deb</code></li>
+			<li><code>cd ..</code></li>
+			<li><code>mv qtplayground-qtdesktopcomponents/*.deb .</code></li>
+			<li><code>sudo rm -r qtplayground-qtdesktopcomponents</code></li>
+			<li><code>rm qtdesktopcomponents.tar.gz</code></li>
+		</ol>
+
 		<h3>Installera Pirateplayer</h3>
 		
 		<ol class="code-block">
-			<li><code>wget https://github.com/jackuess/pirateplayer/archive/v0.4.6.zip -O pirateplayer-0.4.6.zip</code></li>
-			<li><code>unzip pirateplayer-0.4.6.zip</code></li>
-			<li><code>cd pirateplayer-0.4.6</code></li>
+			<li><code>wget https://github.com/jackuess/pirateplayer/archive/v0.5.0.zip -O pirateplayer-0.5.0.zip</code></li>
+			<li><code>unzip pirateplayer-0.5.0.zip</code></li>
+			<li><code>cd pirateplayer-0.5.0</code></li>
 			<li><code>qmake PREFIX=/usr</code></li>
 			<li><code>make</code></li>
-			<li><code>sudo checkinstall --maintainer=dinepost@domain.com --pkgname=pirateplayer --pkgversion=0.4.6 --pkggroup=multimedia --requires=libqtcore4,libqt4-declarative,libqt4-script,libqt4-sql,libqt4-xmlpatterns,libqtgui4,libqt4-xml,libqt4-network,librtmp0,ffmpeg,libtidy -y</code></li>
+			<li><code>sudo checkinstall --maintainer=dinepost@domain.com --pkgname=pirateplayer --pkgversion=0.5.0 --pkggroup=multimedia --requires=libqtcore4,libqt4-declarative,libqt4-script,libqt4-sql,libqt4-xmlpatterns,libqtgui4,libqt4-xml,libqt4-network,qt-components-desktop,librtmp0,ffmpeg,libtidy -y</code></li>
 		</ol>
 
 		<h4>Städa upp och spara paketet</h4>
 		<ol class="code-block">
 			<li><code>sudo chown $$USER:$$USER *.deb</code></li>
 			<li><code>cd ..</code></li>
-			<li><code>mv pirateplayer-0.4.6/*.deb .</code></li>
-			<li><code>sudo rm -r pirateplayer-0.4.6</code></li>
-			<li><code>rm pirateplayer-0.4.6.zip</code></li>
+			<li><code>mv pirateplayer-0.5.0/*.deb .</code></li>
+			<li><code>sudo rm -r pirateplayer-0.5.0</code></li>
+			<li><code>rm pirateplayer-0.5.0.zip</code></li>
 		</ol>
 
 		<p>Pirateplayer är nu installerat!</p>
-		<p>Du bör nu ha två debianpaket i din hemkatalog: "libtidy_<em>version</em>-git-1_<em>arkitektur</em>.deb" och "pirateplayer_0.4.6-1_<em>arkitektur</em>.deb". Se till att mejla dem till jacques@pirateplay.se så kan jag lägga upp dem här på Pirateplay.se och andra kan dra nytta av dem!</p>
+		<p>Du bör nu ha tre debianpaket i din hemkatalog: "libtidy_<em>version</em>-git-1_<em>arkitektur</em>.deb", "qt-components-desktop_<em>version</em>-git-1_<em>arkitektur</em>.deb" och "pirateplayer_0.5.0-1_<em>arkitektur</em>.deb". Se till att mejla dem till jacques@pirateplay.se så kan jag lägga upp dem här på Pirateplay.se och andra kan dra nytta av dem!</p>
 
 		<p>Skrivet av <em>Milleman</em> 2013-02-08</p>
 		<p>Redigerad av <em>Jacques de Laval</em> 2013-02-10</p>
+		<p>Redigerad av <em>Jacques de Laval</em> 2013-03-16: Uppdatering för Pirateplayer version 0.5.0.</p>
 	</body>
 </html>
