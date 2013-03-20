@@ -106,7 +106,7 @@ class Root():
 						'time': relative_time((now - datetime.datetime.strptime(t.created_at, '%a %b %d %H:%M:%S +0000 %Y')).total_seconds()) }
 						for t in tweets
 						if not t.text.startswith('@')]
-		except (AttributeError, twitter.TwitterError):
+		except (AttributeError, ValueError, twitter.TwitterError):
 			twitter = []
 		
 		services_se = sorted([s for s in pirateplay.services if len(s.get('items', [])) > 0 and '\.se/' in s['items'][0].re and s.get('title', '') != ''], key=lambda s: s['title'])
