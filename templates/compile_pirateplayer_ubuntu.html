@@ -47,9 +47,9 @@ librtmp-dev libarchive-dev libtool ffmpeg xsltproc automake checkinstall -y</cod
 
 		<h3>Installera Qt Desktop Components</h3>
 		<ol class="code-block">
-			<li><code>wget -O qtdesktopcomponents.tar.gz "https://qt.gitorious.org/qtplayground/qtdesktopcomponents/archive-tarball/qt4"</code></li>
+			<li><code>wget -O qtdesktopcomponents.tar.gz "http://qt.gitorious.org/qt/qtquickcontrols/archive-tarball/qt4"</code></li>
 			<li><code>tar -zxvf qtdesktopcomponents.tar.gz</code></li>
-			<li><code>cd qtplayground-qtdesktopcomponents</code></li>
+			<li><code>cd qt-qtquickcontrols</code></li>
 			<li><code>qmake &amp;&amp; make</code></li>
 			<li><code>sudo checkinstall --maintainer=dinepost@domain.com --pkgname=qt-components-desktop --pkgversion=`date +%Y%m%d`-git -y</code></li>
 		</ol>
@@ -59,8 +59,8 @@ librtmp-dev libarchive-dev libtool ffmpeg xsltproc automake checkinstall -y</cod
 		<ol class="code-block">
 			<li><code>sudo chown $$USER:$$USER *.deb</code></li>
 			<li><code>cd ..</code></li>
-			<li><code>mv qtplayground-qtdesktopcomponents/*.deb .</code></li>
-			<li><code>sudo rm -r qtplayground-qtdesktopcomponents</code></li>
+			<li><code>mv qt-qtquickcontrols/*.deb .</code></li>
+			<li><code>sudo rm -r qt-qtquickcontrols</code></li>
 			<li><code>rm qtdesktopcomponents.tar.gz</code></li>
 		</ol>
 
