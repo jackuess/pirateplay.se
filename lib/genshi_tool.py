@@ -21,7 +21,8 @@ class GenshiHandler():
 		context = Context(url=cherrypy.url, quote=quote)
 		context.push(self.next_handler())
 		stream = self.template.generate(context)
-		stream = stream | replace_at
+		if self.type == 'xhtml':
+			stream = stream | replace_at
 		cherrypy.response.headers['Content-Type'] = { 'xhtml': 'text/html', 'xml': 'application/xml' }[self.type]
 		return stream.render(self.type)
 
