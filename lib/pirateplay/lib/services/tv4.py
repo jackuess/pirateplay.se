@@ -15,14 +15,14 @@ rtmp = { 'title': 'TV4-play', 'url': 'http://tv4play.se/', 'feed_url': 'http://w
 
 hls = { 'items': [init_req(protocol='(hls\+?)?http://', query='?protocol=hls'),
 						TemplateRequest(
-							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<final_url>http://[^<]+\.m3u8)(?=.*?(?P<subtitles>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?',
-							encode_vars = lambda v: { 'quality': '%(bitrate)s kbps' % v,
-													'suffix-hint': 'mp4' } )] }#,
-						#TemplateRequest(
-							#re = r'BANDWIDTH=(?P<bitrate>\d+).*?RESOLUTION=(?P<resolution>\d+x\d+).*?(?P<url>index[^\n]+)',
-							#encode_vars = lambda v: { 'final_url': 'http://tv4play-i.akamaihd.net/i/mp4root/2013-02-14/pid4210801(2276479_,T3MP43,T3MP48,T3MP415,T3MP425,).mp4.csmil/%(url)s' % v,
-													#'quality': '%s kbps' % (str(int(v['bitrate'])/1000)),
-													#'suffix-hint': 'mp4' })] }
+							re = r'<bitrate>(?P<bitrate>[0-9]+)</bitrate>.*?<url>(?P<req_url>(?P<base>http://[^<]+)master\.m3u8)(?=.*?(?P<subtitles>http://((anytime)|(prima))\.tv4(play)?\.se/multimedia/vman/smiroot/[^<]+))?' ),
+							#encode_vars = lambda v: { 'quality': '%(bitrate)s kbps' % v,
+							#						'suffix-hint': 'mp4' } )] }#,
+						TemplateRequest(
+							re = r'BANDWIDTH=(?P<bitrate>\d+).*?RESOLUTION=(?P<resolution>\d+x\d+).*?(?P<url>index[^\n]+)',
+							encode_vars = lambda v: { 'final_url': '%(base)s/%(url)s' % v,
+													'quality': '%s kbps' % (str(int(v['bitrate'])/1000)),
+													'suffix-hint': 'mp4' })] }
 
 hds = { 'items': [init_req(),
 				TemplateRequest(
