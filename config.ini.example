@@ -6,6 +6,8 @@ server.socket_port = 80
 tools.genshi_template.dir = os.path.join(config.base_dir, 'templates')
 tools.genshi_template.auto_reload = False
 log.screen = False
+tools.sessions.storage_type = "file"
+tools.sessions.storage_path = os.path.join(config.base_dir, 'sessions')
 
 [/]
 tools.encode.on = True
