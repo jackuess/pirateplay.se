@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv">
+	<xi:include href="layout.html" />
+	<head>
+		<title>Pirateplayer filarkiv</title>
+		<style type="text/css">
+			.download_column { text-align: right }
+		</style>
+	</head>
+	<body>
+		<p py:if="msg != None" class="box box-red">${msg}</p>
+		<form method="post" action="login.html">
+			<input type="hidden" name="from_page" value="${from_page}" />
+			<label for="password" accesskey="l">Lösenord</label>
+			<input type="password" name="password" id="password" />
+			<input type="submit" value="Logga in" />
+		</form>
+	</body>
+</html>

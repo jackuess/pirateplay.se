@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:py="http://genshi.edgewall.org/"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	lang="sv">
+	<xi:include href="../../layout.html" />
+	<head>
+		<title>Hantera filarkiv</title>
+		<style type="text/css">
+			ul#files { list-style: none; padding: 0 }
+		</style>
+	</head>
+	<body>
+		<h1>Hantera filarkiv</h1>
+		<p><a href="authenticate/logout.html">Logga ut</a></p>
+		<p py:if="msg != None" class="box box-${'green' if msg_type == 'success' else 'red'}">${msg}</p>
+		<h2>Filarkiv</h2>
+		<h3>Lägg till fil</h3>
+		<form id="add_form" action="add.html" class="alternating_odd"><p>
+			<label for="filename">Filnamn</label>
+			<input type="text" name="filename" id="filename" />
+			<input type="submit" value="Lägg till" />
+		</p></form>
+		<h3>Filer</h3>
+		<ul id="files" class="alternating_odd">
+			<py:for each="d in downloads">
+				<li>
+					<form action="update.html">
+						<input type="text" name="filename" value="${d[0]}" />
+						<input type="hidden" name="id" value="${d[2]}" />
+						<input type="submit" value="Uppdatera" />
+						<input type="submit" value="Radera" formaction="delete.html" />
+					</form>
+				</li>
+			</py:for>
+		</ul>
+	</body>
+</html>
