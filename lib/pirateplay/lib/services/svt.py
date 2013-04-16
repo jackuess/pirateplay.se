@@ -33,7 +33,7 @@ def download_clip(c, v):
 	return c
 
 init_req = TemplateRequest(
-				re = r'^(http://)?(www\.)?(?P<domain>svt(play)?\.se)/(?P<path>[^?]+)(\?(?P<query>.+))?',
+				re = r'^(http://)?(www\.)?(?P<domain>((svt(play)?)|(oppetarkiv))\.se)/(?P<path>[^?]+)(\?(?P<query>.+))?',
 				encode_vars = fix_url)
 
 stream_re = r'"url":"(?P<url>%s[^"]+\.%s[^"]*)".*?(?=.*?"subtitleReferences":\[{"url":"(?P<subtitles>[^"]*))'
