@@ -56,7 +56,7 @@ hls = { 'items': [init_req,
 					decode_content = download_clip,
 					encode_vars = lambda v: { 'req_url': '%(url)s' % v }),
 				TemplateRequest(
-					re = r'BANDWIDTH=(?P<bitrate>\d+).*?RESOLUTION=(?P<resolution>\d+x\d+).*?(?P<url>http://[^\n]+)',
+					re = r'BANDWIDTH=(?P<bitrate>\d+).*?RESOLUTION=(?P<resolution>\d+x\d+).*?(?P<url>https?://[^\n]+)',
 					encode_vars = lambda v: { 'final_url': '%(url)s' % v,
 												'quality': '%s kbps' % (str(int(v['bitrate'])/1000)),
 												'suffix-hint': 'mp4' })] }
