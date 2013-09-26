@@ -1,7 +1,7 @@
 from ..rerequest import TemplateRequest
 
 mtg_encode = [lambda v: { 'req_url': 'http://viastream.viasat.tv/PlayProduct/%s' % v['id'] },
-			lambda v: { 'final_url': '%s swfVfy=1 swfUrl=http://flvplayer.viastream.viasat.tv/play/swf/player120328.swf' % v['final_url'].replace('/mp4:', '/ playpath=mp4:'),
+			lambda v: { 'final_url': '%s swfVfy=1 swfUrl=http://flvplayer.viastream.viasat.tv/flvplayer/play/swf/player.swf' % v['final_url'].replace('/mp4:', '/ playpath=mp4:'),
 						'quality': '%s kbps' % v['bitrate'] }]
 
 tv3play = { 'title': 'TV3-play', 'url': 'http://tv3play.se/', 'startvars': { 'suffix-hint': 'flv' },
