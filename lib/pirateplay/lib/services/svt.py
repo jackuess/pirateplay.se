@@ -46,7 +46,7 @@ rtmp = { 'title': 'SVT-play', 'url': 'http://svtplay.se/',
 		'items': [init_req,
 				TemplateRequest(
 					re = stream_re2 % 'rtmp',
-					encode_vars = lambda v: { 'final_url': '%(url)s swfVfy=1 swfUrl=http://www.svtplay.se/public/swf/video/svtplayer-2012.15.swf' % v,
+					encode_vars = lambda v: { 'final_url': '%(url)s swfVfy=1 swfUrl=http://www.svtplay.se/public/swf/video/svtplayer-2013.23.swf' % v,
 											'quality': 'quality=%(bitrate)s kbps' % v,
 											'suffix-hint': 'flv' })] }
 
