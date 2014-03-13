@@ -15,18 +15,18 @@ tv3play = { 'title': 'TV3-play', 'url': 'http://tv3play.se/', 'startvars': { 'su
 							
 mtg_alt = { 'startvars': { 'suffix-hint': 'flv' },
 			'items': [TemplateRequest(
-						re = r'^(http://)?(www\.)?tv[368]play\.se/.*(?:play/(?P<id>\d+)).*',
+						re = r'^(http://)?(www\.)?tv[368]play\.se/.*/(?P<id>\d+).*',
 						encode_vars = mtg_encode[0]),
 						
 					TemplateRequest(
 						re = r'<SamiFile>(?P<subtitles>[^<]*).*<Video>.*<BitRate>(?P<bitrate>\d+).*?<Url><!\[CDATA\[(?P<req_url>http[^\]]+)'),
 						
 					TemplateRequest(
-						re = r'<Url>(?P<final_url>[^<]+)',
+						re = r'<Url><!\[CDATA\[(?P<final_url>[^\]]+)',
 						encode_vars = mtg_encode[1])] }
 						
 mtg_hls = { 'items': [TemplateRequest(
-						re = r'(hls\+?)?(http://)?(www\.)?tv[368]play\.se/.*(?:play/(?P<id>\d+)).*',
+						re = r'(hls\+?)?(http://)?(www\.)?tv[368]play\.se/.*/(?P<id>\d+).*',
 						encode_vars = lambda v: { 'req_url': 'http://viastream.viasat.tv/MobileStream/%(id)s' % v } ),
 					TemplateRequest(
 						re = r'"(?P<req_url>(?P<base>.+/)[^/]+.m3u8)"',
