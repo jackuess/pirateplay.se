@@ -6,7 +6,7 @@ mtg_encode = [lambda v: { 'req_url': 'http://viastream.viasat.tv/PlayProduct/%s'
 
 tv3play = { 'title': 'TV3-play', 'url': 'http://tv3play.se/', 'startvars': { 'suffix-hint': 'flv' },
 			'items': [TemplateRequest(
-						re = r'^(http://)?(www\.)?tv[368]play\.se/.*(?:play/(?P<id>\d+)).*',
+						re = r'^(http://)?(www\.)?tv[368]play\.se/.*/(?P<id>\d+).*',
 						encode_vars = mtg_encode[0]),
 						
 					TemplateRequest(
